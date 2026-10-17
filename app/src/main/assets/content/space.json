@@ -1,0 +1,59 @@
+{
+  "theme": {
+    "id": "space",
+    "name": "Space",
+    "tagline": "Look up.",
+    "accentColor": "0xFF6366F1"
+  },
+  "subcategories": [
+    {
+      "id": "mars",
+      "name": "Mars",
+      "guidedOrder": 1,
+      "accentColor": "0xFFEA580C"
+    }
+  ],
+  "discoveries": [
+    {
+      "id": "space.mars.fact.01",
+      "subcategoryId": "mars",
+      "type": "FACT",
+      "title": "A day on Mars is just 37 minutes longer than on Earth.",
+      "body": "One Martian day, called a sol, lasts about 24 hours and 39 minutes.",
+      "source": {
+        "name": "NASA",
+        "url": "https://science.nasa.gov/mars/",
+        "license": "Public domain"
+      }
+    },
+    {
+      "id": "space.mars.fact.02",
+      "subcategoryId": "mars",
+      "type": "FACT",
+      "title": "Sunsets on Mars appear blue.",
+      "body": "Fine dust particles in the thin Martian atmosphere scatter blue light forward toward an observer.",
+      "source": {
+        "name": "NASA JPL",
+        "url": "https://www.jpl.nasa.gov/",
+        "license": "Public domain"
+      }
+    },
+    {
+      "id": "space.mars.quiz.01",
+      "subcategoryId": "mars",
+      "type": "QUIZ",
+      "title": "Test yourself",
+      "quiz": {
+        "question": "What is the name of the largest volcano in the solar system, located on Mars?",
+        "options": ["Mauna Kea", "Olympus Mons", "Mount Vesuvius", "Elysium Mons"],
+        "correctIndex": 1,
+        "explanation": "Olympus Mons is a massive shield volcano nearly 22 km (13.6 mi) high, about two and a half times Mount Everest's height!"
+      },
+      "source": {
+        "name": "NASA",
+        "url": "https://science.nasa.gov/mars/",
+        "license": "Public domain"
+      }
+    }
+  ]
+}
