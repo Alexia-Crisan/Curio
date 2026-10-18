@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.curio.data.RealClock
 import com.example.curio.data.fake.FakeDiscoveryRepository
 import com.example.curio.data.fake.FakeInteractionRepository
+import com.example.curio.data.settings.SettingsRepository
 import com.example.curio.domain.Clock
 import com.example.curio.domain.DiscoveryRepository
 import com.example.curio.domain.InteractionRepository
@@ -15,6 +16,7 @@ class AppContainer(context: Context) {
     val clock: Clock = RealClock()
     val discoveryRepository: DiscoveryRepository = FakeDiscoveryRepository()
     val interactionRepository: InteractionRepository = FakeInteractionRepository()
+    val settingsRepository: SettingsRepository = SettingsRepository(context)
     val shakeSensor: ShakeSensor = ShakeSensor(context)
     val tiltSensor: TiltSensor = TiltSensor(context)
     val hapticsController: HapticsController = HapticsController()
