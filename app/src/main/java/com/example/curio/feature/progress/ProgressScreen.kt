@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +33,10 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun ProgressScreen(
+    treeUiState: TreeUiState = TreeUiState(),
+    onSelectTheme: (String) -> Unit = {},
+    onToggleTopicExpanded: (String) -> Unit = {},
+    onLeafClick: (String) -> Unit = {},
     completedDays: Int = 12,
     totalDays: Int = 30,
     currentStreak: Int = 5,
@@ -42,6 +48,7 @@ fun ProgressScreen(
         Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
+            .verticalScroll(rememberScrollState())
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -53,11 +60,11 @@ fun ProgressScreen(
             modifier = Modifier.align(Alignment.Start),
         )
 
-        Spacer(Modifier.height(40.dp))
+        Spacer(Modifier.height(32.dp))
 
-        Box(contentAlignment = Alignment.Center, modifier = Modifier.size(220.dp)) {
+        Box(contentAlignment = Alignment.Center, modifier = Modifier.size(200.dp)) {
             Canvas(modifier = Modifier.fillMaxSize()) {
-                val strokeWidth = 20.dp.toPx()
+                val strokeWidth = 18.dp.toPx()
                 drawArc(
                     color = Color.White.copy(alpha = 0.15f),
                     startAngle = -90f,
@@ -76,19 +83,19 @@ fun ProgressScreen(
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
                     text = "$completedDays / $totalDays",
-                    fontSize = 36.sp,
+                    fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
                 )
                 Text(
                     text = "Days Completed",
-                    fontSize = 14.sp,
+                    fontSize = 13.sp,
                     color = Color.Gray,
                 )
             }
         }
 
-        Spacer(Modifier.height(48.dp))
+        Spacer(Modifier.height(32.dp))
 
         Row(
             Modifier.fillMaxWidth(),
@@ -100,9 +107,9 @@ fun ProgressScreen(
                 colors = CardDefaults.cardColors(containerColor = Color(0xFF1E293B)),
             ) {
                 Column(Modifier.padding(20.dp)) {
-                    Text("🔥 Streak", fontSize = 16.sp, color = Color.Gray)
-                    Spacer(Modifier.height(8.dp))
-                    Text("$currentStreak Days", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                    Text("🔥 Streak", fontSize = 15.sp, color = Color.Gray)
+                    Spacer(Modifier.height(6.dp))
+                    Text("$currentStreak Days", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Color.White)
                 }
             }
 
@@ -112,11 +119,21 @@ fun ProgressScreen(
                 colors = CardDefaults.cardColors(containerColor = Color(0xFF1E293B)),
             ) {
                 Column(Modifier.padding(20.dp)) {
-                    Text("⭐ Total Saved", fontSize = 16.sp, color = Color.Gray)
-                    Spacer(Modifier.height(8.dp))
-                    Text("8 Items", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                    Text("⭐ Total Saved", fontSize = 15.sp, color = Color.Gray)
+                    Spacer(Modifier.height(6.dp))
+                    Text("8 Items", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Color.White)
                 }
             }
         }
+
+        Spacer(Modifier.height(28.dp))
+
+        // WP9: Knowledge Tree Card
+        TreeCard(
+            uiState = treeUiState,
+            onSelectTheme = onSelectTheme,
+            onToggleTopicExpanded = onToggleTopicExpanded,
+            onLeafClick = onLeafClick,
+        )
     }
 }

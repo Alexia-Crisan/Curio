@@ -1,7 +1,6 @@
 package com.example.curio.navigation
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -11,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -22,6 +22,7 @@ import com.example.curio.feature.feed.FeedViewModel
 import com.example.curio.feature.library.LibraryScreen
 import com.example.curio.feature.onboarding.OnboardingScreen
 import com.example.curio.feature.progress.ProgressScreen
+import com.example.curio.feature.progress.TreeViewModel
 import com.example.curio.feature.settings.SettingsScreen
 
 data class NavTab(val route: Route, val label: String, val iconText: String)
@@ -36,6 +37,7 @@ val navTabs = listOf(
 @Composable
 fun CurioNavHost(
     feedViewModel: FeedViewModel,
+    treeViewModel: TreeViewModel,
     savedCards: List<Discovery>,
     onboardingDone: Boolean,
     onFinishOnboarding: () -> Unit,
@@ -108,7 +110,15 @@ fun CurioNavHost(
             }
 
             composable<Route.Progress> {
-                ProgressScreen()
+                val treeUiState by treeViewModel.uiState.collectAsStateWithLifecycle()
+                ProgressScreen(
+                    treeUiState = treeUiState,
+                    onSelectTheme = treeViewModel::selectTheme,
+                    onToggleTopicExpanded = treeViewModel::toggleTopicExpanded,
+                    onLeafClick = { id ->
+                        navController.navigate(Route.Detail(id))
+                    }
+                )
             }
 
             composable<Route.Settings> {
