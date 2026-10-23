@@ -1,6 +1,8 @@
 package com.example.curio.domain
 
-enum class ContentType { VIDEO, IMAGE, FACT, ARTICLE, QUIZ, SOURCE }
+enum class ContentType { VIDEO, IMAGE, FACT, ARTICLE, QUIZ, SOURCE, KNOWLEDGE }
+
+typealias DiscoveryType = ContentType
 
 data class Source(
     val name: String,
@@ -26,4 +28,19 @@ data class Discovery(
     val quiz: Quiz? = null,
     val source: Source,
     val accentColor: Long = 0xFF3B82F6,
+) {
+    val topicId: String get() = subcategoryId
+}
+
+data class Topic(
+    val id: String,
+    val themeId: String,
+    val title: String,
+)
+
+data class Theme(
+    val id: String,
+    val title: String,
+    val topics: List<Topic>,
+    val available: Boolean = true,
 )
