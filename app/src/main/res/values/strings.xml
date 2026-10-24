@@ -29,4 +29,25 @@
     <string name="badge_deep_learner_desc">Read %1$d knowledge articles in detail.</string>
     <string name="badge_hidden_discoveries_title">Hidden Discoveries</string>
     <string name="badge_hidden_discoveries_desc">Find %1$d new bonus discoveries by shaking your phone.</string>
+
+    <string name="tree_title">Knowledge tree</string>
+    <string name="tree_empty">Your tree will grow here once content is available.</string>
+    <string name="tree_progress">%1$d of %2$d discoveries</string>
+    <string name="tree_topic_progress">%1$d of %2$d</string>
+    <string name="tree_leaf_hidden">Not discovered yet</string>
+    <string name="tree_leaf_landmark">Key discovery</string>
+    <string name="tree_leaf_bonus">Found by shaking</string>
+    <string name="tree_cd_topic">%1$s, %2$s, %3$d of %4$d discoveries</string>
+    <string name="tree_cd_leaf_done">%1$s, discovered</string>
+    <string name="tree_cd_leaf_locked">Not discovered yet</string>
+    <string name="tree_stage_seed">Seed</string>
+    <string name="tree_stage_sprout">Sprout</string>
+    <string name="tree_stage_sapling">Sapling</string>
+    <string name="tree_stage_tree">Tree</string>
+    <string name="tree_stage_mature">Mature tree</string>
+    <string name="tree_stage_bloom">In bloom</string>
+    <string name="tree_state_locked">Not explored yet</string>
+    <string name="tree_state_seeded">Just planted</string>
+    <string name="tree_state_growing">Growing</string>
+    <string name="tree_state_complete">Complete</string>
 </resources>
