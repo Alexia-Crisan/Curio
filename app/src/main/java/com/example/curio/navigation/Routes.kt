@@ -19,5 +19,8 @@ sealed interface Route {
     data object Settings : Route
 
     @Serializable
+    data object Achievements : Route
+
+    @Serializable
     data class Detail(val discoveryId: String) : Route
 }

@@ -8,8 +8,9 @@ import androidx.room.RoomDatabase
 @Database(
     entities = [
         ViewEventEntity::class,
-        AchievementUnlockEntity::class,
         DayChoiceEntity::class,
+        SavedDiscoveryEntity::class,
+        AchievementUnlockEntity::class,
     ],
     version = 1,
     exportSchema = false,
@@ -17,6 +18,8 @@ import androidx.room.RoomDatabase
 abstract class CurioDatabase : RoomDatabase() {
     abstract fun viewEventDao(): ViewEventDao
     abstract fun dayChoiceDao(): DayChoiceDao
+    abstract fun savedDao(): SavedDao
+    abstract fun achievementDao(): AchievementDao
 
     companion object {
         fun create(context: Context): CurioDatabase =

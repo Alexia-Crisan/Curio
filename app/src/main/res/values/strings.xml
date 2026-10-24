@@ -1,3 +1,32 @@
 <resources>
     <string name="app_name">Curio</string>
+    <string name="badges_title">Badges</string>
+    <string name="badges_unlocked_count">%1$d of %2$d unlocked</string>
+    <string name="badge_unlocked_on">Unlocked %1$s</string>
+    <string name="badge_locked">Locked</string>
+    <string name="badge_progress">%1$d / %2$d</string>
+    <string name="badge_cd_locked">%1$s, locked, %2$d of %3$d</string>
+    <string name="badge_cd_unlocked">%1$s, unlocked on %2$s</string>
+    <string name="badge_go_to_feed">Go to the feed</string>
+    <string name="badge_how_to_earn">How to earn it</string>
+    <string name="badge_unlocked_banner">Badge unlocked</string>
+    <string name="badges_entry_cd">Badges, %1$d of %2$d unlocked</string>
+    <string name="badges_entry_cd_new">Badges, %1$d of %2$d unlocked, new badge</string>
+    <string name="tab_new_badge">New badge</string>
+    <string name="back">Back</string>
+
+    <string name="badge_first_discovery_title">First Discovery</string>
+    <string name="badge_first_discovery_desc">Complete your first discovery.</string>
+    <string name="badge_full_day_title">Full Day</string>
+    <string name="badge_full_day_desc">Complete all six discoveries of a day\'s topic.</string>
+    <string name="badge_curious_mind_title">Curious Mind</string>
+    <string name="badge_curious_mind_desc">Complete %1$d different discoveries.</string>
+    <string name="badge_topic_explorer_title">Topic Explorer</string>
+    <string name="badge_topic_explorer_desc">Explore %1$d topics in one theme by completing several discoveries in each.</string>
+    <string name="badge_knowledge_collector_title">Knowledge Collector</string>
+    <string name="badge_knowledge_collector_desc">Save %1$d discoveries.</string>
+    <string name="badge_deep_learner_title">Deep Learner</string>
+    <string name="badge_deep_learner_desc">Read %1$d knowledge articles in detail.</string>
+    <string name="badge_hidden_discoveries_title">Hidden Discoveries</string>
+    <string name="badge_hidden_discoveries_desc">Find %1$d new bonus discoveries by shaking your phone.</string>
 </resources>

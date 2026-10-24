@@ -45,6 +45,7 @@ class MainActivity : ComponentActivity() {
                 CurioNavHost(
                     feedViewModel = feedVm,
                     treeViewModel = treeVm,
+                    achievementSource = container.achievementSource,
                     savedCards = emptyList(),
                     onboardingDone = onboardingDone,
                     onFinishOnboarding = {

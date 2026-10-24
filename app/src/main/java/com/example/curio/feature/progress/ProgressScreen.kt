@@ -30,10 +30,14 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.curio.feature.achievements.BadgeSummary
+import com.example.curio.feature.achievements.BadgesEntryCard
 
 @Composable
 fun ProgressScreen(
     treeUiState: TreeUiState = TreeUiState(),
+    badgeSummary: BadgeSummary = BadgeSummary(0, 7, false),
+    onOpenAchievements: () -> Unit = {},
     onSelectTheme: (String) -> Unit = {},
     onToggleTopicExpanded: (String) -> Unit = {},
     onLeafClick: (String) -> Unit = {},
@@ -125,6 +129,14 @@ fun ProgressScreen(
                 }
             }
         }
+
+        Spacer(Modifier.height(28.dp))
+
+        // WP5: Achievements Badges Card
+        BadgesEntryCard(
+            summary = badgeSummary,
+            onClick = onOpenAchievements,
+        )
 
         Spacer(Modifier.height(28.dp))
 

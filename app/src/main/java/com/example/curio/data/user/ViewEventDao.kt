@@ -29,6 +29,9 @@ abstract class ViewEventDao {
     @Query("SELECT COUNT(*) FROM view_event WHERE date = :date AND completed = 1 AND source = 'FEED'")
     abstract suspend fun completedFeedCount(date: String): Int
 
+    @Query("DELETE FROM view_event")
+    abstract suspend fun deleteAll()
+
     /** The only way the app writes view events. Read-merge-write is one transaction. */
     @Transaction
     open suspend fun record(touch: ViewTouch) {
