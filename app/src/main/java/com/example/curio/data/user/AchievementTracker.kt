@@ -5,7 +5,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.launch
 
-/** Application-scoped, so badges unlock on every screen. The snapshot is only a trigger; evaluateNow() reads fresh state. */
 class AchievementTracker(
     private val scope: CoroutineScope,
     private val activity: UserActivityRepository,

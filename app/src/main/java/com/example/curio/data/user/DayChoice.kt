@@ -12,7 +12,7 @@ import java.time.LocalDate
 
 @Entity(tableName = "day_choice")
 data class DayChoiceEntity(
-    @PrimaryKey val date: String,      // ISO local date
+    @PrimaryKey val date: String,
     val themeId: String,
     val topicId: String,
     val mode: String,

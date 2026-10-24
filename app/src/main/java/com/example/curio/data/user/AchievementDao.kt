@@ -8,14 +8,12 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AchievementDao {
-    /** Returns -1 when the badge is already unlocked (IGNORE): that is the duplicate protection. */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertUnlock(entity: AchievementUnlockEntity): Long
 
     @Query("SELECT * FROM achievement_unlock") suspend fun getAll(): List<AchievementUnlockEntity>
     @Query("SELECT * FROM achievement_unlock") fun observeAll(): Flow<List<AchievementUnlockEntity>>
 
-    /** The banner queue: unlocked but not yet announced, oldest first. */
     @Query("SELECT * FROM achievement_unlock WHERE notifiedAt IS NULL ORDER BY unlockedAt, achievementId")
     fun observePending(): Flow<List<AchievementUnlockEntity>>
 

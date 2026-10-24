@@ -14,7 +14,7 @@ class FakeDiscoveryRepository : DiscoveryRepository {
     private val nasa = Source("NASA", "https://science.nasa.gov/mars/", "Public Domain")
 
     override suspend fun getDailyFeed(date: LocalDate): List<Discovery> {
-        delay(600) // simulate loading so skeletons/indicators appear
+        delay(600)
         return listOf(
             Discovery(
                 id = "fake.1",

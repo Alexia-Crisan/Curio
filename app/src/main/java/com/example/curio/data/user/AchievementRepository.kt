@@ -19,7 +19,7 @@ class AchievementRepository(
     private val activity: UserActivityRepository,
     private val content: ContentIndex,
     private val clock: Clock,
-    private val defs: List<AchievementDef> = AchievementConfig.defs.filter { it.mvp },   // should-have badges stay off
+    private val defs: List<AchievementDef> = AchievementConfig.defs.filter { it.mvp },
 ) : AchievementSource {
     private val dao = db.achievementDao()
 
@@ -42,9 +42,6 @@ class AchievementRepository(
     override suspend fun markNotified(id: AchievementId) { dao.markNotified(id.name, clock.millis()) }
     override suspend fun markAllSeen() { dao.markAllSeen(clock.millis()) }
 
-    /**
-     * Evaluate against the latest committed data and persist every newly earned badge, in one transaction
-     */
     suspend fun evaluateNow(): List<AchievementId> = db.withTransaction {
         val snapshot = activity.currentSnapshot()
         val unlocked = dao.getAll().toUnlockedMap()

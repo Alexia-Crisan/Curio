@@ -15,12 +15,8 @@ class DayPlanRepository(
     private val choices = db.dayChoiceDao()
     private val views = db.viewEventDao()
 
-    /** Read-only. Used for past days: it never creates a row. */
     suspend fun peek(date: LocalDate): DayChoice? = choices.find(date.toString())?.toDomain()
 
-    /**
-     * Today's plan for the CURRENT theme and mode. Writes today's row on first call, for every mode.
-     */
     suspend fun ensureToday(themeId: String, topicIds: List<String>, mode: DailyMode): DayPlan = db.withTransaction {
         val today = LocalDate.now(clock)
         val key = today.toString()
@@ -52,7 +48,6 @@ class DayPlanRepository(
         }
     }
 
-    /** Choose mode: the user picks (or re-picks) today's topic. Refused once progress exists. */
     suspend fun chooseTopic(themeId: String, topicIds: List<String>, topicId: String): DayPlan = db.withTransaction {
         require(topicId in topicIds) { "$topicId is not a topic of $themeId" }
         val today = LocalDate.now(clock)

@@ -17,11 +17,6 @@ class BonusRepository(
     private val views = db.viewEventDao()
     private val byId = allDiscoveries.associateBy { it.id }
 
-    /**
-     * Pick a bonus and, if one was found, write its BONUS row immediately (completed = false).
-     * Select + write are ONE transaction, so two quick shakes can never get the same card.
-     * The caller must NOT call this while showing a past day's feed.
-     */
     suspend fun reveal(themeId: String, todayTopicId: String): ShakeBonusSelector.Result = db.withTransaction {
         val today = LocalDate.now(clock)
         val events = views.getAll().map { it.toDomain() }
@@ -32,7 +27,6 @@ class BonusRepository(
         result
     }
 
-    /** Today's bonus cards in the order they were revealed, to rebuild the feed after a restart. */
     suspend fun todaysBonusCards(): List<Discovery> =
         views.bonusRows(LocalDate.now(clock).toString()).mapNotNull { byId[it.discoveryId] }
 }
