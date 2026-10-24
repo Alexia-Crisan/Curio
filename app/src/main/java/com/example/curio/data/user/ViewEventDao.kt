@@ -19,6 +19,12 @@ abstract class ViewEventDao {
     @Query("SELECT * FROM view_event")
     abstract fun observeAll(): Flow<List<ViewEventEntity>>   // a few hundred rows at most
 
+    @Query("SELECT * FROM view_event")
+    abstract suspend fun getAll(): List<ViewEventEntity>
+
+    @Query("SELECT * FROM view_event WHERE date = :date AND source = 'BONUS' ORDER BY firstViewedAt, discoveryId")
+    abstract suspend fun bonusRows(date: String): List<ViewEventEntity>
+
     /** Only regular feed cards lock the day. Bonus and Detail-only rows do not. */
     @Query("SELECT COUNT(*) FROM view_event WHERE date = :date AND completed = 1 AND source = 'FEED'")
     abstract suspend fun completedFeedCount(date: String): Int
