@@ -2,10 +2,6 @@ package com.example.curio.domain
 
 object AchievementEvaluator {
 
-    /**
-     * @param unlocked achievementId -> unlockedAt (epoch ms), read from the achievement_unlock table in step 6.
-     * Unlocking is permanent: an unlocked badge reports target/target whatever the data says now.
-     */
     fun evaluate(
         s: ActivitySnapshot,
         c: ContentIndex,
@@ -19,7 +15,7 @@ object AchievementEvaluator {
         val progress = defs.map { def ->
             val at = unlocked[def.id]
             if (at != null) AchievementProgress(def, def.target, at)
-            else AchievementProgress(def, minOf(raw.getValue(def.id), def.target), null)   // never show 40 / 25
+            else AchievementProgress(def, minOf(raw.getValue(def.id), def.target), null)
         }
         val newlyEarned = defs.filter { it.id !in unlocked && raw.getValue(it.id) >= it.target }
         return Evaluation(progress, newlyEarned)
@@ -30,7 +26,7 @@ object AchievementEvaluator {
             AchievementId.FIRST_DISCOVERY -> minOf(1, s.completedIds.size)
             AchievementId.FULL_DAY -> if (s.completedDays.isNotEmpty()) 1 else 0
             AchievementId.CURIOUS_MIND -> s.completedIds.size
-            AchievementId.TOPIC_EXPLORER -> explored.values.maxOrNull() ?: 0        // best single theme, never summed
+            AchievementId.TOPIC_EXPLORER -> explored.values.maxOrNull() ?: 0
             AchievementId.KNOWLEDGE_COLLECTOR -> s.savedIds.size
             AchievementId.DEEP_LEARNER -> s.deepReadIds.size
             AchievementId.HIDDEN_DISCOVERIES -> s.bonusCompletedIds.size

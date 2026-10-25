@@ -41,7 +41,6 @@ class AchievementsViewModel(
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), AchievementsUiState())
 
     init {
-        // While this screen exists, every unlock counts as seen immediately (clears the dot).
         viewModelScope.launch {
             source.observeUnseenCount().filter { it > 0 }.collect { source.markAllSeen() }
         }

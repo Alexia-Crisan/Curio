@@ -15,7 +15,6 @@ data class AchievementVisual(
     val descriptionUsesTarget: Boolean,
 )
 
-/** Only badges listed here are shown. Should-have badges get an entry when they are switched on. */
 object AchievementVisuals {
     private val visuals = mapOf(
         AchievementId.FIRST_DISCOVERY to AchievementVisual(R.string.badge_first_discovery_title, R.string.badge_first_discovery_desc, R.drawable.ic_badge_first_discovery, false),
@@ -30,7 +29,6 @@ object AchievementVisuals {
     fun of(id: AchievementId): AchievementVisual? = visuals[id]
 }
 
-/** What Developer B's components receive. Plain data. */
 data class AchievementUi(
     val id: AchievementId,
     @StringRes val titleRes: Int,
@@ -41,7 +39,7 @@ data class AchievementUi(
     val target: Int,
     val fraction: Float,
     val isUnlocked: Boolean,
-    val unlockedOn: String?,        // already formatted, null while locked
+    val unlockedOn: String?,
 )
 
 @Composable

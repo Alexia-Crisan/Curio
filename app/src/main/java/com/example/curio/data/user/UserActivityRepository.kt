@@ -29,20 +29,15 @@ class UserActivityRepository(
     private fun build(v: List<ViewEventEntity>, s: List<String>, c: List<DayChoiceEntity>): ActivitySnapshot =
         ActivitySnapshotBuilder.build(v.map { it.toDomain() }, s.toSet(), c.map { it.toDomain() }, content)
 
-    /** Re-emits whenever a view event, a save or a day choice changes. Tables are a few hundred rows at most. */
     override fun observeSnapshot(): Flow<ActivitySnapshot> =
         combine(views.observeAll(), savedDao.observeIds(), choices.observeAll()) { v, s, c -> build(v, s, c) }
             .distinctUntilChanged()
             .flowOn(Dispatchers.Default)
 
-    /** One-shot read, used inside the evaluator's transaction so it always sees the latest committed state. */
     suspend fun currentSnapshot(): ActivitySnapshot = build(views.getAll(), savedDao.getIds(), choices.getAll())
 
     fun observeSavedIds(): Flow<Set<String>> = savedDao.observeIds().map { it.toSet() }
 
-    /**
-     * Save or un-save.
-     */
     suspend fun setSaved(
         discoveryId: String,
         saved: Boolean,
@@ -60,7 +55,6 @@ class UserActivityRepository(
         }
     }
 
-    /** Settings "Reset progress": everything the user generated, in ONE transaction. */
     suspend fun resetAll() = db.withTransaction {
         views.deleteAll()
         choices.deleteAll()

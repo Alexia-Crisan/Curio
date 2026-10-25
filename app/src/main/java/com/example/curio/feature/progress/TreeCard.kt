@@ -86,7 +86,6 @@ fun TreeCard(
 
             Spacer(Modifier.height(16.dp))
 
-            // Theme selector chips
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 uiState.trees.forEach { tree ->
                     val selected = tree.theme.id == uiState.selectedThemeId
@@ -109,7 +108,6 @@ fun TreeCard(
 
             Spacer(Modifier.height(20.dp))
 
-            // Topic branches
             currentTree.branches.forEach { topicNode ->
                 val isExpanded = topicNode.topic.id in uiState.expandedTopicIds
                 TopicBranchRow(

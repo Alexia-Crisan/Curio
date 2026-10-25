@@ -41,7 +41,6 @@ class TreeBuilderTest {
     private fun idsOf(prefix: String, range: IntRange = 1..6) = range.map { "$prefix$it" }
     private fun ids(prefix: String, range: IntRange) = idsOf(prefix, range).toSet()
 
-    // 7 topics x 6 cards = 42, like one real theme
     private val bigCards = (1..7).flatMap { t -> (1..6).map { i -> TestContent.disc("g${t}_$i", "big", "g$t") } }
     private val bigTheme = TestContent.theme("big", *(1..7).map { "g$it" }.toTypedArray())
     private val big = ContentIndex(listOf(bigTheme), bigCards)
@@ -62,7 +61,6 @@ class TreeBuilderTest {
         detailDwellMs = 0,
     )
 
-    // ---- initial state ----
     @Test fun anEmptyHistoryGivesASeedWithFourLockedBranches() {
         val t = tree()
         assertEquals(SEED, t.stage)
@@ -83,7 +81,6 @@ class TreeBuilderTest {
     @Test fun branchesFollowTheThemeTopicOrder() =
         assertEquals(listOf("t1", "t2", "t3", "t4"), tree().branches.map { it.topic.id })
 
-    // ---- node states ----
     @Test fun topicStateBoundariesForSixCards() {
         val expected = mapOf(0 to LOCKED, 1 to SEEDED, 2 to SEEDED, 3 to GROWING, 4 to GROWING, 5 to GROWING, 6 to COMPLETE)
         expected.forEach { (done, state) -> assertEquals("$done of 6", state, TreeBuilder.stateFor(done, 6)) }
@@ -118,9 +115,7 @@ class TreeBuilderTest {
         assertTrue(listOf("t2", "t3", "t4").all { t.branch(it).state == LOCKED })
     }
 
-    // ---- growth stage ----
     @Test fun stageThresholdsForFortyTwoCards() {
-        // 12 % of 42 is 5.04, so the first sapling is the SIXTH card. (The plan's "5" was wrong.)
         val expected = listOf(
             0 to SEED, 1 to SPROUT, 5 to SPROUT, 6 to SAPLING, 13 to SAPLING,
             14 to TREE, 27 to TREE, 28 to MATURE, 41 to MATURE, 42 to BLOOM,
@@ -157,7 +152,6 @@ class TreeBuilderTest {
         assertEquals(0.25f, t.fraction, 0.001f)
     }
 
-    // ---- leaves ----
     @Test fun aLeafIsLitOnlyWhenItsCardIsCompleted() {
         val leaves = tree(snap(completed = setOf("a2", "a4"))).branch("t1").leaves
         assertEquals(listOf(false, true, false, true, false, false), leaves.map { it.completed })
@@ -175,7 +169,6 @@ class TreeBuilderTest {
     @Test fun theNoCardsLeakATitleWhenNothingIsDone() =
         assertTrue(tree().branches.flatMap { it.leaves }.all { it.title == null })
 
-    // ---- landmarks ----
     @Test fun theLandmarkIsTheKnowledgeCard() {
         val leaves = tree().branch("t1").leaves
         assertEquals(listOf("a6"), leaves.filter { it.isLandmark }.map { it.discoveryId })
@@ -198,7 +191,6 @@ class TreeBuilderTest {
         assertEquals(listOf("k2"), leaves.filter { it.isLandmark }.map { it.discoveryId })
     }
 
-    // ---- bonus reveals ----
     @Test fun aBonusCompletionRevealsALockedBranchAndGetsTheSparkMarker() {
         val t = tree(snap(completed = setOf("b1"), bonus = setOf("b1")))
         assertEquals(SEEDED, t.branch("t2").state)
@@ -218,7 +210,6 @@ class TreeBuilderTest {
         assertFalse(leaf.viaBonus)
     }
 
-    // ---- isolation and robustness ----
     @Test fun unknownIdsAreIgnored() {
         val t = tree(snap(completed = setOf("ghost", "a1")))
         assertEquals(1, t.completed)
@@ -248,10 +239,10 @@ class TreeBuilderTest {
 
     @Test fun theTreeFollowsTheRealSnapshotBuilder() {
         val events = listOf(
-            ev("a1"),                                         // regular feed
-            ev("a2", source = ViewSource.DETAIL),             // opened from Saved or QR: still lights the leaf
-            ev("b1", source = ViewSource.BONUS),              // first-time bonus
-            ev("c1", completed = false),                      // only viewed
+            ev("a1"),
+            ev("a2", source = ViewSource.DETAIL),
+            ev("b1", source = ViewSource.BONUS),
+            ev("c1", completed = false),
         )
         val s = ActivitySnapshotBuilder.build(events, emptySet(), emptyList(), c)
         val t = tree(s)
@@ -266,6 +257,6 @@ class TreeBuilderTest {
         val start = System.nanoTime()
         repeat(200) { TreeBuilder.build(bigTheme, big, s) }
         val ms = (System.nanoTime() - start) / 1_000_000
-        assertTrue("200 builds took $ms ms", ms < 2_000)       // lenient on purpose: only catches accidental O(n^2) mistakes
+        assertTrue("200 builds took $ms ms", ms < 2_000)
     }
 }

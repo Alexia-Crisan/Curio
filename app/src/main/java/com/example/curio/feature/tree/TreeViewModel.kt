@@ -60,7 +60,6 @@ class TreeViewModel(
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), TreeUiState())
 
     init {
-        // A different current theme (changed in Settings) wins over an old chip choice.
         viewModelScope.launch {
             currentTheme.observe().distinctUntilChanged().drop(1).collect { manualTheme.value = null }
         }

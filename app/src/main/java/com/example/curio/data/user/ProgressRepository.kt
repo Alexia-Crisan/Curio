@@ -14,7 +14,6 @@ class ProgressRepository(
     private val db: CurioDatabase,
     private val membership: TopicMembership,
 ) {
-    /** Recomputed whenever a view event or a day choice changes. */
     fun observeMonth(month: YearMonth): Flow<MonthProgress> =
         combine(db.viewEventDao().observeAll(), db.dayChoiceDao().observeAll()) { events, choices ->
             ProgressCalculator.monthProgress(

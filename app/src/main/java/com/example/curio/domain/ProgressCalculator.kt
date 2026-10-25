@@ -3,7 +3,6 @@ package com.example.curio.domain
 import java.time.LocalDate
 import java.time.YearMonth
 
-/** topicId -> the discovery ids of that topic. */
 class TopicMembership(private val byTopic: Map<String, Set<String>>) {
     fun discoveriesOf(topicId: String): Set<String> = byTopic[topicId].orEmpty()
 
@@ -37,9 +36,9 @@ object ProgressCalculator {
     fun dayProgress(choice: DayChoice, events: Collection<ViewEvent>, membership: TopicMembership): DayProgress {
         val topicItems = membership.discoveriesOf(choice.topicId)
         val done = events.asSequence()
-            .filter { it.date == choice.date }                       // only that day's rows
+            .filter { it.date == choice.date }
             .filter { it.completed && it.source != ViewSource.BONUS }
-            .filter { it.discoveryId in topicItems }                 // membership: other topics never count
+            .filter { it.discoveryId in topicItems }
             .map { it.discoveryId }
             .toSet().size
         return DayProgress(choice.date, choice.topicId, done, topicItems.size)

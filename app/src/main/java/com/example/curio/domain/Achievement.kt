@@ -1,6 +1,5 @@
 package com.example.curio.domain
 
-/** Persisted by NAME (step 6). Never rename a value; add new ones at the end. */
 enum class AchievementId {
     FIRST_DISCOVERY, FULL_DAY, CURIOUS_MIND, TOPIC_EXPLORER, KNOWLEDGE_COLLECTOR,
     DEEP_LEARNER, HIDDEN_DISCOVERIES, CONSISTENT_CURIOSITY, THEME_EXPLORER,
@@ -17,18 +16,18 @@ data class AchievementProgress(val def: AchievementDef, val current: Int, val un
 
 data class Evaluation(
     val progress: List<AchievementProgress>,
-    val newlyEarned: List<AchievementDef>,      // earned now but not yet in the unlocked map: the tracker persists these
+    val newlyEarned: List<AchievementDef>,
 )
 
 object AchievementConfig {
     const val CURIOUS_MIND_TARGET = 25
-    const val TOPIC_EXPLORER_TARGET = 3          // explored topics in ONE theme
+    const val TOPIC_EXPLORER_TARGET = 3
     const val KNOWLEDGE_COLLECTOR_TARGET = 10
     const val DEEP_LEARNER_TARGET = 5
     const val HIDDEN_DISCOVERIES_TARGET = 3
-    const val CONSISTENT_CURIOSITY_TARGET = 5    // distinct days, not consecutive
-    const val THEME_EXPLORER_TARGET = 2          // themes
-    const val THEME_EXPLORED_AT = 3              // completed discoveries for a theme to count
+    const val CONSISTENT_CURIOSITY_TARGET = 5
+    const val THEME_EXPLORER_TARGET = 2
+    const val THEME_EXPLORED_AT = 3
 
     private val I = AchievementKind.INCREMENTAL
     private val B = AchievementKind.BINARY
@@ -41,7 +40,7 @@ object AchievementConfig {
         AchievementDef(AchievementId.KNOWLEDGE_COLLECTOR, KNOWLEDGE_COLLECTOR_TARGET, I, mvp = true),
         AchievementDef(AchievementId.DEEP_LEARNER, DEEP_LEARNER_TARGET, I, mvp = true),
         AchievementDef(AchievementId.HIDDEN_DISCOVERIES, HIDDEN_DISCOVERIES_TARGET, I, mvp = true),
-        AchievementDef(AchievementId.CONSISTENT_CURIOSITY, CONSISTENT_CURIOSITY_TARGET, I, mvp = false),   // Should-have
-        AchievementDef(AchievementId.THEME_EXPLORER, THEME_EXPLORER_TARGET, I, mvp = false),               // Should-have
+        AchievementDef(AchievementId.CONSISTENT_CURIOSITY, CONSISTENT_CURIOSITY_TARGET, I, mvp = false),
+        AchievementDef(AchievementId.THEME_EXPLORER, THEME_EXPLORER_TARGET, I, mvp = false),
     )
 }

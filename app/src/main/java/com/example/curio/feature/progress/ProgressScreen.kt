@@ -132,7 +132,6 @@ fun ProgressScreen(
 
         Spacer(Modifier.height(28.dp))
 
-        // WP5: Achievements Badges Card
         BadgesEntryCard(
             summary = badgeSummary,
             onClick = onOpenAchievements,
@@ -140,7 +139,6 @@ fun ProgressScreen(
 
         Spacer(Modifier.height(28.dp))
 
-        // WP9: Knowledge Tree Card
         TreeCard(
             uiState = treeUiState,
             onSelectTheme = onSelectTheme,

@@ -25,7 +25,7 @@ class ViewEventRecorderTest {
         val a = ViewEventRecorder.merge(null, touch(dwell = 1_000))
         val b = ViewEventRecorder.merge(a, touch(now = 9_000, dwell = 2_500))
         assertEquals(3_500, b.dwellMs)
-        assertEquals(1_000, b.firstViewedAt)        // first view time never moves
+        assertEquals(1_000, b.firstViewedAt)
         assertTrue(b.completed)
     }
 
@@ -58,7 +58,7 @@ class ViewEventRecorderTest {
         assertTrue(ViewEventRecorder.merge(null, touch(dwell = 400, left = true)).skipped)
 
     @Test fun bonusRowInsertedAtRevealIsNotSkipped() =
-        assertFalse(ViewEventRecorder.merge(null, touch(ViewSource.BONUS, dwell = 0)).skipped)   // pageLeft = false
+        assertFalse(ViewEventRecorder.merge(null, touch(ViewSource.BONUS, dwell = 0)).skipped)
 
     @Test fun completedCardIsNeverSkipped() =
         assertFalse(ViewEventRecorder.merge(null, touch(dwell = 400, complete = true, left = true)).skipped)

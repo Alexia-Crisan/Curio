@@ -49,10 +49,10 @@ enum class GrowthStage { SEED, SPROUT, SAPLING, TREE, MATURE, BLOOM }
 
 data class LeafNode(
     val discoveryId: String,
-    val title: String?,          // null until completed: titles are the facts, never spoiled
+    val title: String?,
     val completed: Boolean,
-    val isLandmark: Boolean,     // the topic's KNOWLEDGE card (flower leaf)
-    val viaBonus: Boolean,       // first completed through a shake bonus (spark marker)
+    val isLandmark: Boolean,
+    val viaBonus: Boolean,
 )
 
 data class TopicNode(
@@ -60,8 +60,8 @@ data class TopicNode(
     val completed: Int,
     val total: Int,
     val state: NodeState,
-    val leaves: List<LeafNode>,          // dataset order
-    val firstCompletedAtMs: Long?,       // earliest completion among this topic's leaves, for "why did this grow"
+    val leaves: List<LeafNode>,
+    val firstCompletedAtMs: Long?,
 ) {
     val fraction: Float get() = if (total == 0) 0f else completed.toFloat() / total
 }
@@ -71,17 +71,15 @@ data class ThemeTree(
     val stage: GrowthStage,
     val completed: Int,
     val total: Int,
-    val branches: List<TopicNode>,       // the theme's topic order
+    val branches: List<TopicNode>,
 ) {
     val fraction: Float get() = if (total == 0) 0f else completed.toFloat() / total
 }
 
 object TreeConfig {
-    // Growth stage of a theme, from completed / total. Integer percentages, evaluated without floats.
     const val SAPLING_FROM_PERCENT = 12
     const val TREE_FROM_PERCENT = 33
     const val MATURE_FROM_PERCENT = 66
 
-    /** The landmark leaf of a topic is its first card of this type, in dataset order. */
     val LANDMARK_TYPE: ContentType = ContentType.KNOWLEDGE
 }
