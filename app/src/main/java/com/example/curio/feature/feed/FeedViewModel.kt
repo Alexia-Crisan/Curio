@@ -17,14 +17,18 @@ import com.example.curio.domain.DayChoice
 import com.example.curio.domain.DayPlan
 import com.example.curio.domain.Discovery
 import com.example.curio.domain.DwellTracker
+import com.example.curio.domain.EndCardTeaser
 import com.example.curio.domain.FeedAssembler
 import com.example.curio.domain.FeedItem
 import com.example.curio.domain.ShakeBonusSelector
+import com.example.curio.domain.TeaserBuilder
 import com.example.curio.domain.TouchQueue
+import com.example.curio.domain.TreeBuilder
 import com.example.curio.domain.ViewSource
 import com.example.curio.domain.ViewTouch
 import java.time.Clock
 import java.time.LocalDate
+import java.time.ZoneId
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -36,6 +40,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -61,6 +66,15 @@ class FeedViewModel(
 
     val savedIds: StateFlow<Set<String>> = activity.observeSavedIds()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptySet())
+
+    val teaser: StateFlow<EndCardTeaser?> = combine(
+        activity.observeSnapshot().map { TreeBuilder.buildAll(content, it) },
+        state,
+        dailyMode.observe(),
+    ) { trees, s, mode ->
+        val ready = s as? FeedUiState.Ready
+        if (ready == null || ready.readOnly) null else TeaserBuilder.forFeed(trees, ready.themeId, mode, ready.date, ZoneId.systemDefault())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
 
     private var lastTheme: String? = null
     private var lastMode: DailyMode = DailyMode.GUIDED

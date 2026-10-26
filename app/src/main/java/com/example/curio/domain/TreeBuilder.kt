@@ -39,6 +39,7 @@ object TreeBuilder {
                 completed = done,
                 isLandmark = d.id == landmarkId,
                 viaBonus = done && d.id in s.bonusCompletedIds,
+                completedAtMs = if (done) s.firstCompletedAt[d.id] else null,
             )
         }
         val completed = leaves.count { it.completed }

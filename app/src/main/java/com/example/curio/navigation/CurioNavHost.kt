@@ -10,6 +10,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -218,11 +219,14 @@ fun CurioNavHost(
                                     container.userActivity,
                                     container.currentTheme,
                                     container.contentIndex,
-                                    route.themeId
+                                    route.themeId,
+                                    container.treeVisits,
+                                    container.clock,
                                 )
                             }
                         }
                     )
+                    DisposableEffect(vm) { onDispose { vm.onLeave() } }
                     val ui by vm.state.collectAsStateWithLifecycle()
                     LaunchedEffect(vm) {
                         vm.events.collect { event ->

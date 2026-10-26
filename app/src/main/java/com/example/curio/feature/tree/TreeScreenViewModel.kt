@@ -14,7 +14,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import com.example.curio.data.RealClock
 import com.example.curio.domain.ActivitySource
+import com.example.curio.domain.Clock
 import com.example.curio.domain.ContentIndex
 import com.example.curio.domain.CurrentThemeSource
 import com.example.curio.domain.LeafExplanation
@@ -25,7 +27,12 @@ import com.example.curio.domain.TopicExplanation
 import com.example.curio.domain.TopicNode
 import com.example.curio.domain.TreeBuilder
 import com.example.curio.domain.TreeExplainer
+import com.example.curio.domain.TreeGrowth
+import com.example.curio.domain.TreeGrowthSummary
 import com.example.curio.domain.TreeSelection
+import com.example.curio.domain.TreeVisitStore
+
+private data class Baseline(val ready: Boolean, val sinceMs: Long?)
 
 sealed interface NodeKey {
     data class OfTopic(val topicId: String) : NodeKey
@@ -43,6 +50,7 @@ data class TreeScreenUi(
     val themeExplanation: ThemeExplanation? = null,
     val sheet: NodeSheet? = null,
     val isLoading: Boolean = true,
+    val growth: TreeGrowthSummary? = null,
 ) {
     val selected: ThemeTree? get() = trees.firstOrNull { it.theme.id == selectedThemeId }
     val isEmpty: Boolean get() = !isLoading && trees.isEmpty()
@@ -57,10 +65,13 @@ class TreeScreenViewModel(
     private val currentTheme: CurrentThemeSource,
     private val content: ContentIndex,
     initialThemeId: String?,
+    private val visits: TreeVisitStore = TreeVisitStore.None,
+    private val clock: Clock = RealClock(),
 ) : ViewModel() {
 
     private val manualTheme = MutableStateFlow(initialThemeId)
     private val openNode = MutableStateFlow<NodeKey?>(null)
+    private val baseline = MutableStateFlow(Baseline(false, null))
     private val _events = Channel<TreeScreenEvent>(Channel.BUFFERED)
     val events: Flow<TreeScreenEvent> = _events.receiveAsFlow()
 
@@ -69,7 +80,8 @@ class TreeScreenViewModel(
         currentTheme.observe(),
         manualTheme,
         openNode,
-    ) { trees, current, manual, key ->
+        baseline,
+    ) { trees, current, manual, key, base ->
         val selectedId = TreeSelection.resolve(trees, manual, current)
         val tree = trees.firstOrNull { it.theme.id == selectedId }
         TreeScreenUi(
@@ -78,10 +90,14 @@ class TreeScreenViewModel(
             themeExplanation = tree?.let { TreeExplainer.explainTheme(it) },
             sheet = if (tree != null && key != null) resolveSheet(tree, key) else null,
             isLoading = false,
+            growth = if (tree != null && base.ready) TreeGrowth.since(tree, base.sinceMs) else null,
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), TreeScreenUi())
 
     init {
+        viewModelScope.launch {
+            baseline.value = Baseline(true, visits.lastVisitedAt())
+        }
         viewModelScope.launch {
             currentTheme.observe().distinctUntilChanged().drop(1).collect { manualTheme.value = null }
         }
@@ -109,6 +125,10 @@ class TreeScreenViewModel(
         if (sheet.leaf.discoveryId != discoveryId || !sheet.explanation.canOpenDetail) return
         _events.trySend(TreeScreenEvent.OpenDetail(discoveryId))
         openNode.value = null
+    }
+
+    fun onLeave() {
+        visits.markVisited(clock.now().toEpochMilli())
     }
 
     private fun resolveSheet(tree: ThemeTree, key: NodeKey): NodeSheet? = when (key) {

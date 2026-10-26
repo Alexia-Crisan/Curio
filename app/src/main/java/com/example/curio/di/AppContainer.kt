@@ -5,6 +5,7 @@ import com.example.curio.data.RealClock
 import com.example.curio.data.fake.FakeDiscoveryRepository
 import com.example.curio.data.fake.FakeInteractionRepository
 import com.example.curio.data.settings.PreferencesSettingsStore
+import com.example.curio.data.settings.PreferencesTreeVisitStore
 import com.example.curio.data.settings.SettingsRepository
 import com.example.curio.data.user.AchievementRepository
 import com.example.curio.data.user.AchievementTracker
@@ -25,6 +26,7 @@ import com.example.curio.domain.SettingsStore
 import com.example.curio.domain.TestContent
 import com.example.curio.domain.Theme
 import com.example.curio.domain.TouchQueue
+import com.example.curio.domain.TreeVisitStore
 import com.example.curio.hardware.HapticsController
 import com.example.curio.hardware.ShakeSensor
 import com.example.curio.hardware.TiltSensor
@@ -58,7 +60,11 @@ class AppContainer(context: Context) {
     val achievementTracker: AchievementTracker = AchievementTracker(appScope, userActivity, achievements)
 
     val settingsStore: SettingsStore = PreferencesSettingsStore(settingsRepository)
-    val progressResetter = ProgressResetter { userActivity.resetAll() }
+    val treeVisits: TreeVisitStore = PreferencesTreeVisitStore(settingsRepository, appScope)
+    val progressResetter = ProgressResetter {
+        userActivity.resetAll()
+        treeVisits.clear()
+    }
     val currentTheme: CurrentThemeSource = CurrentThemeSource { settingsStore.observe().map { it.themeId }.distinctUntilChanged() }
     val dailyMode: DailyModeSource = DailyModeSource { settingsStore.observe().map { it.mode }.distinctUntilChanged() }
     val availableThemes: List<Theme> get() = contentIndex.themes

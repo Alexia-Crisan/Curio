@@ -104,4 +104,16 @@
     <string name="tree_sheet_locked_hint">Keep exploring this topic to uncover it.</string>
     <string name="tree_sheet_close">Close</string>
     <string name="tree_back">Back</string>
+
+    <plurals name="tree_growth_new">
+        <item quantity="one">%1$d new discovery since your last visit</item>
+        <item quantity="other">%1$d new discoveries since your last visit</item>
+    </plurals>
+    <string name="tree_growth_stage">Your tree reached: %1$s</string>
+    <plurals name="teaser_leaves_today">
+        <item quantity="one">Today: +%1$d leaf on your tree</item>
+        <item quantity="other">Today: +%1$d leaves on your tree</item>
+    </plurals>
+    <string name="teaser_stage">Your tree reached: %1$s</string>
+    <string name="teaser_next">Next on your path: %1$s on %2$s</string>
 </resources>

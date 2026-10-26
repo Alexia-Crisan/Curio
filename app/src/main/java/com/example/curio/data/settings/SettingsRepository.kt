@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
@@ -22,6 +23,7 @@ class SettingsRepository(private val context: Context) {
         val SHAKE_ENABLED = booleanPreferencesKey("shake_enabled")
         val HAPTICS_ENABLED = booleanPreferencesKey("haptics_enabled")
         val DARK_MODE = stringPreferencesKey("dark_mode")
+        val TREE_LAST_VISITED_AT = longPreferencesKey("tree_last_visited_at")
     }
 
     val onboardingDone: Flow<Boolean> = context.dataStore.data.map { prefs ->
@@ -48,6 +50,10 @@ class SettingsRepository(private val context: Context) {
         prefs[Keys.DARK_MODE] ?: "SYSTEM"
     }
 
+    val treeLastVisitedAt: Flow<Long?> = context.dataStore.data.map { prefs ->
+        prefs[Keys.TREE_LAST_VISITED_AT]
+    }
+
     suspend fun setOnboardingDone(done: Boolean) {
         context.dataStore.edit { prefs -> prefs[Keys.ONBOARDING_DONE] = done }
     }
@@ -70,6 +76,14 @@ class SettingsRepository(private val context: Context) {
 
     suspend fun setDarkMode(mode: String) {
         context.dataStore.edit { prefs -> prefs[Keys.DARK_MODE] = mode }
+    }
+
+    suspend fun setTreeLastVisitedAt(timestamp: Long) {
+        context.dataStore.edit { prefs -> prefs[Keys.TREE_LAST_VISITED_AT] = timestamp }
+    }
+
+    suspend fun clearTreeLastVisitedAt() {
+        context.dataStore.edit { prefs -> prefs.remove(Keys.TREE_LAST_VISITED_AT) }
     }
 
     suspend fun completeOnboarding(themeId: String, mode: DailyMode) {

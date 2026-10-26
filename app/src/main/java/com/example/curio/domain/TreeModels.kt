@@ -9,6 +9,7 @@ data class LeafNode(
     val completed: Boolean,
     val isLandmark: Boolean,
     val viaBonus: Boolean,
+    val completedAtMs: Long? = null,
 )
 
 data class TopicNode(

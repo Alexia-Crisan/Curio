@@ -26,6 +26,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -86,6 +87,12 @@ fun TreeScreen(
                                 Text(stringResource(R.string.tree_theme_next_stage, left, stringResource(TreeVisuals.stage(next))))
                             } else if (e.total > 0) {
                                 Text(stringResource(R.string.tree_theme_top))
+                            }
+                        }
+                        state.growth?.let { g ->
+                            if (g.newLeafCount > 0) {
+                                Text(pluralStringResource(R.plurals.tree_growth_new, g.newLeafCount, g.newLeafCount))
+                                if (g.stageChanged) Text(stringResource(R.string.tree_growth_stage, stringResource(TreeVisuals.stage(g.stageAfter))))
                             }
                         }
                     }
