@@ -50,4 +50,43 @@
     <string name="tree_state_seeded">Just planted</string>
     <string name="tree_state_growing">Growing</string>
     <string name="tree_state_complete">Complete</string>
+
+    <string name="feed_bonus_cap">That\'s today\'s bonus allowance. More tomorrow.</string>
+    <string name="feed_bonus_nothing">You\'ve found everything else in this theme.</string>
+    <string name="feed_bonus_revisit">Revisit</string>
+    <string name="feed_past_day_missing">No feed was recorded for this day.</string>
+    <string name="feed_past_day_readonly">Past day: viewing only. Progress is not changed.</string>
+    <string name="feed_settings_locked">Your change applies tomorrow, because today\'s feed is already in progress.</string>
+    <string name="feed_no_theme">Pick a theme to start your daily feed.</string>
+    <string name="feed_no_content">Coming soon</string>
+    <string name="feed_choose_topic">Pick today\'s topic</string>
+
+    <string name="onboarding_title">Welcome to Curio</string>
+    <string name="onboarding_subtitle">One small discovery at a time, every day.</string>
+    <string name="onboarding_pick_theme">Pick a theme for this month</string>
+    <string name="onboarding_pick_mode">How should we choose each day\'s topic?</string>
+    <string name="onboarding_start">Start</string>
+    <string name="theme_coming_soon">Coming soon</string>
+    <string name="mode_guided">Guided</string>
+    <string name="mode_guided_desc">A new topic every day, in a fixed order.</string>
+    <string name="mode_choose">Choose</string>
+    <string name="mode_choose_desc">You pick the topic each day.</string>
+    <string name="mode_surprise">Surprise</string>
+    <string name="mode_surprise_desc">A random topic each day.</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_mode">Daily mode</string>
+    <string name="settings_change_tomorrow_hint">Changes made after you have started today\'s feed apply tomorrow.</string>
+    <string name="settings_reset">Reset progress</string>
+    <string name="settings_reset_title">Reset all progress?</string>
+    <string name="settings_reset_message">This removes your progress, saved discoveries and badges. It cannot be undone.</string>
+    <string name="settings_reset_confirm">Reset</string>
+    <string name="settings_reset_cancel">Cancel</string>
+    <string name="settings_reset_done">Progress was reset.</string>
+    <string name="settings_reset_failed">Could not reset. Try again.</string>
+    <string name="settings_sources">Sources and licences</string>
+    <string name="sources_title">Sources and licences</string>
+    <string name="sources_cards">%1$d cards</string>
+    <string name="sources_empty">No sources to show.</string>
+    <string name="common_back">Back</string>
 </resources>

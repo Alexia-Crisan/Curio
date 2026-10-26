@@ -3,8 +3,6 @@ package com.example.curio.domain
 import java.time.LocalDate
 import kotlin.random.Random
 
-enum class DailyMode { GUIDED, CHOOSE, SURPRISE }
-
 class DailyTopicResolver {
 
     fun resolveTopic(

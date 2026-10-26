@@ -4,10 +4,13 @@ enum class ContentType { VIDEO, IMAGE, FACT, ARTICLE, QUIZ, SOURCE, KNOWLEDGE }
 
 typealias DiscoveryType = ContentType
 
+enum class DailyMode { GUIDED, CHOOSE, SURPRISE }
+
 data class Source(
     val name: String,
     val url: String,
     val license: String,
+    val attribution: String = "",
 )
 
 data class Quiz(

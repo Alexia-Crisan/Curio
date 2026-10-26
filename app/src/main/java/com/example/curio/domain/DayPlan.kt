@@ -2,8 +2,6 @@ package com.example.curio.domain
 
 import java.time.LocalDate
 
-enum class DailyMode { GUIDED, CHOOSE, SURPRISE }
-
 data class DayChoice(
     val date: LocalDate,
     val themeId: String,

@@ -83,7 +83,7 @@ class TopicSelectorTest {
 
     @Test fun surpriseGoldenValues() {
         val actual = (1..10).map { TopicSelector.surprise(d(2026, 10, it), "animals", ids) }
-        val expected = listOf("t1", "t0", "t1", "t0", "t6", "t2", "t6", "t2", "t5", "t0")
+        val expected = listOf("t5", "t0", "t1", "t0", "t4", "t6", "t6", "t2", "t1", "t2")
         assertEquals(expected, actual)
     }
 

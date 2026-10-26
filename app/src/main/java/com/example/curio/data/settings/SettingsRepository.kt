@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import com.example.curio.domain.DailyMode
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "curio_settings")
 
@@ -69,5 +70,13 @@ class SettingsRepository(private val context: Context) {
 
     suspend fun setDarkMode(mode: String) {
         context.dataStore.edit { prefs -> prefs[Keys.DARK_MODE] = mode }
+    }
+
+    suspend fun completeOnboarding(themeId: String, mode: DailyMode) {
+        context.dataStore.edit { prefs ->
+            prefs[Keys.SELECTED_THEME] = themeId
+            prefs[Keys.DAILY_MODE] = mode.name
+            prefs[Keys.ONBOARDING_DONE] = true
+        }
     }
 }

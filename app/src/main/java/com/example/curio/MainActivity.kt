@@ -24,16 +24,12 @@ class MainActivity : ComponentActivity() {
             MaterialTheme {
                 val scope = rememberCoroutineScope()
                 val feedVm: FeedViewModel = viewModel(
-                    factory = FeedViewModel.Factory(
-                        container.discoveryRepository,
-                        container.interactionRepository,
-                        container.clock,
-                    )
+                    factory = FeedViewModel.factory(container)
                 )
 
                 val treeVm: TreeViewModel = viewModel(
                     factory = TreeViewModel.Factory(
-                        userActivityRepository = container.userActivityRepository,
+                        userActivityRepository = container.userActivity,
                         contentIndex = container.contentIndex,
                     )
                 )
@@ -43,6 +39,7 @@ class MainActivity : ComponentActivity() {
                 val hapticsEnabled by container.settingsRepository.hapticsEnabled.collectAsStateWithLifecycle(initialValue = true)
 
                 CurioNavHost(
+                    container = container,
                     feedViewModel = feedVm,
                     treeViewModel = treeVm,
                     achievementSource = container.achievementSource,

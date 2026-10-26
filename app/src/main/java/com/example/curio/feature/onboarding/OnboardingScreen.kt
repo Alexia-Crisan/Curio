@@ -1,145 +1,114 @@
 package com.example.curio.feature.onboarding
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.launch
-
-data class OnboardingPage(
-    val title: String,
-    val description: String,
-    val color: Color,
-)
-
-val onboardingPages = listOf(
-    OnboardingPage(
-        title = "Discover Daily Curiosities",
-        description = "6 bite-sized discoveries every day. Facts, articles, quizzes, images, and videos.",
-        color = Color(0xFF6366F1),
-    ),
-    OnboardingPage(
-        title = "Shake & Interactive Physics",
-        description = "Shake your device for bonus discoveries or tilt to explore 3D parallax cards.",
-        color = Color(0xFFEC4899),
-    ),
-    OnboardingPage(
-        title = "Track Your Monthly Growth",
-        description = "Save your favorite discoveries and watch your knowledge ring grow over time.",
-        color = Color(0xFF10B981),
-    ),
-)
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.curio.R
+import com.example.curio.domain.DailyMode
 
 @Composable
-fun OnboardingScreen(onFinished: () -> Unit) {
-    val pagerState = rememberPagerState(pageCount = { onboardingPages.size })
-    val scope = rememberCoroutineScope()
+fun OnboardingScreen(viewModel: OnboardingViewModel, onFinished: () -> Unit) {
+    val ui by viewModel.ui.collectAsStateWithLifecycle()
 
-    Box(
-        Modifier
-            .fillMaxSize()
-            .background(onboardingPages[pagerState.currentPage].color)
+    LaunchedEffect(Unit) {
+        viewModel.events.collect { onFinished() }
+    }
+
+    Column(
+        modifier = Modifier.fillMaxSize().systemBarsPadding().padding(24.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        HorizontalPager(
-            state = pagerState,
-            modifier = Modifier.fillMaxSize(),
-        ) { page ->
-            val p = onboardingPages[page]
-            Column(
-                Modifier
-                    .fillMaxSize()
-                    .padding(36.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-            ) {
-                Text(
-                    text = p.title,
-                    color = Color.White,
-                    fontSize = 32.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    lineHeight = 38.sp,
-                )
-                Spacer(Modifier.height(20.dp))
-                Text(
-                    text = p.description,
-                    color = Color.White.copy(alpha = 0.9f),
-                    fontSize = 18.sp,
-                    textAlign = TextAlign.Center,
-                    lineHeight = 26.sp,
-                )
-            }
-        }
+        Text(stringResource(R.string.onboarding_title), style = MaterialTheme.typography.headlineMedium)
+        Text(stringResource(R.string.onboarding_subtitle), style = MaterialTheme.typography.bodyLarge)
+        Text(stringResource(R.string.onboarding_pick_theme), style = MaterialTheme.typography.titleMedium)
 
-        Column(
-            Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 48.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
+        LazyColumn(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                repeat(onboardingPages.size) { i ->
-                    val active = i == pagerState.currentPage
-                    Box(
-                        Modifier
-                            .size(if (active) 12.dp else 8.dp)
-                            .clip(CircleShape)
-                            .background(if (active) Color.White else Color.White.copy(alpha = 0.4f))
-                    )
+            items(ui.themes, key = { it.id }) { theme ->
+                val selected = theme.id == ui.selectedThemeId
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 56.dp)
+                        .selectable(
+                            selected = selected,
+                            enabled = theme.available,
+                            role = Role.RadioButton,
+                            onClick = { viewModel.selectTheme(theme.id) },
+                        ),
+                ) {
+                    Row(
+                        modifier = Modifier.padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        RadioButton(selected = selected, onClick = null, enabled = theme.available)
+                        Column {
+                            Text(theme.title, style = MaterialTheme.typography.titleMedium)
+                            if (!theme.available) {
+                                Text(stringResource(R.string.theme_coming_soon), style = MaterialTheme.typography.bodySmall)
+                            }
+                        }
+                    }
                 }
             }
+        }
 
-            Spacer(Modifier.height(32.dp))
-
-            Button(
-                onClick = {
-                    if (pagerState.currentPage < onboardingPages.size - 1) {
-                        scope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
-                    } else {
-                        onFinished()
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth(0.8f)
-                    .height(52.dp),
-                shape = RoundedCornerShape(26.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-            ) {
-                Text(
-                    text = if (pagerState.currentPage == onboardingPages.size - 1) "Get Started" else "Next",
-                    color = Color.Black,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
+        Text(stringResource(R.string.onboarding_pick_mode), style = MaterialTheme.typography.titleMedium)
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            DailyMode.values().forEach { mode ->
+                FilterChip(
+                    selected = ui.mode == mode,
+                    onClick = { viewModel.selectMode(mode) },
+                    label = { Text(stringResource(modeLabel(mode))) },
                 )
             }
         }
+        Text(stringResource(modeDescription(ui.mode)), style = MaterialTheme.typography.bodyMedium)
+
+        Button(
+            onClick = viewModel::start,
+            enabled = ui.canStart,
+            modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
+        ) {
+            Text(stringResource(R.string.onboarding_start))
+        }
     }
+}
+
+fun modeLabel(mode: DailyMode): Int = when (mode) {
+    DailyMode.GUIDED -> R.string.mode_guided
+    DailyMode.CHOOSE -> R.string.mode_choose
+    DailyMode.SURPRISE -> R.string.mode_surprise
+}
+
+fun modeDescription(mode: DailyMode): Int = when (mode) {
+    DailyMode.GUIDED -> R.string.mode_guided_desc
+    DailyMode.CHOOSE -> R.string.mode_choose_desc
+    DailyMode.SURPRISE -> R.string.mode_surprise_desc
 }

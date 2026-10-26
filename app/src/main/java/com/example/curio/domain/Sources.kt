@@ -10,6 +10,10 @@ fun interface CurrentThemeSource {
     fun observe(): Flow<String?>
 }
 
+fun interface DailyModeSource {
+    fun observe(): Flow<DailyMode>
+}
+
 interface AchievementSource {
     fun observeProgress(): Flow<List<AchievementProgress>>
     fun observeNextPending(): Flow<AchievementDef?>

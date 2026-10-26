@@ -1,49 +1,5 @@
 package com.example.curio.domain
 
-object TopicProgress {
-    const val EXPLORED_AT = 3
-}
-
-data class ActivitySnapshot(
-    val completedIds: Set<String> = emptySet(),
-    val completedFeedDays: Set<String> = emptySet(),
-    val savedIds: Set<String> = emptySet(),
-    val deepReadIds: Set<String> = emptySet(),
-    val bonusCompletedIds: Set<String> = emptySet(),
-    val completedDays: Set<String> = emptySet(),
-    val firstCompletedAt: Map<String, Long> = emptyMap(),
-)
-
-data class ContentIndex(
-    val themes: List<Theme>,
-    val discoveries: List<Discovery>,
-) {
-    fun discoveriesOf(topicId: String): List<Discovery> =
-        discoveries.filter { it.subcategoryId == topicId || it.themeId == topicId }
-}
-
-object ActivitySnapshotBuilder {
-    fun build(
-        events: List<ViewEvent>,
-        savedIds: Set<String>,
-        days: List<String>,
-        index: ContentIndex,
-    ): ActivitySnapshot {
-        val completedIds = events.filter { it.completed }.map { it.discoveryId }.toSet()
-        val bonusCompletedIds = events.filter { it.completed && it.source == ViewSource.BONUS }.map { it.discoveryId }.toSet()
-        val firstCompletedAt = events.filter { it.completed }
-            .groupBy { it.discoveryId }
-            .mapValues { (_, evs) -> evs.minOf { it.firstViewedAt } }
-
-        return ActivitySnapshot(
-            completedIds = completedIds,
-            bonusCompletedIds = bonusCompletedIds,
-            savedIds = savedIds,
-            firstCompletedAt = firstCompletedAt,
-        )
-    }
-}
-
 enum class NodeState { LOCKED, SEEDED, GROWING, COMPLETE }
 enum class GrowthStage { SEED, SPROUT, SAPLING, TREE, MATURE, BLOOM }
 

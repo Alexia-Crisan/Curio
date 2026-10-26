@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.curio.data.RealClock
 import com.example.curio.data.fake.FakeDiscoveryRepository
 import com.example.curio.data.fake.FakeInteractionRepository
+import com.example.curio.data.settings.PreferencesSettingsStore
 import com.example.curio.data.settings.SettingsRepository
 import com.example.curio.data.user.AchievementRepository
 import com.example.curio.data.user.AchievementTracker
@@ -16,15 +17,21 @@ import com.example.curio.domain.AchievementSource
 import com.example.curio.domain.Clock
 import com.example.curio.domain.ContentIndex
 import com.example.curio.domain.CurrentThemeSource
+import com.example.curio.domain.DailyModeSource
 import com.example.curio.domain.DiscoveryRepository
 import com.example.curio.domain.InteractionRepository
+import com.example.curio.domain.ProgressResetter
+import com.example.curio.domain.SettingsStore
 import com.example.curio.domain.TestContent
+import com.example.curio.domain.Theme
+import com.example.curio.domain.TouchQueue
 import com.example.curio.hardware.HapticsController
 import com.example.curio.hardware.ShakeSensor
 import com.example.curio.hardware.TiltSensor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
 class AppContainer(context: Context) {
@@ -50,7 +57,11 @@ class AppContainer(context: Context) {
     val achievementSource: AchievementSource get() = achievements
     val achievementTracker: AchievementTracker = AchievementTracker(appScope, userActivity, achievements)
 
-    val currentTheme: CurrentThemeSource = CurrentThemeSource {
-        settingsRepository.selectedTheme.map { it as String? }
-    }
+    val settingsStore: SettingsStore = PreferencesSettingsStore(settingsRepository)
+    val progressResetter = ProgressResetter { userActivity.resetAll() }
+    val currentTheme: CurrentThemeSource = CurrentThemeSource { settingsStore.observe().map { it.themeId }.distinctUntilChanged() }
+    val dailyMode: DailyModeSource = DailyModeSource { settingsStore.observe().map { it.mode }.distinctUntilChanged() }
+    val availableThemes: List<Theme> get() = contentIndex.themes
+
+    val touchQueue: TouchQueue = TouchQueue(appScope) { touch -> database.viewEventDao().record(touch) }
 }

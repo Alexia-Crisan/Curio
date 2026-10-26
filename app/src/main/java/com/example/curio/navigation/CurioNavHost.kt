@@ -25,8 +25,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.curio.di.AppContainer
 import com.example.curio.domain.AchievementSource
 import com.example.curio.domain.Discovery
+import com.example.curio.domain.SourcesBuilder
 import com.example.curio.feature.achievements.AchievementsScreen
 import com.example.curio.feature.achievements.AchievementsViewModel
 import com.example.curio.feature.achievements.BadgeSummary
@@ -36,9 +38,12 @@ import com.example.curio.feature.feed.FeedScreen
 import com.example.curio.feature.feed.FeedViewModel
 import com.example.curio.feature.library.LibraryScreen
 import com.example.curio.feature.onboarding.OnboardingScreen
+import com.example.curio.feature.onboarding.OnboardingViewModel
 import com.example.curio.feature.progress.ProgressScreen
 import com.example.curio.feature.progress.TreeViewModel
 import com.example.curio.feature.settings.SettingsScreen
+import com.example.curio.feature.settings.SettingsViewModel
+import com.example.curio.feature.settings.SourcesScreen
 
 data class NavTab(val route: Route, val label: String, val iconText: String)
 
@@ -51,6 +56,7 @@ val navTabs = listOf(
 
 @Composable
 fun CurioNavHost(
+    container: AppContainer,
     feedViewModel: FeedViewModel,
     treeViewModel: TreeViewModel,
     achievementSource: AchievementSource,
@@ -72,7 +78,7 @@ fun CurioNavHost(
     Box(Modifier.fillMaxSize()) {
         Scaffold(
             bottomBar = {
-                if (currentRoute != null && !currentRoute.contains("Onboarding") && !onAchievements) {
+                if (currentRoute != null && !currentRoute.contains("Onboarding") && !currentRoute.contains("Sources") && !onAchievements) {
                     NavigationBar(containerColor = Color(0xFF0F172A)) {
                         navTabs.forEach { tab ->
                             val selected = currentRoute.contains(tab.label)
@@ -104,7 +110,13 @@ fun CurioNavHost(
                 modifier = Modifier.padding(innerPadding)
             ) {
                 composable<Route.Onboarding> {
+                    val onboardingVm: OnboardingViewModel = viewModel(
+                        factory = viewModelFactory {
+                            initializer { OnboardingViewModel(container.availableThemes, container.settingsStore) }
+                        }
+                    )
                     OnboardingScreen(
+                        viewModel = onboardingVm,
                         onFinished = {
                             onFinishOnboarding()
                             navController.navigate(Route.Feed) {
@@ -166,11 +178,26 @@ fun CurioNavHost(
                 }
 
                 composable<Route.Settings> {
+                    val settingsVm: SettingsViewModel = viewModel(
+                        factory = viewModelFactory {
+                            initializer { SettingsViewModel(container.availableThemes, container.settingsStore, container.progressResetter) }
+                        }
+                    )
                     SettingsScreen(
+                        viewModel = settingsVm,
+                        onOpenSources = { navController.navigate(Route.Sources) { launchSingleTop = true } },
                         shakeEnabled = shakeEnabled,
                         onShakeToggle = onShakeToggle,
                         hapticsEnabled = hapticsEnabled,
                         onHapticsToggle = onHapticsToggle,
+                    )
+                }
+
+                composable<Route.Sources> {
+                    val entries = remember { SourcesBuilder.build(container.contentIndex.discoveries) }
+                    SourcesScreen(
+                        entries = entries,
+                        onBack = { navController.popBackStack() }
                     )
                 }
             }
