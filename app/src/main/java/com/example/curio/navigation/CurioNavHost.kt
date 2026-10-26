@@ -10,6 +10,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -25,6 +26,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.example.curio.di.AppContainer
 import com.example.curio.domain.AchievementSource
 import com.example.curio.domain.Discovery
@@ -44,6 +46,9 @@ import com.example.curio.feature.progress.TreeViewModel
 import com.example.curio.feature.settings.SettingsScreen
 import com.example.curio.feature.settings.SettingsViewModel
 import com.example.curio.feature.settings.SourcesScreen
+import com.example.curio.feature.tree.TreeScreen
+import com.example.curio.feature.tree.TreeScreenEvent
+import com.example.curio.feature.tree.TreeScreenViewModel
 
 data class NavTab(val route: Route, val label: String, val iconText: String)
 
@@ -78,7 +83,7 @@ fun CurioNavHost(
     Box(Modifier.fillMaxSize()) {
         Scaffold(
             bottomBar = {
-                if (currentRoute != null && !currentRoute.contains("Onboarding") && !currentRoute.contains("Sources") && !onAchievements) {
+                if (currentRoute != null && !currentRoute.contains("Onboarding") && !currentRoute.contains("Sources") && !currentRoute.contains("Tree") && !onAchievements) {
                     NavigationBar(containerColor = Color(0xFF0F172A)) {
                         navTabs.forEach { tab ->
                             val selected = currentRoute.contains(tab.label)
@@ -154,6 +159,9 @@ fun CurioNavHost(
                         onToggleTopicExpanded = treeViewModel::toggleTopicExpanded,
                         onLeafClick = { id ->
                             navController.navigate(Route.Detail(id))
+                        },
+                        onOpenTree = {
+                            navController.navigate(Route.Tree(treeUiState.selectedThemeId)) { launchSingleTop = true }
                         }
                     )
                 }
@@ -198,6 +206,39 @@ fun CurioNavHost(
                     SourcesScreen(
                         entries = entries,
                         onBack = { navController.popBackStack() }
+                    )
+                }
+
+                composable<Route.Tree> { entry ->
+                    val route = entry.toRoute<Route.Tree>()
+                    val vm: TreeScreenViewModel = viewModel(
+                        factory = viewModelFactory {
+                            initializer {
+                                TreeScreenViewModel(
+                                    container.userActivity,
+                                    container.currentTheme,
+                                    container.contentIndex,
+                                    route.themeId
+                                )
+                            }
+                        }
+                    )
+                    val ui by vm.state.collectAsStateWithLifecycle()
+                    LaunchedEffect(vm) {
+                        vm.events.collect { event ->
+                            when (event) {
+                                is TreeScreenEvent.OpenDetail -> navController.navigate(Route.Detail(event.discoveryId))
+                            }
+                        }
+                    }
+                    TreeScreen(
+                        state = ui,
+                        onBack = { navController.popBackStack() },
+                        onThemeSelected = vm::onThemeSelected,
+                        onTopicTap = vm::onTopicTap,
+                        onLeafTap = { topicId, leaf -> vm.onLeafTap(topicId, leaf.discoveryId) },
+                        onSheetDismiss = vm::onSheetDismiss,
+                        onOpenDetail = vm::onOpenDetail,
                     )
                 }
             }

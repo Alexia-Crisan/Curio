@@ -21,6 +21,7 @@ import com.example.curio.domain.CurrentThemeSource
 import com.example.curio.domain.LeafNode
 import com.example.curio.domain.ThemeTree
 import com.example.curio.domain.TreeBuilder
+import com.example.curio.domain.TreeSelection
 
 data class TreeUiState(
     val trees: List<ThemeTree> = emptyList(),
@@ -53,9 +54,7 @@ class TreeViewModel(
         manualTheme,
         expanded,
     ) { trees, current, manual, open ->
-        val selectedId = listOf(manual, current)
-            .firstOrNull { id -> id != null && trees.any { it.theme.id == id } }
-            ?: trees.firstOrNull()?.theme?.id
+        val selectedId = TreeSelection.resolve(trees, manual, current)
         TreeUiState(trees = trees, selectedThemeId = selectedId, expandedTopicIds = open, isLoading = false)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), TreeUiState())
 

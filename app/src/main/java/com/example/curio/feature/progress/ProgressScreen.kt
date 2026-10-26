@@ -41,6 +41,7 @@ fun ProgressScreen(
     onSelectTheme: (String) -> Unit = {},
     onToggleTopicExpanded: (String) -> Unit = {},
     onLeafClick: (String) -> Unit = {},
+    onOpenTree: () -> Unit = {},
     completedDays: Int = 12,
     totalDays: Int = 30,
     currentStreak: Int = 5,
@@ -144,6 +145,7 @@ fun ProgressScreen(
             onSelectTheme = onSelectTheme,
             onToggleTopicExpanded = onToggleTopicExpanded,
             onLeafClick = onLeafClick,
+            onOpenTree = onOpenTree,
         )
     }
 }

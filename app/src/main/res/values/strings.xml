@@ -89,4 +89,19 @@
     <string name="sources_cards">%1$d cards</string>
     <string name="sources_empty">No sources to show.</string>
     <string name="common_back">Back</string>
+
+    <string name="tree_open">Open tree</string>
+    <string name="tree_next_start">Discover %1$d cards to make this branch grow.</string>
+    <string name="tree_next_reach_growing">%1$d more to make this branch grow.</string>
+    <string name="tree_next_finish">%1$d more to complete this branch.</string>
+    <string name="tree_next_done">Every card in this branch is discovered.</string>
+    <string name="tree_theme_next_stage">%1$d more discoveries until: %2$s</string>
+    <string name="tree_theme_top">This tree is in full bloom.</string>
+    <string name="tree_sheet_landmark_found">Key discovery found</string>
+    <string name="tree_sheet_landmark_missing">Key discovery still hidden</string>
+    <string name="tree_sheet_bonus_count">%1$d found by shaking</string>
+    <string name="tree_sheet_open_detail">Read again</string>
+    <string name="tree_sheet_locked_hint">Keep exploring this topic to uncover it.</string>
+    <string name="tree_sheet_close">Close</string>
+    <string name="tree_back">Back</string>
 </resources>

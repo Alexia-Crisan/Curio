@@ -25,5 +25,8 @@ sealed interface Route {
     data object Sources : Route
 
     @Serializable
+    data class Tree(val themeId: String? = null) : Route
+
+    @Serializable
     data class Detail(val discoveryId: String) : Route
 }

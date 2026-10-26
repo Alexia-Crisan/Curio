@@ -17,6 +17,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +38,7 @@ fun TreeCard(
     onThemeSelected: (String) -> Unit,
     onTopicClick: (String) -> Unit,
     onLeafClick: (LeafNode) -> Unit,
+    onOpenTree: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     Card(modifier.fillMaxWidth()) {
@@ -68,6 +70,10 @@ fun TreeCard(
                         TopicRow(branch, branch.topic.id in state.expandedTopicIds, onTopicClick, onLeafClick)
                     }
                 }
+            }
+            Spacer(Modifier.height(8.dp))
+            TextButton(onClick = onOpenTree, modifier = Modifier.heightIn(min = 48.dp)) {
+                Text(stringResource(R.string.tree_open))
             }
         }
     }
