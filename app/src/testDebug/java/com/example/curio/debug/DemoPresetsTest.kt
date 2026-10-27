@@ -8,6 +8,9 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.time.LocalDate
 import java.time.YearMonth
+import com.example.curio.debug.DemoPreset
+import com.example.curio.debug.DemoPresets
+import com.example.curio.debug.DemoPlan
 import com.example.curio.domain.AchievementEvaluator
 import com.example.curio.domain.AchievementId
 import com.example.curio.domain.ActivitySnapshotBuilder

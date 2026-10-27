@@ -37,11 +37,22 @@ android {
         compose = true
     }
     sourceSets {
+        getByName("main") {
+            kotlin.srcDir("src/main/java")
+        }
+        getByName("debug") {
+            kotlin.srcDir("src/debug/java")
+        }
         getByName("test") {
+            kotlin.srcDir("src/test/java")
+            kotlin.srcDir("src/testDebug/java")
             kotlin.srcDir("src/sharedTest/java")
+            kotlin.srcDir("src/debug/java")
         }
         getByName("androidTest") {
+            kotlin.srcDir("src/androidTest/java")
             kotlin.srcDir("src/sharedTest/java")
+            kotlin.srcDir("src/debug/java")
         }
     }
 }
