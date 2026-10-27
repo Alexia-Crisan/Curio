@@ -8,6 +8,9 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.time.LocalDate
 import java.time.YearMonth
+import com.example.curio.debug.DemoPreset
+import com.example.curio.debug.DemoPresets
+import com.example.curio.debug.DemoPlan
 import com.example.curio.domain.AchievementEvaluator
 import com.example.curio.domain.AchievementId
 import com.example.curio.domain.ActivitySnapshotBuilder
@@ -86,18 +89,18 @@ class DemoPresetsTest {
     @Test
     fun theNextCardUnlocksCuriousMind() {
         val eval1 = AchievementEvaluator.evaluate(snapshot(almost), TestContent.index)
-        assertFalse(eval1.newlyEarned.contains(AchievementId.CURIOUS_MIND))
+        assertFalse(eval1.newlyEarned.map { it.id }.contains(AchievementId.CURIOUS_MIND))
 
         val eval2 = AchievementEvaluator.evaluate(snapshot(almost, extra = listOf(ev("a1"))), TestContent.index)
-        assertTrue(eval2.newlyEarned.contains(AchievementId.CURIOUS_MIND))
+        assertTrue(eval2.newlyEarned.map { it.id }.contains(AchievementId.CURIOUS_MIND))
     }
 
     @Test
     fun hiddenDiscoveriesStandsAtTwoOfThree() {
         val eval = AchievementEvaluator.evaluate(snapshot(almost), TestContent.index)
-        val p = eval.progress.first { it.id == AchievementId.HIDDEN_DISCOVERIES }
+        val p = eval.progress.first { it.def.id == AchievementId.HIDDEN_DISCOVERIES }
         assertEquals(2, p.current)
-        assertEquals(3, p.target)
+        assertEquals(3, p.def.target)
     }
 
     @Test
@@ -125,14 +128,14 @@ class DemoPresetsTest {
     @Test
     fun twoThemesLightsTheThemeExplorerBadge() {
         val eval = AchievementEvaluator.evaluate(snapshot(two), TestContent.index)
-        val p = eval.progress.first { it.id == AchievementId.TOPIC_EXPLORER }
+        val p = eval.progress.first { it.def.id == AchievementId.TOPIC_EXPLORER }
         assertEquals(2, p.current)
     }
 
     @Test
     fun twoThemesNeedsTwoAvailableThemes() {
         val singleThemeIndex = ContentIndex(listOf(TestContent.index.themes[0]), TestContent.index.discoveries.filter { it.themeId == "animals" })
-        assertNull(DemoPresets.build(DemoPreset.TWO_THEMES, singleThemeIndex, D, NOW))
+        assertNull(DemoPresets.build(DemoPreset.TWO_THEMES, singleThemeIndex, D, NOW, "t1"))
     }
 
     @Test
