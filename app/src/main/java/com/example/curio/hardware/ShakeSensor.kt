@@ -27,7 +27,7 @@ class ShakeSensor(context: Context) {
                     val x = it.values[0]
                     val y = it.values[1]
                     val z = it.values[2]
-                    val timeMs = System.currentTimeMillis()
+                    val timeMs = it.timestamp / 1_000_000L
 
                     if (detector.onSensorSample(x, y, z, timeMs)) {
                         trySend(Unit)

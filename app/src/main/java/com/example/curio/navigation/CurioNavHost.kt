@@ -17,6 +17,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
@@ -74,6 +76,7 @@ fun CurioNavHost(
     hapticsEnabled: Boolean,
     onHapticsToggle: (Boolean) -> Unit,
 ) {
+    val haptics = LocalHapticFeedback.current
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -133,7 +136,15 @@ fun CurioNavHost(
                 }
 
                 composable<Route.Feed> {
-                    FeedScreen(viewModel = feedViewModel)
+                    val shakes = remember { container.shakeSensor.shakes() }
+                    FeedScreen(
+                        viewModel = feedViewModel,
+                        shakes = shakes,
+                        shakeEnabled = shakeEnabled,
+                        onShakeDetected = {
+                            haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                        },
+                    )
                 }
 
                 composable<Route.Library> {
@@ -252,6 +263,9 @@ fun CurioNavHost(
             source = achievementSource,
             suppress = onAchievements,
             onOpenAchievements = { navController.navigate(Route.Achievements) { launchSingleTop = true } },
+            onShown = {
+                haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+            },
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .statusBarsPadding(),

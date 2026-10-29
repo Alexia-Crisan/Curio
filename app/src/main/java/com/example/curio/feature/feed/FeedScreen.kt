@@ -1,5 +1,6 @@
 package com.example.curio.feature.feed
 
+import android.content.pm.ApplicationInfo
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,6 +22,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -40,16 +42,36 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.curio.R
 import com.example.curio.domain.FeedItem
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 @Composable
-fun FeedScreen(viewModel: FeedViewModel) {
+fun FeedScreen(
+    viewModel: FeedViewModel,
+    shakes: Flow<Unit> = emptyFlow(),
+    shakeEnabled: Boolean = false,
+    onShakeDetected: () -> Unit = {},
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val savedIds by viewModel.savedIds.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(shakes, shakeEnabled) {
+        if (!shakeEnabled) return@LaunchedEffect
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            shakes.collect {
+                onShakeDetected()
+                viewModel.onShake()
+            }
+        }
+    }
 
     LifecycleEventEffect(Lifecycle.Event.ON_PAUSE) { viewModel.onScreenPaused() }
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { viewModel.onScreenResumed() }
@@ -113,6 +135,16 @@ fun FeedScreen(viewModel: FeedViewModel) {
             hostState = snackbarHostState,
             modifier = Modifier.align(Alignment.BottomCenter)
         )
+
+        val debuggable = remember {
+            (context.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
+        }
+        if (debuggable && shakeEnabled) {
+            SmallFloatingActionButton(
+                onClick = { onShakeDetected(); viewModel.onShake() },
+                modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp),
+            ) { Text("Shake") }
+        }
     }
 }
 

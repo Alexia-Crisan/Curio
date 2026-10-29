@@ -5,14 +5,22 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.hapticfeedback.HapticFeedback
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.curio.feature.feed.FeedViewModel
 import com.example.curio.feature.progress.TreeViewModel
 import com.example.curio.navigation.CurioNavHost
 import kotlinx.coroutines.launch
+
+private object NoHaptics : HapticFeedback {
+    override fun performHapticFeedback(hapticFeedbackType: HapticFeedbackType) = Unit
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,25 +46,30 @@ class MainActivity : ComponentActivity() {
                 val shakeEnabled by container.settingsRepository.shakeEnabled.collectAsStateWithLifecycle(initialValue = true)
                 val hapticsEnabled by container.settingsRepository.hapticsEnabled.collectAsStateWithLifecycle(initialValue = true)
 
-                CurioNavHost(
-                    container = container,
-                    feedViewModel = feedVm,
-                    treeViewModel = treeVm,
-                    achievementSource = container.achievementSource,
-                    savedCards = emptyList(),
-                    onboardingDone = onboardingDone,
-                    onFinishOnboarding = {
-                        scope.launch { container.settingsRepository.setOnboardingDone(true) }
-                    },
-                    shakeEnabled = shakeEnabled,
-                    onShakeToggle = { enabled ->
-                        scope.launch { container.settingsRepository.setShakeEnabled(enabled) }
-                    },
-                    hapticsEnabled = hapticsEnabled,
-                    onHapticsToggle = { enabled ->
-                        scope.launch { container.settingsRepository.setHapticsEnabled(enabled) }
-                    },
-                )
+                val systemHaptics = LocalHapticFeedback.current
+                CompositionLocalProvider(
+                    LocalHapticFeedback provides if (hapticsEnabled) systemHaptics else NoHaptics
+                ) {
+                    CurioNavHost(
+                        container = container,
+                        feedViewModel = feedVm,
+                        treeViewModel = treeVm,
+                        achievementSource = container.achievementSource,
+                        savedCards = emptyList(),
+                        onboardingDone = onboardingDone,
+                        onFinishOnboarding = {
+                            scope.launch { container.settingsRepository.setOnboardingDone(true) }
+                        },
+                        shakeEnabled = shakeEnabled,
+                        onShakeToggle = { enabled ->
+                            scope.launch { container.settingsRepository.setShakeEnabled(enabled) }
+                        },
+                        hapticsEnabled = hapticsEnabled,
+                        onHapticsToggle = { enabled ->
+                            scope.launch { container.settingsRepository.setHapticsEnabled(enabled) }
+                        },
+                    )
+                }
             }
         }
     }

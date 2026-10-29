@@ -27,7 +27,6 @@ import com.example.curio.domain.TestContent
 import com.example.curio.domain.Theme
 import com.example.curio.domain.TouchQueue
 import com.example.curio.domain.TreeVisitStore
-import com.example.curio.hardware.HapticsController
 import com.example.curio.hardware.ShakeSensor
 import com.example.curio.hardware.TiltSensor
 import kotlinx.coroutines.CoroutineScope
@@ -46,7 +45,6 @@ class AppContainer(context: Context) {
     val settingsRepository: SettingsRepository = SettingsRepository(context)
     val shakeSensor: ShakeSensor = ShakeSensor(context)
     val tiltSensor: TiltSensor = TiltSensor(context)
-    val hapticsController: HapticsController = HapticsController()
 
     val database: CurioDatabase = CurioDatabase.create(context)
     val contentIndex: ContentIndex = TestContent.index
