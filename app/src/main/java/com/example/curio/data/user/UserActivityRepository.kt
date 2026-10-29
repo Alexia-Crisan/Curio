@@ -11,6 +11,7 @@ import com.example.curio.domain.ActivitySnapshot
 import com.example.curio.domain.ActivitySnapshotBuilder
 import com.example.curio.domain.ActivitySource
 import com.example.curio.domain.ContentIndex
+import com.example.curio.domain.ViewEvent
 import com.example.curio.domain.ViewSource
 import com.example.curio.domain.ViewTouch
 import java.time.Clock
@@ -61,4 +62,6 @@ class UserActivityRepository(
         savedDao.deleteAll()
         unlocks.deleteAll()
     }
+
+    fun observeRecentViews(limit: Int = 50): Flow<List<ViewEvent>> = views.observeRecent(limit).map { rows -> rows.map { it.toDomain() } }
 }

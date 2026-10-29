@@ -55,7 +55,6 @@ class MainActivity : ComponentActivity() {
                         feedViewModel = feedVm,
                         treeViewModel = treeVm,
                         achievementSource = container.achievementSource,
-                        savedCards = emptyList(),
                         onboardingDone = onboardingDone,
                         onFinishOnboarding = {
                             scope.launch { container.settingsRepository.setOnboardingDone(true) }

@@ -16,28 +16,37 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.curio.R
 import com.example.curio.domain.Discovery
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 @Composable
 fun LibraryScreen(
     savedCards: List<Discovery>,
+    history: List<HistoryDay> = emptyList(),
     onCardClick: (String) -> Unit,
 ) {
-    var selectedTab by remember { mutableStateOf(0) }
+    var selectedTab by remember { mutableIntStateOf(0) }
 
     Column(
         Modifier
@@ -84,42 +93,85 @@ fun LibraryScreen(
 
         Spacer(Modifier.height(24.dp))
 
-        if (savedCards.isEmpty()) {
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(
-                    text = "No saved discoveries yet.\nTap ♥ on any feed card to bookmark it!",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = Color.Gray,
-                )
-            }
-        } else {
-            LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                items(savedCards, key = { it.id }) { card ->
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { onCardClick(card.id) },
-                        shape = RoundedCornerShape(16.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color(card.accentColor)),
-                    ) {
-                        Column(Modifier.padding(20.dp)) {
-                            Text(
-                                text = card.type.name,
-                                fontSize = 11.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White.copy(alpha = 0.7f),
-                            )
-                            Spacer(Modifier.height(6.dp))
-                            Text(
-                                text = card.title,
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White,
-                            )
-                        }
-                    }
+        when {
+            (selectedTab == 0 && savedCards.isEmpty()) -> EmptyState(stringResource(R.string.library_saved_empty))
+            selectedTab == 0 -> SavedList(savedCards, onCardClick)
+            history.isEmpty() -> EmptyState(stringResource(R.string.library_history_empty))
+            else -> HistoryList(history, onCardClick)
+        }
+    }
+}
+
+@Composable
+private fun EmptyState(text: String) {
+    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyLarge,
+            color = Color.Gray,
+        )
+    }
+}
+
+@Composable
+private fun SavedList(savedCards: List<Discovery>, onCardClick: (String) -> Unit) {
+    LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        items(savedCards, key = { it.id }) { card ->
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onCardClick(card.id) },
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(card.accentColor)),
+            ) {
+                Column(Modifier.padding(20.dp)) {
+                    Text(
+                        text = card.type.name,
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White.copy(alpha = 0.7f),
+                    )
+                    Spacer(Modifier.height(6.dp))
+                    Text(
+                        text = card.title,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                    )
                 }
             }
         }
     }
+}
+
+@Composable
+private fun HistoryList(days: List<HistoryDay>, onCardClick: (String) -> Unit) {
+    val today = remember { LocalDate.now() }
+    LazyColumn {
+        days.forEach { day ->
+            item(key = "h-${day.date}") {
+                Text(
+                    text = dayLabel(day.date, today),
+                    style = MaterialTheme.typography.titleSmall,
+                    modifier = Modifier
+                        .padding(top = 16.dp, bottom = 4.dp)
+                        .semantics { heading() },
+                )
+            }
+            items(day.items, key = { "${day.date}-${it.id}" }) { d ->
+                ListItem(
+                    headlineContent = { Text(d.title) },
+                    supportingContent = { Text(d.source.name) },
+                    modifier = Modifier.clickable { onCardClick(d.id) },
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun dayLabel(date: LocalDate, today: LocalDate): String = when (date) {
+    today -> stringResource(R.string.history_today)
+    today.minusDays(1) -> stringResource(R.string.history_yesterday)
+    else -> date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
 }
