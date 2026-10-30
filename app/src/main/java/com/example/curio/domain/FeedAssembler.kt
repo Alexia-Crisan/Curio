@@ -12,8 +12,9 @@ object FeedAssembler {
         discoveries: List<Discovery>,
         bonus: List<Discovery> = emptyList(),
         revisitIds: Set<String> = emptySet(),
+        completedBefore: Set<String> = emptySet(),
     ): List<FeedItem> {
-        val regular = FeedComposer.feedFor(topicId, discoveries)
+        val regular = FreshFirst.order(FeedComposer.feedFor(topicId, discoveries), completedBefore)
         val regularIds = regular.map { it.id }.toSet()
         val extra = bonus.distinctBy { it.id }.filter { it.id !in regularIds }
         return regular.map { FeedItem(it, FeedItemKind.REGULAR) } +

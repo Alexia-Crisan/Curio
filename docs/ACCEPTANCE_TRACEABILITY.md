@@ -28,6 +28,9 @@
 | AC-R4 | Month lengths and year boundary | `ProgressCalculatorTest.monthLengths` | none | `monthLengths`, `newYearsEve` |
 | AC-R5 | Schema export matches committed JSON | `RoomSchemaExportTest.theExportedSchemaExistsAndIsVersionOne` | none | `RoomSchemaExportTest` |
 | AC-R6 | Original acceptance criteria still pass on a phone | none | Run the original list on a real phone | none |
+| AC-R7 | On a revisit, unseen cards come first, seen cards last, dataset order inside each group | `FreshFirstTest.seenCardsMoveToTheEnd` | Complete a topic, return to it on another day, check the order | `seenCardsMoveToTheEnd`, `aRevisitShowsUnseenCardsFirst` |
+| AC-R8 | The order is stable for the whole day and across restarts; completing a card today never moves it | `FreshFirstFlowTest.theOrderIsStableWhileTheDayProgresses` | Complete a card mid-feed, leave and return | `theOrderIsStableWhileTheDayProgresses`, `theOrderIsStableAfterARestart` |
+| AC-R9 | Selection and Full Day are unchanged by the ordering | `FeedAssemblerFreshTest.theSetOfRegularCardsNeverChanges` | none | `theSetOfRegularCardsNeverChanges`, `fullDayStillCompletesInTheNewOrder` |
 
 ## Gaps
 - AC-A10: Manual accessibility checks reserved for Developer B's final UI pass.

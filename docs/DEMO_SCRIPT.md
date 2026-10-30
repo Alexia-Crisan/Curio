@@ -7,6 +7,7 @@
    `adb shell am start -n com.example.curio/com.example.curio.debug.DebugDemoActivity --es preset almost_there`
 4. Open Curio and verify that the Progress tab shows 3 complete days and 24 completed discoveries.
 5. Turn on Airplane Mode. Ensure Battery Saver is off and system animations are enabled.
+6. Note: Fresh-first ordering only shows on a revisit, so the `almost_there` preset (which never revisits today's topic) shows dataset order; this is expected behavior.
 
 ## 2. Scene 1: Daily Feed (2 min)
 1. Open the Feed tab.

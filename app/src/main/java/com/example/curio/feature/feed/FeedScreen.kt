@@ -110,7 +110,7 @@ fun FeedScreen(
             is FeedUiState.Ready -> {
                 key(s.date, s.topicId) {
                     val pagerState = rememberPagerState(pageCount = { s.items.size })
-                    LaunchedEffect(pagerState.settledPage, s.items.size) {
+                    LaunchedEffect(pagerState.settledPage, s.items) {
                         viewModel.onPageSettled(pagerState.settledPage)
                     }
                     LaunchedEffect(Unit) {
