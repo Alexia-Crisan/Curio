@@ -32,7 +32,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.curio.di.AppContainer
 import com.example.curio.domain.AchievementSource
-import com.example.curio.domain.Discovery
 import com.example.curio.domain.SourcesBuilder
 import com.example.curio.feature.achievements.AchievementsScreen
 import com.example.curio.feature.achievements.AchievementsViewModel
@@ -42,6 +41,7 @@ import com.example.curio.feature.achievements.observeSummary
 import com.example.curio.feature.feed.FeedScreen
 import com.example.curio.feature.feed.FeedViewModel
 import com.example.curio.feature.library.LibraryScreen
+import com.example.curio.feature.library.LibraryViewModel
 import com.example.curio.feature.onboarding.OnboardingScreen
 import com.example.curio.feature.onboarding.OnboardingViewModel
 import com.example.curio.feature.progress.ProgressScreen
@@ -68,7 +68,6 @@ fun CurioNavHost(
     feedViewModel: FeedViewModel,
     treeViewModel: TreeViewModel,
     achievementSource: AchievementSource,
-    savedCards: List<Discovery>,
     onboardingDone: Boolean,
     onFinishOnboarding: () -> Unit,
     shakeEnabled: Boolean,
@@ -148,11 +147,15 @@ fun CurioNavHost(
                 }
 
                 composable<Route.Library> {
+                    val vm: LibraryViewModel = viewModel(factory = viewModelFactory {
+                        initializer { LibraryViewModel(container.userActivity, container.contentIndex) }
+                    })
+                    val saved by vm.saved.collectAsStateWithLifecycle()
+                    val history by vm.history.collectAsStateWithLifecycle()
                     LibraryScreen(
-                        savedCards = savedCards,
-                        onCardClick = { id ->
-                            navController.navigate(Route.Detail(id))
-                        }
+                        savedCards = saved,
+                        history = history,
+                        onCardClick = { id -> navController.navigate(Route.Detail(id)) },
                     )
                 }
 

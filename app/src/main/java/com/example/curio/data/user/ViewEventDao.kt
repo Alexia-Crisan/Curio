@@ -39,4 +39,7 @@ abstract class ViewEventDao {
         val existing = find(touch.discoveryId, touch.date.toString())?.toDomain()
         upsert(ViewEventRecorder.merge(existing, touch).toEntity())
     }
+
+    @Query ("SELECT * FROM view_event ORDER BY date DESC, firstViewedAt DESC LIMIT :limit")
+    abstract fun observeRecent(limit: Int): Flow<List<ViewEventEntity>>
 }
