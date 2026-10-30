@@ -110,6 +110,13 @@
     <string name="history_today">Today</string>
     <string name="history_yesterday">Yesterday</string>
 
+    <string name="progress_days_completed">Days Completed</string>
+    <string name="progress_days_explored">Days explored</string>
+    <string name="progress_saved">Saved</string>
+    <string name="day_complete">complete</string>
+    <string name="day_in_progress">in progress</string>
+    <string name="day_not_started">not started</string>
+
     <plurals name="tree_growth_new">
         <item quantity="one">%1$d new discovery since your last visit</item>
         <item quantity="other">%1$d new discoveries since your last visit</item>
