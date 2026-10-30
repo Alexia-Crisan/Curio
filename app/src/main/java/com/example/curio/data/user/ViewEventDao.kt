@@ -28,6 +28,9 @@ abstract class ViewEventDao {
     @Query("SELECT COUNT(*) FROM view_event WHERE date = :date AND completed = 1 AND source = 'FEED'")
     abstract suspend fun completedFeedCount(date: String): Int
 
+    @Query("SELECT DISTINCT discoveryId FROM view_event WHERE completed = 1 AND date < :date")
+    abstract suspend fun completedIdsBefore(date: String): List<String>
+
     @Query("DELETE FROM view_event")
     abstract suspend fun deleteAll()
 

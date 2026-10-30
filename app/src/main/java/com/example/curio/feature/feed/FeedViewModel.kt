@@ -19,7 +19,9 @@ import com.example.curio.domain.Discovery
 import com.example.curio.domain.DwellTracker
 import com.example.curio.domain.EndCardTeaser
 import com.example.curio.domain.FeedAssembler
+import com.example.curio.domain.FeedConfig
 import com.example.curio.domain.FeedItem
+import com.example.curio.domain.FreshnessSource
 import com.example.curio.domain.ShakeBonusSelector
 import com.example.curio.domain.TeaserBuilder
 import com.example.curio.domain.TouchQueue
@@ -54,6 +56,7 @@ class FeedViewModel(
     private val currentTheme: CurrentThemeSource,
     private val dailyMode: DailyModeSource,
     private val clock: Clock,
+    private val freshness: FreshnessSource = FreshnessSource.None,
 ) : ViewModel() {
 
     private val isLive: Boolean = forDate == null || forDate == LocalDate.now(clock)
@@ -83,6 +86,7 @@ class FeedViewModel(
     private var bonusCards: List<Discovery> = emptyList()
     private val revisitIds = mutableSetOf<String>()
     private var loadedDate: LocalDate? = null
+    private var seenBefore: Set<String> = emptySet()
 
     init {
         if (isLive) {
@@ -125,11 +129,12 @@ class FeedViewModel(
         }
         loadedDate = today
         bonusCards = bonus.todaysBonusCards()
+        seenBefore = if (FeedConfig.FRESH_FIRST) freshness.seenBefore(today) else emptySet()
         _state.value = FeedUiState.Ready(
             date = today,
             themeId = choice.themeId,
             topicId = choice.topicId,
-            items = FeedAssembler.assemble(choice.topicId, content.discoveries, bonusCards, revisitIds),
+            items = FeedAssembler.assemble(choice.topicId, content.discoveries, bonusCards, revisitIds, seenBefore),
             readOnly = false,
             settingsLocked = locked,
         )
@@ -142,7 +147,11 @@ class FeedViewModel(
         } else {
             FeedUiState.Ready(
                 date = date, themeId = choice.themeId, topicId = choice.topicId,
-                items = FeedAssembler.assemble(choice.topicId, content.discoveries),
+                items = FeedAssembler.assemble(
+                    choice.topicId,
+                    content.discoveries,
+                    completedBefore = if (FeedConfig.FRESH_FIRST) freshness.seenBefore(date) else emptySet(),
+                ),
                 readOnly = true, settingsLocked = false,
             )
         }
@@ -197,7 +206,7 @@ class FeedViewModel(
                 is ShakeBonusSelector.Result.Found -> {
                     if (r.isRevisit) revisitIds += r.discovery.id
                     bonusCards = bonus.todaysBonusCards()
-                    val items = FeedAssembler.assemble(s.topicId, content.discoveries, bonusCards, revisitIds)
+                    val items = FeedAssembler.assemble(s.topicId, content.discoveries, bonusCards, revisitIds, seenBefore)
                     _state.value = s.copy(items = items)
                     val index = items.indexOfFirst { it.discovery.id == r.discovery.id }
                     if (index >= 0) _events.emit(FeedEvent.ScrollTo(index))
@@ -252,6 +261,7 @@ class FeedViewModel(
                     currentTheme = container.currentTheme,
                     dailyMode = container.dailyMode,
                     clock = container.javaClock,
+                    freshness = container.freshness,
                 )
             }
         }
