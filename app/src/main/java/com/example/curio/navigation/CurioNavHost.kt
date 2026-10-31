@@ -88,6 +88,10 @@ fun CurioNavHost(
     onShakeToggle: (Boolean) -> Unit,
     hapticsEnabled: Boolean,
     onHapticsToggle: (Boolean) -> Unit,
+    tiltEnabled: Boolean = true,
+    onTiltToggle: (Boolean) -> Unit = {},
+    darkMode: String = "SYSTEM",
+    onDarkModeChange: (String) -> Unit = {},
 ) {
     val haptics = LocalHapticFeedback.current
     val navController = rememberNavController()
@@ -282,6 +286,10 @@ fun CurioNavHost(
                         onShakeToggle = onShakeToggle,
                         hapticsEnabled = hapticsEnabled,
                         onHapticsToggle = onHapticsToggle,
+                        tiltEnabled = tiltEnabled,
+                        onTiltToggle = onTiltToggle,
+                        darkMode = darkMode,
+                        onDarkModeChange = onDarkModeChange,
                     )
                 }
 

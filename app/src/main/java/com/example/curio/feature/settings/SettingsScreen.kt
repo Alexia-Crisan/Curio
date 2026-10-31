@@ -1,5 +1,8 @@
 package com.example.curio.feature.settings
 
+import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorManager
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,10 +18,15 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
@@ -30,6 +38,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
@@ -42,6 +51,7 @@ import com.example.curio.ui.theme.Spacing
 import com.example.curio.ui.theme.curioCardBorder
 import com.example.curio.ui.theme.curioCardColors
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     viewModel: SettingsViewModel,
@@ -50,6 +60,10 @@ fun SettingsScreen(
     onShakeToggle: (Boolean) -> Unit,
     hapticsEnabled: Boolean,
     onHapticsToggle: (Boolean) -> Unit,
+    tiltEnabled: Boolean = true,
+    onTiltToggle: (Boolean) -> Unit = {},
+    darkMode: String = "SYSTEM",
+    onDarkModeChange: (String) -> Unit = {},
 ) {
     val ui by viewModel.ui.collectAsStateWithLifecycle()
     val snackbar = remember { SnackbarHostState() }
@@ -85,8 +99,8 @@ fun SettingsScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
-                            Text("Shake to Discover", style = MaterialTheme.typography.titleMedium)
-                            Text("Shake phone for a bonus discovery card", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text(stringResource(R.string.settings_shake_title), style = MaterialTheme.typography.titleMedium)
+                            Text(stringResource(R.string.settings_shake_desc), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                         Switch(checked = shakeEnabled, onCheckedChange = onShakeToggle)
                     }
@@ -97,11 +111,68 @@ fun SettingsScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
-                            Text("Haptic Feedback", style = MaterialTheme.typography.titleMedium)
-                            Text("Vibrate on save, shake, and quiz answers", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text(stringResource(R.string.settings_tilt_title), style = MaterialTheme.typography.titleMedium)
+                            Text(stringResource(R.string.settings_tilt_desc), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                        Switch(checked = tiltEnabled, onCheckedChange = onTiltToggle)
+                    }
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(stringResource(R.string.settings_haptics_title), style = MaterialTheme.typography.titleMedium)
+                            Text(stringResource(R.string.settings_haptics_desc), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                         Switch(checked = hapticsEnabled, onCheckedChange = onHapticsToggle)
                     }
+                }
+            }
+
+            Text(stringResource(R.string.settings_appearance), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
+            val modes = listOf("SYSTEM", "LIGHT", "DARK")
+            val labels = listOf<Int>(R.string.appearance_system, R.string.appearance_light, R.string.appearance_dark)
+            SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
+                modes.forEachIndexed { i, mode ->
+                    SegmentedButton(
+                        selected = darkMode == mode,
+                        onClick = { onDarkModeChange(mode) },
+                        shape = SegmentedButtonDefaults.itemShape(i, modes.size),
+                    ) { Text(stringResource(labels[i])) }
+                }
+            }
+
+            Text(stringResource(R.string.settings_sensors), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
+            val context = LocalContext.current
+            val hasAccelerometer = remember {
+                (context.getSystemService(Context.SENSOR_SERVICE) as SensorManager)
+                    .getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null
+            }
+            val hasGyroscope = remember {
+                (context.getSystemService(Context.SENSOR_SERVICE) as SensorManager)
+                    .getDefaultSensor(Sensor.TYPE_GYROSCOPE) != null
+            }
+
+            Card(colors = curioCardColors(), border = curioCardBorder(false)) {
+                Column(Modifier.padding(Spacing.sm)) {
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.sensor_touchscreen)) },
+                        supportingContent = { Text(stringResource(R.string.sensor_touchscreen_use)) },
+                    )
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.sensor_accelerometer)) },
+                        supportingContent = {
+                            Text(stringResource(if (hasAccelerometer) R.string.sensor_accelerometer_use else R.string.sensor_missing))
+                        },
+                    )
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.sensor_gyroscope)) },
+                        supportingContent = {
+                            Text(stringResource(if (hasGyroscope) R.string.sensor_gyroscope_use else R.string.sensor_missing))
+                        },
+                    )
                 }
             }
 
