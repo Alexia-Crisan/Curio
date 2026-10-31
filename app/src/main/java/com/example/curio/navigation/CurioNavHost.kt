@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -17,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -95,7 +95,7 @@ fun CurioNavHost(
         Scaffold(
             bottomBar = {
                 if (currentRoute != null && !currentRoute.contains("Onboarding") && !currentRoute.contains("Sources") && !currentRoute.contains("Tree") && !onAchievements && !onFeedDay) {
-                    NavigationBar(containerColor = Color(0xFF0F172A)) {
+                    NavigationBar(containerColor = MaterialTheme.colorScheme.surfaceContainer) {
                         navTabs.forEach { tab ->
                             val selected = currentRoute.contains(tab.label)
                             NavigationBarItem(
@@ -110,10 +110,14 @@ fun CurioNavHost(
                                     }
                                 },
                                 icon = { Text(tab.iconText) },
-                                label = { Text(tab.label, color = if (selected) Color.White else Color.Gray) },
+                                label = { Text(tab.label) },
                                 colors = NavigationBarItemDefaults.colors(
-                                    indicatorColor = Color(0xFF1E293B)
-                                )
+                                    selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                                ),
                             )
                         }
                     }
