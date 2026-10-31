@@ -14,6 +14,7 @@
 2. Swipe through the six discovery cards for today's topic.
 3. Pause on card 1 for at least 4 seconds without swiping away.
 4. Switch to the Progress tab to demonstrate that the card counted live while viewing (1/6).
+5. Note: with the `almost_there` preset the Progress calendar has four past days with records; tap one to show the read-only banner.
 
 ## 3. Scene 2: Achievement Unlock (2 min)
 1. Return to the Feed tab and view the remaining cards to complete today's topic (card 25 total).

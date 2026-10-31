@@ -31,5 +31,5 @@ sealed interface Route {
     data class Detail(val discoveryId: String) : Route
 
     @Serializable
-    data class Day(val date: String) : Route
+    data class FeedDay(val date: String) : Route
 }

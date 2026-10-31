@@ -31,6 +31,9 @@
 | AC-R7 | On a revisit, unseen cards come first, seen cards last, dataset order inside each group | `FreshFirstTest.seenCardsMoveToTheEnd` | Complete a topic, return to it on another day, check the order | `seenCardsMoveToTheEnd`, `aRevisitShowsUnseenCardsFirst` |
 | AC-R8 | The order is stable for the whole day and across restarts; completing a card today never moves it | `FreshFirstFlowTest.theOrderIsStableWhileTheDayProgresses` | Complete a card mid-feed, leave and return | `theOrderIsStableWhileTheDayProgresses`, `theOrderIsStableAfterARestart` |
 | AC-R9 | Selection and Full Day are unchanged by the ordering | `FeedAssemblerFreshTest.theSetOfRegularCardsNeverChanges` | none | `theSetOfRegularCardsNeverChanges`, `fullDayStillCompletesInTheNewOrder` |
+| AC-R10 | Opening a past day never changes any table except an explicit save | `PastDayFeedViewModelTest.aPastDayWritesNoViewEvents` | Open a past day, swipe, shake, open Detail, then check Progress and badges | `aPastDayWritesNoViewEvents`, `aPastDayLeavesTheProgressUntouched` |
+| AC-R11 | Only past days with a stored choice can be opened; today opens the live feed; future days do nothing | `PastDayPolicyTest.yesterdayWithAChoiceOpensThatDay` | Tap a past day, today and a future day on the calendar | `PastDayPolicyTest` |
+| AC-R12 | A past day shows the cards in the order it had when it was live | `PastDayFeedViewModelTest.aPastDayWithAnEarlierHistoryIsFreshFirst` | Revisit-day check of step 15, then open that day later | `aPastDayWithAnEarlierHistoryIsFreshFirst`, `aPastDayKeepsItsOwnOrder` |
 
 ## Gaps
 - AC-A10: Manual accessibility checks reserved for Developer B's final UI pass.

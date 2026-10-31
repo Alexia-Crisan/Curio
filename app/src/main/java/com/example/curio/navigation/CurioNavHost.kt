@@ -14,6 +14,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,6 +33,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.curio.di.AppContainer
 import com.example.curio.domain.AchievementSource
+import com.example.curio.domain.PastDayPolicy
+import com.example.curio.domain.PastDayTarget
 import com.example.curio.domain.SourcesBuilder
 import com.example.curio.feature.achievements.AchievementsScreen
 import com.example.curio.feature.achievements.AchievementsViewModel
@@ -40,6 +43,7 @@ import com.example.curio.feature.achievements.UnlockBannerHost
 import com.example.curio.feature.achievements.observeSummary
 import com.example.curio.feature.feed.FeedScreen
 import com.example.curio.feature.feed.FeedViewModel
+import com.example.curio.feature.feed.PastDayScreen
 import com.example.curio.feature.library.LibraryScreen
 import com.example.curio.feature.library.LibraryViewModel
 import com.example.curio.feature.onboarding.OnboardingScreen
@@ -54,6 +58,7 @@ import com.example.curio.feature.tree.TreeScreen
 import com.example.curio.feature.tree.TreeScreenEvent
 import com.example.curio.feature.tree.TreeScreenViewModel
 import java.time.LocalDate
+import kotlinx.coroutines.launch
 
 data class NavTab(val route: Route, val label: String, val iconText: String)
 
@@ -84,11 +89,12 @@ fun CurioNavHost(
 
     val startDestination: Route = if (onboardingDone) Route.Feed else Route.Onboarding
     val onAchievements = navBackStackEntry?.destination?.hasRoute<Route.Achievements>() == true
+    val onFeedDay = navBackStackEntry?.destination?.hasRoute<Route.FeedDay>() == true
 
     Box(Modifier.fillMaxSize()) {
         Scaffold(
             bottomBar = {
-                if (currentRoute != null && !currentRoute.contains("Onboarding") && !currentRoute.contains("Sources") && !currentRoute.contains("Tree") && !onAchievements) {
+                if (currentRoute != null && !currentRoute.contains("Onboarding") && !currentRoute.contains("Sources") && !currentRoute.contains("Tree") && !onAchievements && !onFeedDay) {
                     NavigationBar(containerColor = Color(0xFF0F172A)) {
                         navTabs.forEach { tab ->
                             val selected = currentRoute.contains(tab.label)
@@ -148,15 +154,6 @@ fun CurioNavHost(
                     )
                 }
 
-                composable<Route.Day> { entry ->
-                    val date = LocalDate.parse(entry.toRoute<Route.Day>().date)
-                    val vm: FeedViewModel = viewModel(
-                        key = "day-$date",
-                        factory = FeedViewModel.factory(container, date),
-                    )
-                    FeedScreen(viewModel = vm)
-                }
-
                 composable<Route.Library> {
                     val vm: LibraryViewModel = viewModel(factory = viewModelFactory {
                         initializer { LibraryViewModel(container.userActivity, container.contentIndex) }
@@ -182,6 +179,7 @@ fun CurioNavHost(
                     val treeUiState by treeViewModel.uiState.collectAsStateWithLifecycle()
                     val badgeSummaryFlow = remember(achievementSource) { achievementSource.observeSummary() }
                     val badgeSummary by badgeSummaryFlow.collectAsStateWithLifecycle(initialValue = BadgeSummary(0, 7, false))
+                    val scope = rememberCoroutineScope()
 
                     ProgressScreen(
                         treeUiState = treeUiState,
@@ -202,10 +200,43 @@ fun CurioNavHost(
                         today = progressVm.today(),
                         onPreviousMonth = progressVm::previousMonth,
                         onNextMonth = progressVm::nextMonth,
-                        onOpenDay = { date ->
-                            navController.navigate(Route.Day(date.toString()))
+                        onDayClick = { date ->
+                            scope.launch {
+                                val today = LocalDate.now(container.javaClock)
+                                val hasChoice = container.dayPlans.peek(date) != null
+                                when (val target = PastDayPolicy.targetFor(date, today, hasChoice)) {
+                                    PastDayTarget.Live -> navController.navigate(Route.Feed) {
+                                        popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                                        launchSingleTop = true
+                                        restoreState = true
+                                    }
+                                    is PastDayTarget.Past -> navController.navigate(Route.FeedDay(target.date.toString())) { launchSingleTop = true }
+                                    PastDayTarget.None -> Unit
+                                }
+                            }
                         },
                     )
+                }
+
+                composable<Route.FeedDay> { entry ->
+                    val route = entry.toRoute<Route.FeedDay>()
+                    val date = remember(route.date) { runCatching { LocalDate.parse(route.date) }.getOrNull() }
+                    if (date == null) {
+                        LaunchedEffect(Unit) { navController.popBackStack() }
+                    } else {
+                        val vm: FeedViewModel = viewModel(factory = FeedViewModel.factory(container, date))
+                        PastDayScreen(date = date, onBack = { navController.popBackStack() }) {
+                            val shakes = remember { container.shakeSensor.shakes() }
+                            FeedScreen(
+                                viewModel = vm,
+                                shakes = shakes,
+                                shakeEnabled = shakeEnabled,
+                                onShakeDetected = {
+                                    haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                                },
+                            )
+                        }
+                    }
                 }
 
                 composable<Route.Achievements> {

@@ -62,7 +62,7 @@ fun ProgressScreen(
     today: LocalDate = LocalDate.now(),
     onPreviousMonth: () -> Unit = {},
     onNextMonth: () -> Unit = {},
-    onOpenDay: (LocalDate) -> Unit = {},
+    onDayClick: (LocalDate) -> Unit = {},
 ) {
     val completedDays = month?.daysCompleted ?: 0
     val totalDays = month?.daysInMonth ?: 30
@@ -181,7 +181,7 @@ fun ProgressScreen(
             MonthCalendar(
                 month = month,
                 today = today,
-                onDayClick = onOpenDay,
+                onDayClick = onDayClick,
             )
             Spacer(Modifier.height(28.dp))
         }
@@ -210,7 +210,7 @@ fun MonthCalendar(
     onDayClick: (LocalDate) -> Unit,
 ) {
     val first = month.month.atDay(1)
-    val offset = first.dayOfWeek.value - 1 // luni = 0
+    val offset = first.dayOfWeek.value - 1
     val cells: List<LocalDate?> = List(offset) { null } +
         (1..month.daysInMonth).map { month.month.atDay(it) }
     Column(Modifier.fillMaxWidth()) {
@@ -228,7 +228,7 @@ fun MonthCalendar(
                                 date = d,
                                 status = month.statusOf(d),
                                 isToday = d == today,
-                                enabled = (d < today && d in month.days),
+                                enabled = d <= today,
                                 onClick = { onDayClick(d) },
                                 modifier = Modifier.fillMaxSize(),
                             )
