@@ -1,6 +1,7 @@
 package com.example.curio.navigation
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -16,6 +17,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -27,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
@@ -335,6 +338,18 @@ fun CurioNavHost(
                         onSheetDismiss = vm::onSheetDismiss,
                         onOpenDetail = vm::onOpenDetail,
                     )
+                }
+
+                composable<Route.Detail> { entry ->
+                    val id = entry.toRoute<Route.Detail>().discoveryId
+                    val d = remember(id) { container.contentIndex.discovery(id) }
+                    // TODO(Dev A): placeholder, replace with the real DetailScreen
+                    Column(Modifier.fillMaxSize().padding(24.dp)) {
+                        TextButton(onClick = { navController.popBackStack() }) { Text("Back") }
+                        Text(d?.title ?: "Not found", style = MaterialTheme.typography.headlineSmall)
+                        d?.body?.let { Text(it) }
+                        d?.let { Text("Source: ${it.source.name}") }
+                    }
                 }
             }
         }
