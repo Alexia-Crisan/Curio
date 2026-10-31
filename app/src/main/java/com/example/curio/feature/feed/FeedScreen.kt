@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -126,6 +127,7 @@ fun FeedScreen(
                         items = s.items,
                         savedIds = savedIds,
                         onSave = { id, saved -> viewModel.onSave(id, saved) },
+                        pagerState = pagerState,
                     )
                 }
             }
@@ -153,8 +155,8 @@ private fun FeedPager(
     items: List<FeedItem>,
     savedIds: Set<String>,
     onSave: (String, Boolean) -> Unit,
+    pagerState: PagerState,
 ) {
-    val pagerState = rememberPagerState(pageCount = { items.size })
     Box(Modifier.fillMaxSize()) {
         VerticalPager(state = pagerState, key = { items[it].discovery.id }) { page ->
             val item = items[page]
