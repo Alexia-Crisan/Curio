@@ -67,7 +67,7 @@ fun LibraryScreen(
             Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(12.dp))
-                .background(Color.White.copy(alpha = 0.1f))
+                .background(MaterialTheme.colorScheme.surfaceVariant)
                 .padding(4.dp)
         ) {
             val tabs = listOf("Saved (${savedCards.size})", "History")
@@ -83,7 +83,7 @@ fun LibraryScreen(
                 ) {
                     Text(
                         text = tab,
-                        color = Color.White,
+                        color = if (selectedTab == i) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 15.sp,
                     )
@@ -108,7 +108,7 @@ private fun EmptyState(text: String) {
         Text(
             text = text,
             style = MaterialTheme.typography.bodyLarge,
-            color = Color.Gray,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }

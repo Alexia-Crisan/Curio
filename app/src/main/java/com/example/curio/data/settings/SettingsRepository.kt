@@ -22,6 +22,7 @@ class SettingsRepository(private val context: Context) {
         val DAILY_MODE = stringPreferencesKey("daily_mode")
         val SHAKE_ENABLED = booleanPreferencesKey("shake_enabled")
         val HAPTICS_ENABLED = booleanPreferencesKey("haptics_enabled")
+        val TILT_ENABLED = booleanPreferencesKey("tilt_enabled")
         val DARK_MODE = stringPreferencesKey("dark_mode")
         val TREE_LAST_VISITED_AT = longPreferencesKey("tree_last_visited_at")
     }
@@ -44,6 +45,10 @@ class SettingsRepository(private val context: Context) {
 
     val hapticsEnabled: Flow<Boolean> = context.dataStore.data.map { prefs ->
         prefs[Keys.HAPTICS_ENABLED] ?: true
+    }
+
+    val tiltEnabled: Flow<Boolean> = context.dataStore.data.map { prefs ->
+        prefs[Keys.TILT_ENABLED] ?: true
     }
 
     val darkMode: Flow<String> = context.dataStore.data.map { prefs ->
@@ -72,6 +77,10 @@ class SettingsRepository(private val context: Context) {
 
     suspend fun setHapticsEnabled(enabled: Boolean) {
         context.dataStore.edit { prefs -> prefs[Keys.HAPTICS_ENABLED] = enabled }
+    }
+
+    suspend fun setTiltEnabled(enabled: Boolean) {
+        context.dataStore.edit { prefs -> prefs[Keys.TILT_ENABLED] = enabled }
     }
 
     suspend fun setDarkMode(mode: String) {
