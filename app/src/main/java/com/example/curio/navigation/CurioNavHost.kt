@@ -4,6 +4,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -18,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -60,13 +67,13 @@ import com.example.curio.feature.tree.TreeScreenViewModel
 import java.time.LocalDate
 import kotlinx.coroutines.launch
 
-data class NavTab(val route: Route, val label: String, val iconText: String)
+data class NavTab(val route: Route, val label: String, val icon: ImageVector)
 
 val navTabs = listOf(
-    NavTab(Route.Feed, "Feed", "🔥"),
-    NavTab(Route.Library, "Library", "📚"),
-    NavTab(Route.Progress, "Progress", "📊"),
-    NavTab(Route.Settings, "Settings", "⚙️"),
+    NavTab(Route.Feed, "Feed", Icons.Default.Home),
+    NavTab(Route.Library, "Library", Icons.Default.Favorite),
+    NavTab(Route.Progress, "Progress", Icons.Default.List),
+    NavTab(Route.Settings, "Settings", Icons.Default.Settings),
 )
 
 @Composable
@@ -109,7 +116,7 @@ fun CurioNavHost(
                                         restoreState = true
                                     }
                                 },
-                                icon = { Text(tab.iconText) },
+                                icon = { Icon(tab.icon, contentDescription = tab.label) },
                                 label = { Text(tab.label) },
                                 colors = NavigationBarItemDefaults.colors(
                                     selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,

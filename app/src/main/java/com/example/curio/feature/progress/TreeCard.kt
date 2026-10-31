@@ -57,7 +57,7 @@ fun TreeCard(
             ) {
                 Column {
                     Text(
-                        text = "🌳 Knowledge Tree",
+                        text = "Knowledge Tree",
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
@@ -205,12 +205,13 @@ private fun LeafRow(leaf: LeafNode, onLeafClick: (String) -> Unit) {
     ) {
         Text(
             text = when {
-                leaf.isLandmark -> "🌸"
-                leaf.viaBonus -> "✨"
-                leaf.completed -> "🍃"
-                else -> "🔒"
+                leaf.isLandmark -> "[Landmark]"
+                leaf.viaBonus -> "[Bonus]"
+                leaf.completed -> "[Done]"
+                else -> "[Locked]"
             },
-            fontSize = 14.sp,
+            fontSize = 12.sp,
+            color = Color.Gray,
         )
         Spacer(Modifier.width(8.dp))
         Text(
