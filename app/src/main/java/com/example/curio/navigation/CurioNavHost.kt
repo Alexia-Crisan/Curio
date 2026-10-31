@@ -45,6 +45,7 @@ import com.example.curio.feature.library.LibraryViewModel
 import com.example.curio.feature.onboarding.OnboardingScreen
 import com.example.curio.feature.onboarding.OnboardingViewModel
 import com.example.curio.feature.progress.ProgressScreen
+import com.example.curio.feature.progress.ProgressViewModel
 import com.example.curio.feature.progress.TreeViewModel
 import com.example.curio.feature.settings.SettingsScreen
 import com.example.curio.feature.settings.SettingsViewModel
@@ -52,6 +53,7 @@ import com.example.curio.feature.settings.SourcesScreen
 import com.example.curio.feature.tree.TreeScreen
 import com.example.curio.feature.tree.TreeScreenEvent
 import com.example.curio.feature.tree.TreeScreenViewModel
+import java.time.LocalDate
 
 data class NavTab(val route: Route, val label: String, val iconText: String)
 
@@ -146,6 +148,15 @@ fun CurioNavHost(
                     )
                 }
 
+                composable<Route.Day> { entry ->
+                    val date = LocalDate.parse(entry.toRoute<Route.Day>().date)
+                    val vm: FeedViewModel = viewModel(
+                        key = "day-$date",
+                        factory = FeedViewModel.factory(container, date),
+                    )
+                    FeedScreen(viewModel = vm)
+                }
+
                 composable<Route.Library> {
                     val vm: LibraryViewModel = viewModel(factory = viewModelFactory {
                         initializer { LibraryViewModel(container.userActivity, container.contentIndex) }
@@ -160,6 +171,14 @@ fun CurioNavHost(
                 }
 
                 composable<Route.Progress> {
+                    val progressVm: ProgressViewModel = viewModel(
+                        factory = viewModelFactory {
+                            initializer { ProgressViewModel(container.progress, container.userActivity, container.javaClock) }
+                        }
+                    )
+                    val monthProgress by progressVm.monthProgress.collectAsStateWithLifecycle()
+                    val savedCount by progressVm.savedCount.collectAsStateWithLifecycle()
+
                     val treeUiState by treeViewModel.uiState.collectAsStateWithLifecycle()
                     val badgeSummaryFlow = remember(achievementSource) { achievementSource.observeSummary() }
                     val badgeSummary by badgeSummaryFlow.collectAsStateWithLifecycle(initialValue = BadgeSummary(0, 7, false))
@@ -177,7 +196,15 @@ fun CurioNavHost(
                         },
                         onOpenTree = {
                             navController.navigate(Route.Tree(treeUiState.selectedThemeId)) { launchSingleTop = true }
-                        }
+                        },
+                        month = monthProgress,
+                        savedCount = savedCount,
+                        today = progressVm.today(),
+                        onPreviousMonth = progressVm::previousMonth,
+                        onNextMonth = progressVm::nextMonth,
+                        onOpenDay = { date ->
+                            navController.navigate(Route.Day(date.toString()))
+                        },
                     )
                 }
 

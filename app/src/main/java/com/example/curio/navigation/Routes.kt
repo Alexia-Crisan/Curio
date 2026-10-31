@@ -29,4 +29,7 @@ sealed interface Route {
 
     @Serializable
     data class Detail(val discoveryId: String) : Route
+
+    @Serializable
+    data class Day(val date: String) : Route
 }
