@@ -10,8 +10,11 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.RadioButton
@@ -35,6 +38,9 @@ import com.example.curio.R
 import com.example.curio.domain.DailyMode
 import com.example.curio.feature.onboarding.modeDescription
 import com.example.curio.feature.onboarding.modeLabel
+import com.example.curio.ui.theme.Spacing
+import com.example.curio.ui.theme.curioCardBorder
+import com.example.curio.ui.theme.curioCardColors
 
 @Composable
 fun SettingsScreen(
@@ -66,109 +72,132 @@ fun SettingsScreen(
                 .fillMaxSize()
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp, vertical = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+                .padding(horizontal = Spacing.xl, vertical = Spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(Spacing.md),
         ) {
             Text(stringResource(R.string.settings_title), style = MaterialTheme.typography.headlineMedium)
 
-            Row(
-                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text("Shake to Discover", style = MaterialTheme.typography.titleMedium)
-                    Text("Shake phone for a bonus discovery card", style = MaterialTheme.typography.bodySmall)
-                }
-                Switch(checked = shakeEnabled, onCheckedChange = onShakeToggle)
-            }
+            Card(colors = curioCardColors(), border = curioCardBorder(false)) {
+                Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.md)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text("Shake to Discover", style = MaterialTheme.typography.titleMedium)
+                            Text("Shake phone for a bonus discovery card", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                        Switch(checked = shakeEnabled, onCheckedChange = onShakeToggle)
+                    }
 
-            Row(
-                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text("Haptic Feedback", style = MaterialTheme.typography.bodySmall)
-                    Text("Vibrate on save, shake, and quiz answers", style = MaterialTheme.typography.bodySmall)
-                }
-                Switch(checked = hapticsEnabled, onCheckedChange = onHapticsToggle)
-            }
-
-            Text(stringResource(R.string.settings_theme), style = MaterialTheme.typography.titleMedium)
-            ui.themes.forEach { theme ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = 48.dp)
-                        .selectable(
-                            selected = theme.id == ui.themeId,
-                            enabled = theme.available,
-                            role = Role.RadioButton,
-                            onClick = { viewModel.onThemeSelected(theme.id) },
-                        ),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    RadioButton(selected = theme.id == ui.themeId, onClick = null, enabled = theme.available)
-                    Text(theme.title)
-                    if (!theme.available) Text(stringResource(R.string.theme_coming_soon), style = MaterialTheme.typography.bodySmall)
-                }
-            }
-
-            Text(stringResource(R.string.settings_mode), style = MaterialTheme.typography.titleMedium)
-            DailyMode.values().forEach { mode ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = 48.dp)
-                        .selectable(
-                            selected = mode == ui.mode,
-                            role = Role.RadioButton,
-                            onClick = { viewModel.onModeSelected(mode) },
-                        ),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    RadioButton(selected = mode == ui.mode, onClick = null)
-                    Column {
-                        Text(stringResource(modeLabel(mode)))
-                        Text(stringResource(modeDescription(mode)), style = MaterialTheme.typography.bodySmall)
+                    Row(
+                        modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text("Haptic Feedback", style = MaterialTheme.typography.titleMedium)
+                            Text("Vibrate on save, shake, and quiz answers", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                        Switch(checked = hapticsEnabled, onCheckedChange = onHapticsToggle)
                     }
                 }
             }
-            Text(stringResource(R.string.settings_change_tomorrow_hint), style = MaterialTheme.typography.bodySmall)
+
+            Text(stringResource(R.string.settings_theme), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
+            Card(colors = curioCardColors(), border = curioCardBorder(false)) {
+                Column(Modifier.padding(Spacing.sm)) {
+                    ui.themes.forEach { theme ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .heightIn(min = 48.dp)
+                                .selectable(
+                                    selected = theme.id == ui.themeId,
+                                    enabled = theme.available,
+                                    role = Role.RadioButton,
+                                    onClick = { viewModel.onThemeSelected(theme.id) },
+                                )
+                                .padding(horizontal = Spacing.md, vertical = Spacing.sm),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(Spacing.md),
+                        ) {
+                            RadioButton(selected = theme.id == ui.themeId, onClick = null, enabled = theme.available)
+                            Text(theme.title, style = MaterialTheme.typography.bodyLarge)
+                            if (!theme.available) Text(stringResource(R.string.theme_coming_soon), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                    }
+                }
+            }
+
+            Text(stringResource(R.string.settings_mode), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
+            Card(colors = curioCardColors(), border = curioCardBorder(false)) {
+                Column(Modifier.padding(Spacing.sm)) {
+                    DailyMode.values().forEach { mode ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .heightIn(min = 48.dp)
+                                .selectable(
+                                    selected = mode == ui.mode,
+                                    role = Role.RadioButton,
+                                    onClick = { viewModel.onModeSelected(mode) },
+                                )
+                                .padding(horizontal = Spacing.md, vertical = Spacing.sm),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(Spacing.md),
+                        ) {
+                            RadioButton(selected = mode == ui.mode, onClick = null)
+                            Column {
+                                Text(stringResource(modeLabel(mode)), style = MaterialTheme.typography.bodyLarge)
+                                Text(stringResource(modeDescription(mode)), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
+                        }
+                    }
+                }
+            }
+            Text(stringResource(R.string.settings_change_tomorrow_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
 
             OutlinedButton(
                 onClick = viewModel::onResetRequested,
                 enabled = !ui.resetting,
+                shape = CircleShape,
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error),
                 modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
             ) {
-                Text(stringResource(R.string.settings_reset))
+                Text(stringResource(R.string.settings_reset), style = MaterialTheme.typography.labelLarge)
             }
 
-            Text(
-                text = stringResource(R.string.settings_sources),
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(min = 48.dp)
-                    .clickable(role = Role.Button, onClick = onOpenSources)
-                    .padding(vertical = 12.dp),
-            )
+            Card(colors = curioCardColors(), border = curioCardBorder(false)) {
+                Text(
+                    text = stringResource(R.string.settings_sources),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 48.dp)
+                        .clickable(role = Role.Button, onClick = onOpenSources)
+                        .padding(Spacing.lg),
+                )
+            }
         }
     }
 
     if (ui.resetDialogVisible) {
         AlertDialog(
             onDismissRequest = viewModel::onResetCancelled,
-            title = { Text(stringResource(R.string.settings_reset_title)) },
-            text = { Text(stringResource(R.string.settings_reset_message)) },
+            title = { Text(stringResource(R.string.settings_reset_title), style = MaterialTheme.typography.headlineSmall) },
+            text = { Text(stringResource(R.string.settings_reset_message), style = MaterialTheme.typography.bodyMedium) },
             confirmButton = {
-                TextButton(onClick = viewModel::onResetConfirmed) { Text(stringResource(R.string.settings_reset_confirm)) }
+                TextButton(onClick = viewModel::onResetConfirmed) {
+                    Text(stringResource(R.string.settings_reset_confirm), color = MaterialTheme.colorScheme.error)
+                }
             },
             dismissButton = {
-                TextButton(onClick = viewModel::onResetCancelled) { Text(stringResource(R.string.settings_reset_cancel)) }
+                TextButton(onClick = viewModel::onResetCancelled) {
+                    Text(stringResource(R.string.settings_reset_cancel))
+                }
             },
         )
     }
