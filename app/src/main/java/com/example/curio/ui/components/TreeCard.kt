@@ -24,11 +24,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.unit.dp
 import com.example.curio.R
 import com.example.curio.domain.LeafNode
 import com.example.curio.domain.TopicNode
-import com.example.curio.feature.tree.TreeUiState
+import com.example.curio.feature.progress.TreeUiState
 import com.example.curio.feature.tree.TreeVisuals
 import com.example.curio.ui.theme.CurioTheme
 import com.example.curio.ui.theme.Spacing
@@ -52,9 +51,8 @@ fun TreeCard(
     ) {
         Column(Modifier.padding(Spacing.lg)) {
             Text(stringResource(R.string.tree_title), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
-            val tree = state.selected
+            val tree = state.currentTree
             when {
-                state.isLoading -> Unit
                 tree == null -> Text(stringResource(R.string.tree_empty), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 else -> {
                     if (state.trees.size > 1) {

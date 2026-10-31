@@ -18,10 +18,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -30,13 +28,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.curio.R
@@ -44,6 +40,10 @@ import com.example.curio.domain.DayStatus
 import com.example.curio.domain.MonthProgress
 import com.example.curio.feature.achievements.BadgeSummary
 import com.example.curio.feature.achievements.BadgesEntryCard
+import com.example.curio.ui.components.TreeCard
+import com.example.curio.ui.theme.Spacing
+import com.example.curio.ui.theme.curioCardBorder
+import com.example.curio.ui.theme.curioCardColors
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -70,36 +70,38 @@ fun ProgressScreen(
     val progressFraction = if (totalDays > 0) (completedDays.toFloat() / totalDays.toFloat()).coerceIn(0f, 1f) else 0f
     val animatedProgress by animateFloatAsState(progressFraction, label = "progress")
 
+    val primaryColor = MaterialTheme.colorScheme.primary
+    val trackColor = MaterialTheme.colorScheme.surfaceVariant
+
     Column(
         Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
-            .padding(24.dp),
+            .padding(Spacing.xl),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(Modifier.height(32.dp))
+        Spacer(Modifier.height(Spacing.xl))
         Text(
-            text = "Your Discovery Progress",
+            text = stringResource(R.string.progress_days_completed),
             style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold,
             modifier = Modifier.align(Alignment.Start),
         )
 
-        Spacer(Modifier.height(32.dp))
+        Spacer(Modifier.height(Spacing.xxl))
 
         Box(contentAlignment = Alignment.Center, modifier = Modifier.size(200.dp)) {
             Canvas(modifier = Modifier.fillMaxSize()) {
                 val strokeWidth = 18.dp.toPx()
                 drawArc(
-                    color = Color.White.copy(alpha = 0.15f),
+                    color = trackColor,
                     startAngle = -90f,
                     sweepAngle = 360f,
                     useCenter = false,
                     style = Stroke(width = strokeWidth, cap = StrokeCap.Round),
                 )
                 drawArc(
-                    color = Color(0xFF6366F1),
+                    color = primaryColor,
                     startAngle = -90f,
                     sweepAngle = animatedProgress * 360f,
                     useCenter = false,
@@ -109,73 +111,71 @@ fun ProgressScreen(
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
                     text = "$completedDays / $totalDays",
-                    fontSize = 32.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
+                    style = MaterialTheme.typography.headlineLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
                 Text(
                     text = stringResource(R.string.progress_days_completed),
-                    fontSize = 13.sp,
-                    color = Color.Gray,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
 
-        Spacer(Modifier.height(32.dp))
+        Spacer(Modifier.height(Spacing.xxl))
 
         Row(
             Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(Spacing.lg),
         ) {
             Card(
                 modifier = Modifier.weight(1f),
-                shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFF1E293B)),
+                colors = curioCardColors(),
+                border = curioCardBorder(false),
             ) {
-                Column(Modifier.padding(20.dp)) {
-                    Text(stringResource(R.string.progress_days_explored), fontSize = 15.sp, color = Color.Gray)
-                    Spacer(Modifier.height(6.dp))
-                    Text(daysExplored.toString(), fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                Column(Modifier.padding(Spacing.lg)) {
+                    Text(stringResource(R.string.progress_days_explored), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Spacer(Modifier.height(Spacing.xs))
+                    Text(daysExplored.toString(), style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurface)
                 }
             }
 
             Card(
                 modifier = Modifier.weight(1f),
-                shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFF1E293B)),
+                colors = curioCardColors(),
+                border = curioCardBorder(false),
             ) {
-                Column(Modifier.padding(20.dp)) {
-                    Text(stringResource(R.string.progress_saved), fontSize = 15.sp, color = Color.Gray)
-                    Spacer(Modifier.height(6.dp))
-                    Text(savedCount.toString(), fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                Column(Modifier.padding(Spacing.lg)) {
+                    Text(stringResource(R.string.progress_saved), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Spacer(Modifier.height(Spacing.xs))
+                    Text(savedCount.toString(), style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurface)
                 }
             }
         }
 
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(Spacing.xxl))
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp),
+                .padding(vertical = Spacing.sm),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
             IconButton(onClick = onPreviousMonth) {
-                Text("‹", fontSize = 24.sp, color = Color.White)
+                Text("‹", fontSize = 24.sp, color = MaterialTheme.colorScheme.onSurface)
             }
             Text(
                 text = month?.month?.format(DateTimeFormatter.ofPattern("MMMM yyyy")) ?: "",
                 style = MaterialTheme.typography.titleMedium,
-                color = Color.White,
-                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface,
             )
             IconButton(onClick = onNextMonth) {
-                Text("›", fontSize = 24.sp, color = Color.White)
+                Text("›", fontSize = 24.sp, color = MaterialTheme.colorScheme.onSurface)
             }
         }
 
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(Spacing.sm))
 
         if (month != null) {
             MonthCalendar(
@@ -183,7 +183,7 @@ fun ProgressScreen(
                 today = today,
                 onDayClick = onDayClick,
             )
-            Spacer(Modifier.height(28.dp))
+            Spacer(Modifier.height(Spacing.xxl))
         }
 
         BadgesEntryCard(
@@ -191,13 +191,13 @@ fun ProgressScreen(
             onClick = onOpenAchievements,
         )
 
-        Spacer(Modifier.height(28.dp))
+        Spacer(Modifier.height(Spacing.xxl))
 
         TreeCard(
-            uiState = treeUiState,
-            onSelectTheme = onSelectTheme,
-            onToggleTopicExpanded = onToggleTopicExpanded,
-            onLeafClick = onLeafClick,
+            state = treeUiState,
+            onThemeSelected = onSelectTheme,
+            onTopicClick = onToggleTopicExpanded,
+            onLeafClick = { onLeafClick(it.discoveryId) },
             onOpenTree = onOpenTree,
         )
     }
@@ -269,7 +269,7 @@ private fun DayCell(
                     DayStatus.NOT_STARTED -> Modifier
                 }
             )
-            .then(if (isToday) Modifier.border(1.dp, c.onSurface, CircleShape) else Modifier)
+            .then(if (isToday) Modifier.border(2.dp, c.onSurface, CircleShape) else Modifier)
             .clickable(enabled = enabled, onClick = onClick)
             .semantics(mergeDescendants = true) { contentDescription = description },
         contentAlignment = Alignment.Center,
