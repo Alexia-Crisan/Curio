@@ -20,22 +20,36 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.curio.R
+import com.example.curio.ui.theme.Spacing
 
 @Composable
 fun UnlockBanner(title: String, @DrawableRes iconRes: Int, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Surface(
-        modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp).fillMaxWidth().clickable(onClick = onClick),
+        modifier = modifier.padding(horizontal = Spacing.lg, vertical = Spacing.sm).fillMaxWidth().clickable(onClick = onClick),
         shape = MaterialTheme.shapes.large,
         color = MaterialTheme.colorScheme.inverseSurface,
         contentColor = MaterialTheme.colorScheme.inverseOnSurface,
         shadowElevation = 6.dp,
     ) {
-        Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-            Icon(painterResource(iconRes), contentDescription = null, modifier = Modifier.size(32.dp))
-            Spacer(Modifier.width(12.dp))
+        Row(Modifier.padding(Spacing.lg), verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                painterResource(iconRes),
+                contentDescription = null,
+                modifier = Modifier.size(32.dp),
+                tint = MaterialTheme.colorScheme.inversePrimary,
+            )
+            Spacer(Modifier.width(Spacing.md))
             Column {
-                Text(stringResource(R.string.badge_unlocked_banner), style = MaterialTheme.typography.labelMedium)
-                Text(title, style = MaterialTheme.typography.titleMedium)
+                Text(
+                    stringResource(R.string.badge_unlocked_banner),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.inverseOnSurface.copy(alpha = 0.8f),
+                )
+                Text(
+                    title,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.inverseOnSurface,
+                )
             }
         }
     }

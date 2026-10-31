@@ -22,11 +22,13 @@ fun TeaserLine(teaser: EndCardTeaser, topicTitleOf: (String) -> String, modifier
             Text(
                 pluralStringResource(R.plurals.teaser_leaves_today, teaser.leavesToday, teaser.leavesToday),
                 style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             if (teaser.stageChangedToday) {
                 Text(
                     stringResource(R.string.teaser_stage, stringResource(TreeVisuals.stage(teaser.stageNow))),
                     style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.tertiary,
                 )
             }
         }
@@ -34,6 +36,7 @@ fun TeaserLine(teaser: EndCardTeaser, topicTitleOf: (String) -> String, modifier
             Text(
                 stringResource(R.string.teaser_next, topicTitleOf(next.topicId), next.date.format(formatter)),
                 style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }

@@ -30,6 +30,10 @@ import com.example.curio.domain.LeafNode
 import com.example.curio.domain.TopicNode
 import com.example.curio.feature.tree.TreeUiState
 import com.example.curio.feature.tree.TreeVisuals
+import com.example.curio.ui.theme.CurioTheme
+import com.example.curio.ui.theme.Spacing
+import com.example.curio.ui.theme.curioCardBorder
+import com.example.curio.ui.theme.curioCardColors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,18 +45,22 @@ fun TreeCard(
     onOpenTree: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
-    Card(modifier.fillMaxWidth()) {
-        Column(Modifier.padding(16.dp)) {
-            Text(stringResource(R.string.tree_title), style = MaterialTheme.typography.titleMedium)
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        colors = curioCardColors(),
+        border = curioCardBorder(false),
+    ) {
+        Column(Modifier.padding(Spacing.lg)) {
+            Text(stringResource(R.string.tree_title), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
             val tree = state.selected
             when {
                 state.isLoading -> Unit
-                tree == null -> Text(stringResource(R.string.tree_empty), style = MaterialTheme.typography.bodyMedium)
+                tree == null -> Text(stringResource(R.string.tree_empty), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 else -> {
                     if (state.trees.size > 1) {
                         Row(
-                            Modifier.horizontalScroll(rememberScrollState()).padding(vertical = 8.dp),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            Modifier.horizontalScroll(rememberScrollState()).padding(vertical = Spacing.sm),
+                            horizontalArrangement = Arrangement.spacedBy(Spacing.sm),
                         ) {
                             state.trees.forEach { t ->
                                 FilterChip(
@@ -63,17 +71,17 @@ fun TreeCard(
                             }
                         }
                     }
-                    Text(stringResource(TreeVisuals.stage(tree.stage)), style = MaterialTheme.typography.titleLarge)
-                    Text(stringResource(R.string.tree_progress, tree.completed, tree.total), style = MaterialTheme.typography.bodyMedium)
-                    Spacer(Modifier.height(8.dp))
+                    Text(stringResource(TreeVisuals.stage(tree.stage)), style = MaterialTheme.typography.headlineSmall)
+                    Text(stringResource(R.string.tree_progress, tree.completed, tree.total), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Spacer(Modifier.height(Spacing.sm))
                     tree.branches.forEach { branch ->
                         TopicRow(branch, branch.topic.id in state.expandedTopicIds, onTopicClick, onLeafClick)
                     }
                 }
             }
-            Spacer(Modifier.height(8.dp))
-            TextButton(onClick = onOpenTree, modifier = Modifier.heightIn(min = 48.dp)) {
-                Text(stringResource(R.string.tree_open))
+            Spacer(Modifier.height(Spacing.sm))
+            TextButton(onClick = onOpenTree, modifier = Modifier.heightIn(min = Spacing.xxxl)) {
+                Text(stringResource(R.string.tree_open), color = MaterialTheme.colorScheme.primary)
             }
         }
     }
@@ -85,16 +93,16 @@ private fun TopicRow(branch: TopicNode, expanded: Boolean, onTopicClick: (String
     val description = stringResource(R.string.tree_cd_topic, branch.topic.title, stateLabel, branch.completed, branch.total)
     Column {
         Row(
-            Modifier.fillMaxWidth().heightIn(min = 48.dp)
+            Modifier.fillMaxWidth().heightIn(min = Spacing.xxxl)
                 .semantics(mergeDescendants = true) { contentDescription = description }
                 .clickable { onTopicClick(branch.topic.id) },
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(Modifier.weight(1f)) {
                 Text(branch.topic.title, style = MaterialTheme.typography.titleSmall)
-                Text(stateLabel, style = MaterialTheme.typography.bodySmall)
+                Text(stateLabel, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
-            Text(stringResource(R.string.tree_topic_progress, branch.completed, branch.total), style = MaterialTheme.typography.labelLarge)
+            Text(stringResource(R.string.tree_topic_progress, branch.completed, branch.total), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
         }
         if (expanded) branch.leaves.forEach { LeafRow(it, onLeafClick) }
     }
@@ -106,17 +114,24 @@ private fun LeafRow(leaf: LeafNode, onLeafClick: (LeafNode) -> Unit) {
     val description = if (leaf.completed && title != null) stringResource(R.string.tree_cd_leaf_done, title)
     else stringResource(R.string.tree_cd_leaf_locked)
     Row(
-        Modifier.fillMaxWidth().heightIn(min = 48.dp).padding(start = 16.dp)
+        Modifier.fillMaxWidth().heightIn(min = Spacing.xxxl).padding(start = Spacing.lg)
             .semantics(mergeDescendants = true) { contentDescription = description }
             .clickable(enabled = leaf.completed) { onLeafClick(leaf) },
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(if (leaf.completed) "●" else "○")
-        Spacer(Modifier.width(12.dp))
+        Text(
+            if (leaf.completed) "●" else "○",
+            color = if (leaf.completed) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Spacer(Modifier.width(Spacing.md))
         Column {
-            Text(title ?: stringResource(R.string.tree_leaf_hidden), style = MaterialTheme.typography.bodyMedium)
-            if (leaf.isLandmark) Text(stringResource(R.string.tree_leaf_landmark), style = MaterialTheme.typography.labelSmall)
-            if (leaf.viaBonus) Text(stringResource(R.string.tree_leaf_bonus), style = MaterialTheme.typography.labelSmall)
+            Text(
+                title ?: stringResource(R.string.tree_leaf_hidden),
+                style = MaterialTheme.typography.bodyMedium,
+                color = if (leaf.completed) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            if (leaf.isLandmark) Text(stringResource(R.string.tree_leaf_landmark), style = MaterialTheme.typography.labelSmall, color = CurioTheme.colors.reward)
+            if (leaf.viaBonus) Text(stringResource(R.string.tree_leaf_bonus), style = MaterialTheme.typography.labelSmall, color = CurioTheme.colors.reward)
         }
     }
 }
