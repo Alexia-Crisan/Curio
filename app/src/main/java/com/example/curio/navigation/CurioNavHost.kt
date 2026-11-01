@@ -160,6 +160,7 @@ fun CurioNavHost(
 
                 composable<Route.Feed> {
                     val shakes = remember { container.shakeSensor.shakes() }
+                    val tilt = remember { container.tiltSensor.tilt() }
                     FeedScreen(
                         viewModel = feedViewModel,
                         shakes = shakes,
@@ -167,6 +168,8 @@ fun CurioNavHost(
                         onShakeDetected = {
                             haptics.performHapticFeedback(HapticFeedbackType.LongPress)
                         },
+                        tilt = tilt,
+                        useGyroscope = tiltEnabled && container.tiltSensor.isAvailable,
                     )
                 }
 
@@ -241,6 +244,7 @@ fun CurioNavHost(
                     } else {
                         val vm: FeedViewModel = viewModel(factory = FeedViewModel.factory(container, date))
                         val shakes = remember { container.shakeSensor.shakes() }
+                        val tilt = remember { container.tiltSensor.tilt() }
                         FeedScreen(
                             viewModel = vm,
                             shakes = shakes,
@@ -248,6 +252,8 @@ fun CurioNavHost(
                             onShakeDetected = {
                                 haptics.performHapticFeedback(HapticFeedbackType.LongPress)
                             },
+                            tilt = tilt,
+                            useGyroscope = tiltEnabled && container.tiltSensor.isAvailable,
                         )
                     }
                 }
