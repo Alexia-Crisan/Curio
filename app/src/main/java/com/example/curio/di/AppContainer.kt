@@ -14,12 +14,14 @@ import com.example.curio.data.user.CurioDatabase
 import com.example.curio.data.user.DayPlanRepository
 import com.example.curio.data.user.FreshnessRepository
 import com.example.curio.data.user.ProgressRepository
+import com.example.curio.data.user.UserActivityDetailSaves
 import com.example.curio.data.user.UserActivityRepository
 import com.example.curio.domain.AchievementSource
 import com.example.curio.domain.Clock
 import com.example.curio.domain.ContentIndex
 import com.example.curio.domain.CurrentThemeSource
 import com.example.curio.domain.DailyModeSource
+import com.example.curio.domain.DetailSaves
 import com.example.curio.domain.DiscoveryRepository
 import com.example.curio.domain.FreshnessSource
 import com.example.curio.domain.InteractionRepository
@@ -58,6 +60,7 @@ class AppContainer(context: Context) {
     val achievements: AchievementRepository = AchievementRepository(database, userActivity, contentIndex, javaClock)
     val achievementSource: AchievementSource get() = achievements
     val achievementTracker: AchievementTracker = AchievementTracker(appScope, userActivity, achievements)
+    val detailSaves: DetailSaves = UserActivityDetailSaves(userActivity)
 
     val settingsStore: SettingsStore = PreferencesSettingsStore(settingsRepository)
     val treeVisits: TreeVisitStore = PreferencesTreeVisitStore(settingsRepository, appScope)

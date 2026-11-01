@@ -43,6 +43,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.curio.di.AppContainer
 import com.example.curio.domain.AchievementSource
+import com.example.curio.feature.detail.DetailScreen
 import com.example.curio.domain.PastDayPolicy
 import com.example.curio.domain.PastDayTarget
 import com.example.curio.domain.SourcesBuilder
@@ -342,14 +343,11 @@ fun CurioNavHost(
 
                 composable<Route.Detail> { entry ->
                     val id = entry.toRoute<Route.Detail>().discoveryId
-                    val d = remember(id) { container.contentIndex.discovery(id) }
-                    // TODO(Dev A): placeholder, replace with the real DetailScreen
-                    Column(Modifier.fillMaxSize().padding(24.dp)) {
-                        TextButton(onClick = { navController.popBackStack() }) { Text("Back") }
-                        Text(d?.title ?: "Not found", style = MaterialTheme.typography.headlineSmall)
-                        d?.body?.let { Text(it) }
-                        d?.let { Text("Source: ${it.source.name}") }
-                    }
+                    DetailScreen(
+                        container = container,
+                        id = id,
+                        onBack = { navController.popBackStack() },
+                    )
                 }
             }
         }
