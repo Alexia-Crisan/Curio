@@ -76,7 +76,7 @@ class FeedViewModel(
         dailyMode.observe(),
     ) { trees, s, mode ->
         val ready = s as? FeedUiState.Ready
-        if (ready == null || ready.readOnly) null else TeaserBuilder.forFeed(trees, ready.themeId, mode, ready.date, ZoneId.systemDefault())
+        if (ready == null || ready.readOnly) null else TeaserBuilder.forFeed(trees, ready.themeId, mode, ready.date, ZoneId.systemDefault(), ready.topicId)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
 
     private var lastTheme: String? = null

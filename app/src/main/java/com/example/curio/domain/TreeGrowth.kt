@@ -61,14 +61,18 @@ object TreeTeaser {
         mode: DailyMode,
         after: LocalDate,
         horizonDays: Int = DEFAULT_HORIZON_DAYS,
+        previousTopicId: String? = null,
+        avoidRepeats: Boolean = false,
     ): NextVisit? {
         val topicIds = tree.branches.map { it.topic.id }
         val unfinished = tree.branches.filter { it.state != NodeState.COMPLETE && it.total > 0 }.map { it.topic.id }.toSet()
         if (unfinished.isEmpty()) return null
+        var previous = if (avoidRepeats) previousTopicId else null
         for (offset in 1..horizonDays) {
             val date = after.plusDays(offset.toLong())
-            val topicId = TopicSelector.select(mode, date, tree.theme.id, topicIds, null) ?: return null
+            val topicId = TopicSelector.select(mode, date, tree.theme.id, topicIds, null, previous) ?: return null
             if (topicId in unfinished) return NextVisit(date, topicId)
+            if (avoidRepeats) previous = topicId
         }
         return null
     }
@@ -81,6 +85,7 @@ object TeaserBuilder {
         mode: DailyMode,
         date: LocalDate,
         zone: ZoneId,
+        todayTopicId: String? = null,
     ): EndCardTeaser? {
         val tree = trees.firstOrNull { it.theme.id == themeId } ?: return null
         val today = TreeGrowth.on(tree, date, zone)
@@ -88,7 +93,13 @@ object TeaserBuilder {
             leavesToday = today.newLeafCount,
             stageChangedToday = today.stageChanged,
             stageNow = tree.stage,
-            next = TreeTeaser.nextVisit(tree, mode, date),
+            next = TreeTeaser.nextVisit(
+                tree = tree,
+                mode = mode,
+                after = date,
+                previousTopicId = todayTopicId,
+                avoidRepeats = TopicConfig.SURPRISE_AVOIDS_YESTERDAY,
+            ),
         )
     }
 }

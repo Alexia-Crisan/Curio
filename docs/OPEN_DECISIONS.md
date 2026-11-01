@@ -15,9 +15,9 @@
    - Where: `ProgressResetter`
    - Who decides: Product
 
-4. **Surprise mode may repeat yesterday's topic**
-   - Default: Allowed
-   - Where: `TopicSelector`
+4. **Surprise avoids yesterday's stored topic**
+   - Default: On (`TopicConfig.SURPRISE_AVOIDS_YESTERDAY`)
+   - Where: `TopicSelector.surprise`, `DayPlanRepository.ensureToday`
    - Who decides: Product
 
 5. **A tap on a past day without a record does nothing**
@@ -49,3 +49,8 @@
     - Default: TBD
     - Where: Project plan
     - Who decides: Management
+
+11. **Plan change**
+    - P8 is no longer not done.
+    - Where: `TopicSelector`
+    - Who decides: Engineering

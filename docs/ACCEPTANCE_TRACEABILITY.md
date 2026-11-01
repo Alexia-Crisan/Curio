@@ -34,6 +34,9 @@
 | AC-R10 | Opening a past day never changes any table except an explicit save | `PastDayFeedViewModelTest.aPastDayWritesNoViewEvents` | Open a past day, swipe, shake, open Detail, then check Progress and badges | `aPastDayWritesNoViewEvents`, `aPastDayLeavesTheProgressUntouched` |
 | AC-R11 | Only past days with a stored choice can be opened; today opens the live feed; future days do nothing | `FeedDateResolverTest.yesterdayIsAPastDay` | Tap a past day, today and a future day on the calendar | `FeedDateResolverTest` |
 | AC-R12 | A past day shows the cards in the order it had when it was live | `PastDayFeedViewModelTest.aPastDayWithAnEarlierHistoryIsFreshFirst` | Revisit-day check of step 15, then open that day later | `aPastDayWithAnEarlierHistoryIsFreshFirst`, `aPastDayKeepsItsOwnOrder` |
+| AC-R13 | Surprise never returns yesterday's stored topic when more than one topic exists | `SurpriseAvoidanceTest.aTwoWeekRunNeverRepeatsATopic` | Surprise mode for a week (change system date daily), compare consecutive days | `theAvoidedTopicIsNeverReturned`, `aTwoWeekRunNeverRepeatsATopic` |
+| AC-R14 | Without avoidance the Surprise values are exactly the pinned golden values | `TopicSelectorAvoidTest.nullAvoidEqualsTheOldValues` | none | `nullAvoidEqualsTheOldValues`, `TopicSelectorGoldenTest` |
+| AC-R15 | The day's topic stays stable all day and across restarts, and Guided and Choose are unaffected | `SurpriseAvoidanceTest.todaysChoiceIsStableAllDay` | Restart the app on a Surprise day | `todaysChoiceIsStableAllDay`, `guidedIsNeverAffected`, `chooseModeIsUnaffected` |
 
 ## Gaps
 - AC-A10: Manual accessibility checks reserved for Developer B's final UI pass.

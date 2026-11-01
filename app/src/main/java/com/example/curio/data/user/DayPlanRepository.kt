@@ -4,6 +4,7 @@ import androidx.room.withTransaction
 import com.example.curio.domain.DailyMode
 import com.example.curio.domain.DayChoice
 import com.example.curio.domain.DayPlan
+import com.example.curio.domain.TopicConfig
 import com.example.curio.domain.TopicSelector
 import java.time.Clock
 import java.time.LocalDate
@@ -30,7 +31,12 @@ class DayPlanRepository(
             }
         }
 
-        val topic = TopicSelector.select(mode, today, themeId, topicIds, storedChoice = null)
+        val avoid = if (TopicConfig.SURPRISE_AVOIDS_YESTERDAY) {
+            choices.find(today.minusDays(1).toString())?.toDomain()?.topicId
+        } else {
+            null
+        }
+        val topic = TopicSelector.select(mode, today, themeId, topicIds, storedChoice = null, avoidTopicId = avoid)
         when {
             topic != null -> {
                 val choice = DayChoice(today, themeId, topic, mode)

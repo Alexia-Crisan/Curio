@@ -40,6 +40,7 @@ flowchart LR
 - **Past Days**: Past days with stored choices open read-only; progress cannot be modified.
 - **Badges**: Unlocked once based on distinct discoveries in `ActivitySnapshot`.
 - **Knowledge Tree**: Built dynamically from `ActivitySnapshot` and rendered in UI.
+- **Surprise Avoidance**: In Surprise mode, `TopicSelector.surprise` and `DayPlanRepository.ensureToday` avoid yesterday's stored topic to prevent consecutive duplicate topics.
 
 ## 6. Product Constants
 - `DAILY_FEED_SIZE`: 6
@@ -49,6 +50,7 @@ flowchart LR
 - `MAX_BONUS_PER_DAY`: 3
 - `CHECKPOINT_MS`: 3,000L
 - `MAX_DELTA_MS`: 120,000L
+- `TopicConfig.SURPRISE_AVOIDS_YESTERDAY`: true
 
 ## 7. Time and Randomness
 `java.time.Clock` is injected into repositories and ViewModels. Pure domain logic never accesses system time or unseeded random sources.
