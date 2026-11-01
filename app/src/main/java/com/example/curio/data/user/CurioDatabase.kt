@@ -13,7 +13,7 @@ import androidx.room.RoomDatabase
         AchievementUnlockEntity::class,
     ],
     version = 1,
-    exportSchema = false,
+    exportSchema = true,
 )
 abstract class CurioDatabase : RoomDatabase() {
     abstract fun viewEventDao(): ViewEventDao
