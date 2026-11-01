@@ -48,7 +48,10 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.curio.R
+import com.example.curio.domain.ContentType
+import com.example.curio.domain.Discovery
 import com.example.curio.domain.FeedItem
+import com.example.curio.hardware.TiltState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
@@ -58,6 +61,8 @@ fun FeedScreen(
     shakes: Flow<Unit> = emptyFlow(),
     shakeEnabled: Boolean = false,
     onShakeDetected: () -> Unit = {},
+    tilt: Flow<TiltState> = emptyFlow(),
+    useGyroscope: Boolean = false,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val savedIds by viewModel.savedIds.collectAsStateWithLifecycle()
@@ -142,6 +147,8 @@ fun FeedScreen(
                             savedIds = savedIds,
                             onSave = { id, saved -> viewModel.onSave(id, saved) },
                             pagerState = pagerState,
+                            tilt = tilt,
+                            useGyroscope = useGyroscope,
                         )
                     }
                 }
@@ -171,19 +178,29 @@ private fun FeedPager(
     savedIds: Set<String>,
     onSave: (String, Boolean) -> Unit,
     pagerState: PagerState,
+    tilt: Flow<TiltState>,
+    useGyroscope: Boolean,
 ) {
     Box(Modifier.fillMaxSize()) {
         VerticalPager(state = pagerState, key = { items[it].discovery.id }) { page ->
             val item = items[page]
             val d = item.discovery
             val isSaved = d.id in savedIds
+            val card: @Composable (Discovery) -> Unit = { shown ->
+                DiscoveryCard(d = shown, saved = isSaved, onSave = { onSave(d.id, !isSaved) }, onQuizAnswered = {})
+            }
             Box(Modifier.fillMaxSize()) {
-                DiscoveryCard(
-                    d = d,
-                    saved = isSaved,
-                    onSave = { onSave(d.id, !isSaved) },
-                    onQuizAnswered = {},
-                )
+                if (d.type == ContentType.KNOWLEDGE) {
+                    TiltCard(
+                        d = d,
+                        isCurrent = page == pagerState.currentPage,
+                        useGyroscope = useGyroscope,
+                        tilt = tilt,
+                        content = card,
+                    )
+                } else {
+                    card(d)
+                }
                 if (item.isRevisit) {
                     Text(
                         text = stringResource(R.string.feed_bonus_revisit),

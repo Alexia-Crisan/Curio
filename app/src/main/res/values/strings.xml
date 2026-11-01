@@ -127,6 +127,10 @@
     <string name="day_complete">complete</string>
     <string name="day_in_progress">in progress</string>
     <string name="day_not_started">not started</string>
+    <string name="tilt_hint_gyro">Înclină telefonul ca să descoperi detaliul ascuns</string>
+    <string name="tilt_hint_drag">Trage cardul spre stânga sau spre dreapta</string>
+    <string name="tilt_reveal_button">Arată detaliul</string>
+    <string name="tilt_revealed">Detaliu ascuns</string>
     <plurals name="tree_growth_new">
         <item quantity="one">%1$d descoperire nouă de la ultima ta vizită</item>
         <item quantity="few">%1$d descoperiri noi de la ultima ta vizită</item>

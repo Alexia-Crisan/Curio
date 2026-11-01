@@ -134,6 +134,10 @@
     <string name="day_complete">complete</string>
     <string name="day_in_progress">in progress</string>
     <string name="day_not_started">not started</string>
+    <string name="tilt_hint_gyro">Tilt your phone to reveal the hidden detail</string>
+    <string name="tilt_hint_drag">Drag the card left or right</string>
+    <string name="tilt_reveal_button">Show the detail</string>
+    <string name="tilt_revealed">Hidden detail</string>
 
     <plurals name="tree_growth_new">
         <item quantity="one">%1$d new discovery since your last visit</item>
