@@ -43,18 +43,15 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.curio.di.AppContainer
 import com.example.curio.domain.AchievementSource
-import com.example.curio.feature.detail.DetailScreen
-import com.example.curio.domain.PastDayPolicy
-import com.example.curio.domain.PastDayTarget
 import com.example.curio.domain.SourcesBuilder
 import com.example.curio.feature.achievements.AchievementsScreen
 import com.example.curio.feature.achievements.AchievementsViewModel
 import com.example.curio.feature.achievements.BadgeSummary
 import com.example.curio.feature.achievements.UnlockBannerHost
 import com.example.curio.feature.achievements.observeSummary
+import com.example.curio.feature.detail.DetailScreen
 import com.example.curio.feature.feed.FeedScreen
 import com.example.curio.feature.feed.FeedViewModel
-import com.example.curio.feature.feed.PastDayScreen
 import com.example.curio.feature.library.LibraryScreen
 import com.example.curio.feature.library.LibraryViewModel
 import com.example.curio.feature.onboarding.OnboardingScreen
@@ -222,15 +219,14 @@ fun CurioNavHost(
                         onDayClick = { date ->
                             scope.launch {
                                 val today = LocalDate.now(container.javaClock)
-                                val hasChoice = container.dayPlans.peek(date) != null
-                                when (val target = PastDayPolicy.targetFor(date, today, hasChoice)) {
-                                    PastDayTarget.Live -> navController.navigate(Route.Feed) {
+                                if (date.isBefore(today)) {
+                                    navController.navigate(Route.FeedDay(date.toString())) { launchSingleTop = true }
+                                } else if (date == today) {
+                                    navController.navigate(Route.Feed) {
                                         popUpTo(navController.graph.findStartDestination().id) { saveState = true }
                                         launchSingleTop = true
                                         restoreState = true
                                     }
-                                    is PastDayTarget.Past -> navController.navigate(Route.FeedDay(target.date.toString())) { launchSingleTop = true }
-                                    PastDayTarget.None -> Unit
                                 }
                             }
                         },
@@ -244,17 +240,15 @@ fun CurioNavHost(
                         LaunchedEffect(Unit) { navController.popBackStack() }
                     } else {
                         val vm: FeedViewModel = viewModel(factory = FeedViewModel.factory(container, date))
-                        PastDayScreen(date = date, onBack = { navController.popBackStack() }) {
-                            val shakes = remember { container.shakeSensor.shakes() }
-                            FeedScreen(
-                                viewModel = vm,
-                                shakes = shakes,
-                                shakeEnabled = shakeEnabled,
-                                onShakeDetected = {
-                                    haptics.performHapticFeedback(HapticFeedbackType.LongPress)
-                                },
-                            )
-                        }
+                        val shakes = remember { container.shakeSensor.shakes() }
+                        FeedScreen(
+                            viewModel = vm,
+                            shakes = shakes,
+                            shakeEnabled = shakeEnabled,
+                            onShakeDetected = {
+                                haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                            },
+                        )
                     }
                 }
 

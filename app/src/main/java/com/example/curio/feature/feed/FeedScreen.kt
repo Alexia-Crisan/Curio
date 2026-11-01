@@ -1,6 +1,7 @@
 package com.example.curio.feature.feed
 
 import android.content.pm.ApplicationInfo
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -78,74 +79,86 @@ fun FeedScreen(
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { viewModel.onScreenResumed() }
     DisposableEffect(Unit) { onDispose { viewModel.onScreenPaused() } }
 
-    Box(Modifier.fillMaxSize()) {
-        when (val s = state) {
-            FeedUiState.Loading -> Box(Modifier.fillMaxSize(), Alignment.Center) { CircularProgressIndicator() }
-            FeedUiState.NoTheme -> Box(Modifier.fillMaxSize(), Alignment.Center) {
-                Text(stringResource(R.string.feed_no_theme), color = Color.White)
-            }
-            FeedUiState.NoContent -> Box(Modifier.fillMaxSize(), Alignment.Center) {
-                Text(stringResource(R.string.feed_no_content), color = Color.White)
-            }
-            is FeedUiState.NeedsChoice -> Box(Modifier.fillMaxSize(), Alignment.Center) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(stringResource(R.string.feed_choose_topic), color = Color.White, style = MaterialTheme.typography.titleMedium)
-                    Spacer(Modifier.height(16.dp))
-                    LazyColumn {
-                        items(s.topics) { topic ->
-                            Text(
-                                text = topic.title,
-                                color = Color.White,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clickable { viewModel.onTopicChosen(topic.id) }
-                                    .padding(16.dp)
-                            )
-                        }
-                    }
+    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    val pastDate = when (val s = state) {
+        is FeedUiState.Ready -> if (s.readOnly) s.date else null
+        is FeedUiState.PastDayMissing -> s.date
+        else -> null
+    }
+
+    Column(Modifier.fillMaxSize()) {
+        if (pastDate != null) {
+            PastDayHeader(date = pastDate, onBack = { backDispatcher?.onBackPressed() })
+        }
+        Box(Modifier.weight(1f).fillMaxWidth()) {
+            when (val s = state) {
+                FeedUiState.Loading -> Box(Modifier.fillMaxSize(), Alignment.Center) { CircularProgressIndicator() }
+                FeedUiState.NoTheme -> Box(Modifier.fillMaxSize(), Alignment.Center) {
+                    Text(stringResource(R.string.feed_no_theme), color = Color.White)
                 }
-            }
-            is FeedUiState.PastDayMissing -> Box(Modifier.fillMaxSize(), Alignment.Center) {
-                Text(stringResource(R.string.feed_past_day_missing), color = Color.White)
-            }
-            is FeedUiState.Ready -> {
-                key(s.date, s.topicId) {
-                    val pagerState = rememberPagerState(pageCount = { s.items.size })
-                    LaunchedEffect(pagerState.settledPage, s.items) {
-                        viewModel.onPageSettled(pagerState.settledPage)
-                    }
-                    LaunchedEffect(Unit) {
-                        viewModel.events.collect { e ->
-                            when (e) {
-                                is FeedEvent.ScrollTo -> pagerState.animateScrollToPage(e.index)
-                                FeedEvent.BonusCapReached -> snackbarHostState.showSnackbar(context.getString(R.string.feed_bonus_cap))
-                                FeedEvent.BonusNothingLeft -> snackbarHostState.showSnackbar(context.getString(R.string.feed_bonus_nothing))
+                FeedUiState.NoContent -> Box(Modifier.fillMaxSize(), Alignment.Center) {
+                    Text(stringResource(R.string.feed_no_content), color = Color.White)
+                }
+                is FeedUiState.NeedsChoice -> Box(Modifier.fillMaxSize(), Alignment.Center) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(stringResource(R.string.feed_choose_topic), color = Color.White, style = MaterialTheme.typography.titleMedium)
+                        Spacer(Modifier.height(16.dp))
+                        LazyColumn {
+                            items(s.topics) { topic ->
+                                Text(
+                                    text = topic.title,
+                                    color = Color.White,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable { viewModel.onTopicChosen(topic.id) }
+                                        .padding(16.dp)
+                                )
                             }
                         }
                     }
-                    FeedPager(
-                        items = s.items,
-                        savedIds = savedIds,
-                        onSave = { id, saved -> viewModel.onSave(id, saved) },
-                        pagerState = pagerState,
-                    )
+                }
+                is FeedUiState.PastDayMissing -> Box(Modifier.fillMaxSize(), Alignment.Center) {
+                    Text(stringResource(R.string.feed_past_day_missing), color = Color.White)
+                }
+                is FeedUiState.Ready -> {
+                    key(s.date, s.topicId) {
+                        val pagerState = rememberPagerState(pageCount = { s.items.size })
+                        LaunchedEffect(pagerState.settledPage, s.items) {
+                            viewModel.onPageSettled(pagerState.settledPage)
+                        }
+                        LaunchedEffect(Unit) {
+                            viewModel.events.collect { e ->
+                                when (e) {
+                                    is FeedEvent.ScrollTo -> pagerState.animateScrollToPage(e.index)
+                                    FeedEvent.BonusCapReached -> snackbarHostState.showSnackbar(context.getString(R.string.feed_bonus_cap))
+                                    FeedEvent.BonusNothingLeft -> snackbarHostState.showSnackbar(context.getString(R.string.feed_bonus_nothing))
+                                }
+                            }
+                        }
+                        FeedPager(
+                            items = s.items,
+                            savedIds = savedIds,
+                            onSave = { id, saved -> viewModel.onSave(id, saved) },
+                            pagerState = pagerState,
+                        )
+                    }
                 }
             }
-        }
 
-        SnackbarHost(
-            hostState = snackbarHostState,
-            modifier = Modifier.align(Alignment.BottomCenter)
-        )
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = Modifier.align(Alignment.BottomCenter)
+            )
 
-        val debuggable = remember {
-            (context.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
-        }
-        if (debuggable && shakeEnabled) {
-            SmallFloatingActionButton(
-                onClick = { onShakeDetected(); viewModel.onShake() },
-                modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp),
-            ) { Text("Shake") }
+            val debuggable = remember {
+                (context.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
+            }
+            if (debuggable && shakeEnabled) {
+                SmallFloatingActionButton(
+                    onClick = { onShakeDetected(); viewModel.onShake() },
+                    modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp),
+                ) { Text("Shake") }
+            }
         }
     }
 }
