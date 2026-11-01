@@ -123,6 +123,8 @@ fun FeedScreen(
                 is FeedUiState.Ready -> {
                     key(s.date, s.topicId) {
                         val pagerState = rememberPagerState(pageCount = { s.items.size })
+                        val bonusCapText = stringResource(R.string.feed_bonus_cap)
+                        val bonusNothingText = stringResource(R.string.feed_bonus_nothing)
                         LaunchedEffect(pagerState.settledPage, s.items) {
                             viewModel.onPageSettled(pagerState.settledPage)
                         }
@@ -130,8 +132,8 @@ fun FeedScreen(
                             viewModel.events.collect { e ->
                                 when (e) {
                                     is FeedEvent.ScrollTo -> pagerState.animateScrollToPage(e.index)
-                                    FeedEvent.BonusCapReached -> snackbarHostState.showSnackbar(context.getString(R.string.feed_bonus_cap))
-                                    FeedEvent.BonusNothingLeft -> snackbarHostState.showSnackbar(context.getString(R.string.feed_bonus_nothing))
+                                    FeedEvent.BonusCapReached -> snackbarHostState.showSnackbar(bonusCapText)
+                                    FeedEvent.BonusNothingLeft -> snackbarHostState.showSnackbar(bonusNothingText)
                                 }
                             }
                         }
