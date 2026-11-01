@@ -20,9 +20,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -163,7 +167,11 @@ fun ProgressScreen(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             IconButton(onClick = onPreviousMonth) {
-                Text("‹", fontSize = 24.sp, color = MaterialTheme.colorScheme.onSurface)
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                    contentDescription = "Previous month",
+                    tint = MaterialTheme.colorScheme.onSurface,
+                )
             }
             Text(
                 text = month?.month?.format(DateTimeFormatter.ofPattern("MMMM yyyy")) ?: "",
@@ -171,7 +179,11 @@ fun ProgressScreen(
                 color = MaterialTheme.colorScheme.onSurface,
             )
             IconButton(onClick = onNextMonth) {
-                Text("›", fontSize = 24.sp, color = MaterialTheme.colorScheme.onSurface)
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    contentDescription = "Next month",
+                    tint = MaterialTheme.colorScheme.onSurface,
+                )
             }
         }
 

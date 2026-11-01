@@ -13,14 +13,21 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -97,10 +104,7 @@ private fun CardScaffold(
             verticalArrangement = Arrangement.Center,
             content = content,
         )
-        Text(
-            text = "↗  ${d.source.name}",
-            color = Color.White,
-            style = MaterialTheme.typography.labelLarge,
+        Row(
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .navigationBarsPadding()
@@ -109,7 +113,21 @@ private fun CardScaffold(
                 .background(Color.White.copy(alpha = 0.16f))
                 .clickable { uriHandler.openUri(d.source.url) }
                 .padding(horizontal = 14.dp, vertical = 8.dp),
-        )
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.OpenInNew,
+                contentDescription = null,
+                tint = Color.White,
+                modifier = Modifier.size(16.dp),
+            )
+            Text(
+                text = d.source.name,
+                color = Color.White,
+                style = MaterialTheme.typography.labelLarge,
+            )
+        }
         Box(
             Modifier
                 .align(Alignment.BottomEnd)
@@ -279,10 +297,7 @@ private fun SaveButton(saved: Boolean, onClick: () -> Unit) {
             scale.animateTo(1f)
         }
     }
-    Text(
-        text = if (saved) "♥" else "♡",
-        fontSize = 36.sp,
-        color = if (saved) Color(0xFFFF5A7A) else Color.White,
+    Box(
         modifier = Modifier
             .scale(scale.value)
             .clickable {
@@ -290,5 +305,13 @@ private fun SaveButton(saved: Boolean, onClick: () -> Unit) {
                 onClick()
             }
             .padding(12.dp),
-    )
+        contentAlignment = Alignment.Center,
+    ) {
+        Icon(
+            imageVector = if (saved) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+            contentDescription = if (saved) "Unsave" else "Save",
+            tint = if (saved) Color(0xFFFF5A7A) else Color.White,
+            modifier = Modifier.size(36.dp),
+        )
+    }
 }

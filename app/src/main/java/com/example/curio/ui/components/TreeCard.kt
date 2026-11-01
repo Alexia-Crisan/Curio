@@ -15,15 +15,21 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.outlined.Circle
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.dp
 import com.example.curio.R
 import com.example.curio.domain.LeafNode
 import com.example.curio.domain.TopicNode
@@ -117,9 +123,11 @@ private fun LeafRow(leaf: LeafNode, onLeafClick: (LeafNode) -> Unit) {
             .clickable(enabled = leaf.completed) { onLeafClick(leaf) },
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(
-            if (leaf.completed) "●" else "○",
-            color = if (leaf.completed) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurfaceVariant,
+        Icon(
+            imageVector = if (leaf.completed) Icons.Filled.CheckCircle else Icons.Outlined.Circle,
+            contentDescription = null,
+            tint = if (leaf.completed) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.size(16.dp),
         )
         Spacer(Modifier.width(Spacing.md))
         Column {

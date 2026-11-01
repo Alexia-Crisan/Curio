@@ -117,7 +117,7 @@
     <string name="tree_sheet_locked_hint">Continuă să explorezi topicul ca s-o descoperi.</string>
     <string name="tree_sheet_close">Închide</string>
     <string name="tree_back">Înapoi</string>
-    <string name="library_saved_empty">No saved discoveries yet.\nTap ♥ on any feed card to bookmark it!</string>
+    <string name="library_saved_empty">Nu există încă descoperiri salvate.\nApasă pe pictograma inimă de pe orice card pentru a-l salva!</string>
     <string name="library_history_empty">Nothing viewed yet.</string>
     <string name="history_today">Today</string>
     <string name="history_yesterday">Yesterday</string>

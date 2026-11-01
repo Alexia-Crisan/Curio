@@ -123,7 +123,7 @@
     <string name="tree_sheet_close">Close</string>
     <string name="tree_back">Back</string>
 
-    <string name="library_saved_empty">No saved discoveries yet.\nTap ♥ on any feed card to bookmark it!</string>
+    <string name="library_saved_empty">No saved discoveries yet.\nTap the heart icon on any feed card to bookmark it!</string>
     <string name="library_history_empty">Nothing viewed yet.</string>
     <string name="history_today">Today</string>
     <string name="history_yesterday">Yesterday</string>
