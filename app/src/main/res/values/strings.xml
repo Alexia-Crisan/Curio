@@ -51,6 +51,7 @@
     <string name="feed_bonus_cap">Acesta a fost bonusul de azi. Mai multe mâine.</string>
     <string name="feed_bonus_nothing">Ai văzut tot ce aveam pentru tema asta!</string>
     <string name="feed_bonus_revisit">Revezi</string>
+    <string name="feed_open_detail">Detalii</string>
     <string name="feed_past_day_missing">Pentru ziua aceasta nu a fost înregistrat niciun feed.</string>
     <string name="feed_past_day_readonly">Zi trecută: doar citire. Progresul nu se schimbă.</string>
     <string name="feed_settings_locked">Schimbarea se aplică de mâine, pentru că feed-ul de azi a început deja.</string>

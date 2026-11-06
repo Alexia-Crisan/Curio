@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -26,6 +27,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -50,6 +52,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,6 +63,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import coil3.compose.AsyncImage
+import com.example.curio.R
 import com.example.curio.domain.ContentType
 import com.example.curio.domain.Discovery
 
@@ -69,8 +73,9 @@ fun DiscoveryCard(
     saved: Boolean,
     onSave: () -> Unit,
     onQuizAnswered: () -> Unit,
+    onOpenDetail: (() -> Unit)? = null,
 ) {
-    CardScaffold(d, saved, onSave) {
+    CardScaffold(d, saved, onSave, onOpenDetail) {
         when (d.type) {
             ContentType.FACT -> FactContent(d)
             ContentType.ARTICLE -> ArticleContent(d)
@@ -87,6 +92,7 @@ private fun CardScaffold(
     d: Discovery,
     saved: Boolean,
     onSave: () -> Unit,
+    onOpenDetail: (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
@@ -104,29 +110,59 @@ private fun CardScaffold(
             verticalArrangement = Arrangement.Center,
             content = content,
         )
-        Row(
+        Column(
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .navigationBarsPadding()
-                .padding(24.dp)
-                .clip(RoundedCornerShape(50))
-                .background(Color.White.copy(alpha = 0.16f))
-                .clickable { uriHandler.openUri(d.source.url) }
-                .padding(horizontal = 14.dp, vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
+                .padding(24.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.OpenInNew,
-                contentDescription = null,
-                tint = Color.White,
-                modifier = Modifier.size(16.dp),
-            )
-            Text(
-                text = d.source.name,
-                color = Color.White,
-                style = MaterialTheme.typography.labelLarge,
-            )
+            if (onOpenDetail != null) {
+                val detailText = stringResource(R.string.feed_open_detail)
+                Row(
+                    modifier = Modifier
+                        .heightIn(min = 48.dp)
+                        .clip(RoundedCornerShape(50))
+                        .background(Color.White.copy(alpha = 0.16f))
+                        .clickable(onClickLabel = detailText, onClick = onOpenDetail)
+                        .padding(horizontal = 14.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Info,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(16.dp),
+                    )
+                    Text(
+                        text = detailText,
+                        color = Color.White,
+                        style = MaterialTheme.typography.labelLarge,
+                    )
+                }
+            }
+            Row(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(50))
+                    .background(Color.White.copy(alpha = 0.16f))
+                    .clickable { uriHandler.openUri(d.source.url) }
+                    .padding(horizontal = 14.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.OpenInNew,
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier.size(16.dp),
+                )
+                Text(
+                    text = d.source.name,
+                    color = Color.White,
+                    style = MaterialTheme.typography.labelLarge,
+                )
+            }
         }
         Box(
             Modifier
@@ -283,7 +319,7 @@ private fun ColumnScope.VideoContent(d: Discovery) {
     Text(d.title, color = Color.White, fontSize = 22.sp, lineHeight = 28.sp, fontWeight = FontWeight.Bold)
     d.body?.let {
         Spacer(Modifier.height(8.dp))
-        Text(it, color = Color.White.copy(alpha = 0.9f), fontSize = 15.sp, lineHeight = 20.sp)
+        Text(it, color = Color.White.copy(alpha = 0.9f), fontSize = 15.sp, lineHeight = 22.sp)
     }
 }
 
