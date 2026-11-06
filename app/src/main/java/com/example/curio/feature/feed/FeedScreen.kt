@@ -63,6 +63,7 @@ fun FeedScreen(
     onShakeDetected: () -> Unit = {},
     tilt: Flow<TiltState> = emptyFlow(),
     useGyroscope: Boolean = false,
+    onOpenDetail: (String) -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val savedIds by viewModel.savedIds.collectAsStateWithLifecycle()
@@ -149,6 +150,10 @@ fun FeedScreen(
                             pagerState = pagerState,
                             tilt = tilt,
                             useGyroscope = useGyroscope,
+                            onOpenDetail = { id ->
+                                viewModel.onDetailOpened(id)
+                                onOpenDetail(id)
+                            },
                         )
                     }
                 }
@@ -180,6 +185,7 @@ private fun FeedPager(
     pagerState: PagerState,
     tilt: Flow<TiltState>,
     useGyroscope: Boolean,
+    onOpenDetail: (String) -> Unit = {},
 ) {
     Box(Modifier.fillMaxSize()) {
         VerticalPager(state = pagerState, key = { items[it].discovery.id }) { page ->
@@ -187,7 +193,13 @@ private fun FeedPager(
             val d = item.discovery
             val isSaved = d.id in savedIds
             val card: @Composable (Discovery) -> Unit = { shown ->
-                DiscoveryCard(d = shown, saved = isSaved, onSave = { onSave(d.id, !isSaved) }, onQuizAnswered = {})
+                DiscoveryCard(
+                    d = shown,
+                    saved = isSaved,
+                    onSave = { onSave(d.id, !isSaved) },
+                    onQuizAnswered = {},
+                    onOpenDetail = { onOpenDetail(d.id) },
+                )
             }
             Box(Modifier.fillMaxSize()) {
                 if (d.type == ContentType.KNOWLEDGE) {

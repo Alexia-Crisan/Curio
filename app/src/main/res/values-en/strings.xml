@@ -54,6 +54,7 @@
     <string name="feed_bonus_cap">That\'s today\'s bonus allowance. More tomorrow.</string>
     <string name="feed_bonus_nothing">You\'ve found everything else in this theme.</string>
     <string name="feed_bonus_revisit">Revisit</string>
+    <string name="feed_open_detail">Details</string>
     <string name="feed_past_day_missing">No feed was recorded for this day.</string>
     <string name="feed_past_day_readonly">Past day: viewing only. Progress is not changed.</string>
     <string name="feed_settings_locked">Your change applies tomorrow, because today\'s feed is already in progress.</string>

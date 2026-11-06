@@ -170,6 +170,7 @@ fun CurioNavHost(
                         },
                         tilt = tilt,
                         useGyroscope = tiltEnabled && container.tiltSensor.isAvailable,
+                        onOpenDetail = { id -> navController.navigate(Route.Detail(id)) },
                     )
                 }
 
@@ -254,6 +255,7 @@ fun CurioNavHost(
                             },
                             tilt = tilt,
                             useGyroscope = tiltEnabled && container.tiltSensor.isAvailable,
+                            onOpenDetail = { id -> navController.navigate(Route.Detail(id)) },
                         )
                     }
                 }
