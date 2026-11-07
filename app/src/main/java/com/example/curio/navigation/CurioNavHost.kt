@@ -1,5 +1,6 @@
 package com.example.curio.navigation
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,18 +30,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.example.curio.R
 import com.example.curio.di.AppContainer
 import com.example.curio.domain.AchievementSource
 import com.example.curio.domain.SourcesBuilder
@@ -68,13 +72,13 @@ import com.example.curio.feature.tree.TreeScreenViewModel
 import java.time.LocalDate
 import kotlinx.coroutines.launch
 
-data class NavTab(val route: Route, val label: String, val icon: ImageVector)
+data class NavTab(val route: Route, @StringRes val labelRes: Int, val icon: ImageVector)
 
 val navTabs = listOf(
-    NavTab(Route.Feed, "Feed", Icons.Default.Home),
-    NavTab(Route.Library, "Library", Icons.Default.Favorite),
-    NavTab(Route.Progress, "Progress", Icons.Default.List),
-    NavTab(Route.Settings, "Settings", Icons.Default.Settings),
+    NavTab(Route.Feed, R.string.tab_feed, Icons.Default.Home),
+    NavTab(Route.Library, R.string.tab_library, Icons.Default.Favorite),
+    NavTab(Route.Progress, R.string.tab_progress, Icons.Default.List),
+    NavTab(Route.Settings, R.string.tab_settings, Icons.Default.Settings),
 )
 
 @Composable
@@ -97,7 +101,8 @@ fun CurioNavHost(
     val haptics = LocalHapticFeedback.current
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
+    val currentDestination = navBackStackEntry?.destination
+    val currentRoute = currentDestination?.route
 
     val startDestination: Route = if (onboardingDone) Route.Feed else Route.Onboarding
     val onAchievements = navBackStackEntry?.destination?.hasRoute<Route.Achievements>() == true
@@ -109,7 +114,7 @@ fun CurioNavHost(
                 if (currentRoute != null && !currentRoute.contains("Onboarding") && !currentRoute.contains("Sources") && !currentRoute.contains("Tree") && !onAchievements && !onFeedDay) {
                     NavigationBar(containerColor = MaterialTheme.colorScheme.surfaceContainer) {
                         navTabs.forEach { tab ->
-                            val selected = currentRoute.contains(tab.label)
+                            val selected = currentDestination?.hierarchy?.any { it.hasRoute(tab.route::class) } == true
                             NavigationBarItem(
                                 selected = selected,
                                 onClick = {
@@ -121,8 +126,8 @@ fun CurioNavHost(
                                         restoreState = true
                                     }
                                 },
-                                icon = { Icon(tab.icon, contentDescription = tab.label) },
-                                label = { Text(tab.label) },
+                                icon = { Icon(tab.icon, contentDescription = stringResource(tab.labelRes)) },
+                                label = { Text(stringResource(tab.labelRes)) },
                                 colors = NavigationBarItemDefaults.colors(
                                     selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
                                     selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,

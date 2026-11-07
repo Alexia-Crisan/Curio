@@ -1,5 +1,16 @@
 <resources>
     <string name="app_name">Curio</string>
+    <string name="tab_feed">Feed</string>
+    <string name="tab_library">Bibliotecă</string>
+    <string name="tab_progress">Progres</string>
+    <string name="tab_settings">Setări</string>
+
+    <string name="card_label_did_you_know">ȘTIAI CĂ</string>
+    <string name="card_label_mini_article">MINI ARTICOL</string>
+    <string name="card_label_test_yourself">TESTEAZĂ-TE</string>
+    <string name="card_label_image_discovery">IMAGINE</string>
+    <string name="card_label_video_discovery">VIDEO</string>
+
     <string name="badges_title">Realizări</string>
     <string name="badges_unlocked_count">%1$d din %2$d deblocate</string>
     <string name="badge_unlocked_on">Deblocat pe %1$s</string>
@@ -28,6 +39,7 @@
     <string name="badge_deep_learner_desc">Citește în Detalii %1$d explicații „Pe scurt”.</string>
     <string name="badge_hidden_discoveries_title">Descoperiri ascunse</string>
     <string name="badge_hidden_discoveries_desc">Găsește %1$d descoperiri bonus noi scuturând telefonul.</string>
+
     <string name="tree_title">Arborele cunoașterii</string>
     <string name="tree_empty">Arborele tău va crește aici imediat ce există conținut.</string>
     <string name="tree_progress">%1$d din %2$d descoperiri</string>
@@ -48,6 +60,7 @@
     <string name="tree_state_seeded">Încolțită</string>
     <string name="tree_state_growing">Crește</string>
     <string name="tree_state_complete">Completă</string>
+
     <string name="feed_bonus_cap">Acesta a fost bonusul de azi. Mai multe mâine.</string>
     <string name="feed_bonus_nothing">Ai văzut tot ce aveam pentru tema asta!</string>
     <string name="feed_bonus_revisit">Revezi</string>
@@ -58,6 +71,7 @@
     <string name="feed_no_theme">Alege o temă ca să începi feed-ul zilnic.</string>
     <string name="feed_no_content">În curând</string>
     <string name="feed_choose_topic">Alege topicul de azi</string>
+
     <string name="onboarding_title">Bun venit în Curio</string>
     <string name="onboarding_subtitle">O mică descoperire pe zi, în fiecare zi.</string>
     <string name="onboarding_pick_theme">Alege o temă pentru luna aceasta</string>
@@ -70,25 +84,26 @@
     <string name="mode_choose_desc">Alegi tu topicul în fiecare zi.</string>
     <string name="mode_surprise">Surpriză</string>
     <string name="mode_surprise_desc">Un topic aleatoriu în fiecare zi.</string>
+
     <string name="settings_title">Setări</string>
-    <string name="settings_appearance">Appearance</string>
-    <string name="appearance_system">System</string>
-    <string name="appearance_light">Light</string>
-    <string name="appearance_dark">Dark</string>
-    <string name="settings_shake_title">Shake to Discover</string>
-    <string name="settings_shake_desc">Shake phone for a bonus discovery card</string>
-    <string name="settings_tilt_title">Tilt cards</string>
-    <string name="settings_tilt_desc">Tilt phone to reveal hidden card details</string>
-    <string name="settings_haptics_title">Haptic Feedback</string>
-    <string name="settings_haptics_desc">Vibrate on save, shake and badge unlocks</string>
-    <string name="settings_sensors">Sensors</string>
-    <string name="sensor_touchscreen">Touchscreen</string>
-    <string name="sensor_touchscreen_use">Swipe, tap and save cards</string>
-    <string name="sensor_accelerometer">Accelerometer</string>
-    <string name="sensor_accelerometer_use">Shake for a bonus discovery</string>
-    <string name="sensor_gyroscope">Gyroscope</string>
-    <string name="sensor_gyroscope_use">Tilt a card to reveal a hidden detail</string>
-    <string name="sensor_missing">Not available on this phone</string>
+    <string name="settings_appearance">Aspect</string>
+    <string name="appearance_system">Sistem</string>
+    <string name="appearance_light">Luminos</string>
+    <string name="appearance_dark">Întunecat</string>
+    <string name="settings_shake_title">Scutură pentru a descoperi</string>
+    <string name="settings_shake_desc">Scutură telefonul pentru un card bonus</string>
+    <string name="settings_tilt_title">Înclină cardurile</string>
+    <string name="settings_tilt_desc">Înclină telefonul pentru detalii ascunse</string>
+    <string name="settings_haptics_title">Feedback haptic</string>
+    <string name="settings_haptics_desc">Vibrație la salvare, shake și deblocare de insignă</string>
+    <string name="settings_sensors">Senzori</string>
+    <string name="sensor_touchscreen">Ecran tactil</string>
+    <string name="sensor_touchscreen_use">Glisare, apăsare și salvare de carduri</string>
+    <string name="sensor_accelerometer">Accelerometru</string>
+    <string name="sensor_accelerometer_use">Scuturare pentru descoperire bonus</string>
+    <string name="sensor_gyroscope">Giroscop</string>
+    <string name="sensor_gyroscope_use">Înclină cardul pentru un detaliu ascuns</string>
+    <string name="sensor_missing">Indisponibil pe acest telefon</string>
     <string name="settings_theme">Tema</string>
     <string name="settings_mode">Modul zilnic</string>
     <string name="settings_change_tomorrow_hint">Schimbările făcute după ce ai început feed-ul de azi se aplică de mâine.</string>
@@ -104,6 +119,7 @@
     <string name="sources_cards">%1$d carduri</string>
     <string name="sources_empty">Nu există surse de afișat.</string>
     <string name="common_back">Înapoi</string>
+
     <string name="tree_open">Deschide arborele</string>
     <string name="tree_next_start">Descoperă %1$d carduri ca să crească ramura aceasta.</string>
     <string name="tree_next_reach_growing">Încă %1$d ca să crească ramura aceasta.</string>
@@ -118,20 +134,24 @@
     <string name="tree_sheet_locked_hint">Continuă să explorezi topicul ca s-o descoperi.</string>
     <string name="tree_sheet_close">Închide</string>
     <string name="tree_back">Înapoi</string>
+
     <string name="library_saved_empty">Nu există încă descoperiri salvate.\nApasă pe pictograma inimă de pe orice card pentru a-l salva!</string>
-    <string name="library_history_empty">Nothing viewed yet.</string>
-    <string name="history_today">Today</string>
-    <string name="history_yesterday">Yesterday</string>
-    <string name="progress_days_completed">Days Completed</string>
-    <string name="progress_days_explored">Days explored</string>
-    <string name="progress_saved">Saved</string>
-    <string name="day_complete">complete</string>
-    <string name="day_in_progress">in progress</string>
-    <string name="day_not_started">not started</string>
+    <string name="library_history_empty">Nimic vizualizat încă.</string>
+    <string name="history_today">Azi</string>
+    <string name="history_yesterday">Ieri</string>
+
+    <string name="progress_days_completed">Zile completate</string>
+    <string name="progress_days_explored">Zile explorate</string>
+    <string name="progress_saved">Salvate</string>
+    <string name="day_complete">completă</string>
+    <string name="day_in_progress">în desfășurare</string>
+    <string name="day_not_started">neîncepută</string>
+
     <string name="tilt_hint_gyro">Înclină telefonul ca să descoperi detaliul ascuns</string>
     <string name="tilt_hint_drag">Trage cardul spre stânga sau spre dreapta</string>
     <string name="tilt_reveal_button">Arată detaliul</string>
     <string name="tilt_revealed">Detaliu ascuns</string>
+
     <plurals name="tree_growth_new">
         <item quantity="one">%1$d descoperire nouă de la ultima ta vizită</item>
         <item quantity="few">%1$d descoperiri noi de la ultima ta vizită</item>
