@@ -144,6 +144,7 @@ private fun CardScaffold(
             }
             Row(
                 modifier = Modifier
+                    .heightIn(min = 48.dp)
                     .clip(RoundedCornerShape(50))
                     .background(Color.White.copy(alpha = 0.16f))
                     .clickable { uriHandler.openUri(d.source.url) }
@@ -187,7 +188,7 @@ private fun Label(text: String) {
 
 @Composable
 private fun ColumnScope.FactContent(d: Discovery) {
-    Label("DID YOU KNOW")
+    Label(stringResource(R.string.card_label_did_you_know))
     Text(d.title, color = Color.White, fontSize = 38.sp, lineHeight = 44.sp, fontWeight = FontWeight.Bold)
     d.body?.let {
         Spacer(Modifier.height(20.dp))
@@ -197,7 +198,7 @@ private fun ColumnScope.FactContent(d: Discovery) {
 
 @Composable
 private fun ColumnScope.ArticleContent(d: Discovery) {
-    Label("MINI ARTICLE")
+    Label(stringResource(R.string.card_label_mini_article))
     Text(d.title, color = Color.White, fontSize = 28.sp, lineHeight = 34.sp, fontWeight = FontWeight.Bold)
     Spacer(Modifier.height(16.dp))
     Box(
@@ -217,7 +218,7 @@ private fun ColumnScope.QuizContent(d: Discovery, onAnswered: () -> Unit) {
     val quiz = d.quiz ?: return
     var selected by rememberSaveable(d.id) { mutableStateOf<Int?>(null) }
 
-    Label("TEST YOURSELF")
+    Label(stringResource(R.string.card_label_test_yourself))
     Text(quiz.question, color = Color.White, fontSize = 28.sp, lineHeight = 34.sp, fontWeight = FontWeight.Bold)
     Spacer(Modifier.height(24.dp))
 
@@ -256,7 +257,7 @@ private fun ColumnScope.QuizContent(d: Discovery, onAnswered: () -> Unit) {
 
 @Composable
 private fun ColumnScope.ImageContent(d: Discovery) {
-    Label("IMAGE DISCOVERY")
+    Label(stringResource(R.string.card_label_image_discovery))
     d.mediaUrl?.let { url ->
         AsyncImage(
             model = url,
@@ -297,7 +298,7 @@ private fun ColumnScope.VideoContent(d: Discovery) {
         }
     }
 
-    Label("VIDEO DISCOVERY")
+    Label(stringResource(R.string.card_label_video_discovery))
     Box(
         Modifier
             .fillMaxWidth()
@@ -333,10 +334,11 @@ private fun SaveButton(saved: Boolean, onClick: () -> Unit) {
             scale.animateTo(1f)
         }
     }
+    val contentDesc = if (saved) "Unsave" else "Save"
     Box(
         modifier = Modifier
             .scale(scale.value)
-            .clickable {
+            .clickable(onClickLabel = contentDesc) {
                 haptics.performHapticFeedback(HapticFeedbackType.LongPress)
                 onClick()
             }
@@ -345,7 +347,7 @@ private fun SaveButton(saved: Boolean, onClick: () -> Unit) {
     ) {
         Icon(
             imageVector = if (saved) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-            contentDescription = if (saved) "Unsave" else "Save",
+            contentDescription = contentDesc,
             tint = if (saved) Color(0xFFFF5A7A) else Color.White,
             modifier = Modifier.size(36.dp),
         )

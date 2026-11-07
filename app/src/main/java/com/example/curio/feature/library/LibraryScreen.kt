@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -56,7 +57,7 @@ fun LibraryScreen(
     ) {
         Spacer(Modifier.height(32.dp))
         Text(
-            text = "Library",
+            text = stringResource(R.string.tab_library),
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold,
         )
@@ -70,11 +71,15 @@ fun LibraryScreen(
                 .background(Color.White.copy(alpha = 0.1f))
                 .padding(4.dp)
         ) {
-            val tabs = listOf("Saved (${savedCards.size})", "History")
+            val tabs = listOf(
+                "${stringResource(R.string.progress_saved)} (${savedCards.size})",
+                stringResource(R.string.history_today),
+            )
             tabs.forEachIndexed { i, tab ->
                 Box(
                     Modifier
                         .weight(1f)
+                        .heightIn(min = 48.dp)
                         .clip(RoundedCornerShape(10.dp))
                         .background(if (selectedTab == i) MaterialTheme.colorScheme.primary else Color.Transparent)
                         .clickable { selectedTab = i }
