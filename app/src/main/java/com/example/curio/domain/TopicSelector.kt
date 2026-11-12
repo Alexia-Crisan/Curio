@@ -5,6 +5,7 @@ import java.util.Random
 
 object TopicConfig {
     const val SURPRISE_AVOIDS_YESTERDAY = true
+    const val PLACEHOLDER_TOPIC_ID = "mars"
 }
 
 object TopicSelector {
@@ -28,10 +29,16 @@ object TopicSelector {
         mode: DailyMode, date: LocalDate, themeId: String,
         topicIds: List<String>, storedChoice: String? = null,
         avoidTopicId: String? = null,
-    ): String? = when (mode) {
-        DailyMode.GUIDED -> guided(date, topicIds)
-        DailyMode.SURPRISE -> surprise(date, themeId, topicIds, avoidTopicId)
-        DailyMode.CHOOSE -> choose(topicIds, storedChoice)
+        placeholderTopicId: String = TopicConfig.PLACEHOLDER_TOPIC_ID,
+    ): String? {
+        if (mode != DailyMode.CHOOSE && placeholderTopicId.isNotEmpty() && placeholderTopicId in topicIds) {
+            return placeholderTopicId
+        }
+        return when (mode) {
+            DailyMode.GUIDED -> guided(date, topicIds)
+            DailyMode.SURPRISE -> surprise(date, themeId, topicIds, avoidTopicId)
+            DailyMode.CHOOSE -> choose(topicIds, storedChoice)
+        }
     }
 
     private const val REDRAW_SALT = 0x2545F4914F6CDD1DL
