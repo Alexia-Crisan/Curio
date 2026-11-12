@@ -1,0 +1,115 @@
+{
+  "theme": "art",
+  "language": "en",
+  "cards": [
+    {
+      "id": "image.01",
+      "type": "IMAGE",
+      "variants": [
+        {
+          "requires": ["image_url", "title", "artist", "date"],
+          "title": "“{title}” is a work by {artist}.",
+          "body": "Date given by the museum: {date}.",
+          "media": "{theme}/{topic_id}.jpg"
+        },
+        {
+          "requires": ["image_url", "title", "museum"],
+          "title": "“{title}” belongs to the collection of the {museum}.",
+          "media": "{theme}/{topic_id}.jpg"
+        }
+      ]
+    },
+    {
+      "id": "fact.01",
+      "type": "FACT",
+      "variants": [
+        {
+          "requires": ["title", "medium", "museum"],
+          "title": "The medium of “{title}” is listed as: {medium}.",
+          "body": "Medium as written by the {museum}."
+        },
+        {
+          "requires": ["title", "classification", "museum"],
+          "title": "The {museum} classifies “{title}” as: {classification}."
+        }
+      ]
+    },
+    {
+      "id": "quiz.01",
+      "type": "QUIZ",
+      "variants": [
+        {
+          "requires": ["title", "artist", "museum"],
+          "title": "Who made “{title}”?",
+          "quiz": {
+            "question": "Who made “{title}”?",
+            "answerField": "artist",
+            "options": 4,
+            "explanation": "The {museum} credits “{title}” to {artist}."
+          }
+        },
+        {
+          "requires": ["title", "date", "museum"],
+          "title": "How does the museum date “{title}”?",
+          "quiz": {
+            "question": "How does the {museum} date “{title}”?",
+            "answerField": "date",
+            "options": 4,
+            "explanation": "The {museum} dates “{title}”: {date}."
+          }
+        }
+      ]
+    },
+    {
+      "id": "fact.02",
+      "type": "FACT",
+      "variants": [
+        {
+          "requires": ["title", "dimensions", "museum"],
+          "title": "“{title}” measures {dimensions}.",
+          "body": "Dimensions as written by the {museum}."
+        },
+        {
+          "requires": ["title", "classification"],
+          "title": "“{title}” is catalogued as: {classification}."
+        }
+      ]
+    },
+    {
+      "id": "fact.03",
+      "type": "FACT",
+      "variants": [
+        {
+          "requires": ["title", "origin", "museum"],
+          "title": "“{title}” comes from {origin}.",
+          "body": "Place of origin as written by the {museum}."
+        },
+        {
+          "requires": ["title", "credit_line"],
+          "title": "The credit line of “{title}” reads: {credit_line}."
+        }
+      ]
+    },
+    {
+      "id": "know.01",
+      "type": "KNOWLEDGE",
+      "variants": [
+        {
+          "requires": ["title", "artist", "date", "medium", "museum"],
+          "title": "“{title}” in short",
+          "body": "{artist}, {date}. {medium}. In the collection of the {museum}."
+        },
+        {
+          "requires": ["title", "date", "medium", "museum"],
+          "title": "“{title}” in short",
+          "body": "{date}. {medium}. In the collection of the {museum}."
+        },
+        {
+          "requires": ["title", "museum"],
+          "title": "“{title}” in short",
+          "body": "In the collection of the {museum}."
+        }
+      ]
+    }
+  ]
+}

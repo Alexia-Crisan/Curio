@@ -1,0 +1,9 @@
+{
+  "theme": {
+    "id": "art",
+    "name": "Art",
+    "tagline": "Look closer.",
+    "available": false,
+    "accentColor": "0xFFB45309"
+  }
+}

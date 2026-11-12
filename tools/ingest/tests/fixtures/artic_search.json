@@ -1,0 +1,9 @@
+{
+  "pagination": {"total": 3, "limit": 50, "offset": 0, "total_pages": 1, "current_page": 1},
+  "data": [
+    {"id": 27992, "title": "A Sunday on La Grande Jatte — 1884", "is_public_domain": true},
+    {"id": 20001, "title": "Not public domain", "is_public_domain": false},
+    {"id": 20002, "title": "No image", "is_public_domain": true}
+  ],
+  "config": {"iiif_url": "https://www.artic.edu/iiif/2", "website_url": "http://www.artic.edu"}
+}

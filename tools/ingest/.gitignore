@@ -1,0 +1,5 @@
+.cache/
+records/
+images/
+__pycache__/
+*.pyc
