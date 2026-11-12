@@ -10,7 +10,7 @@ object TopicConfig {
 object TopicSelector {
 
     fun guided(date: LocalDate, topicIds: List<String>): String? =
-        if (topicIds.isEmpty()) null else topicIds[(date.dayOfMonth - 1) % topicIds.size]
+        if (topicIds.isEmpty()) null else topicIds[Math.floorMod(date.toEpochDay(), topicIds.size.toLong()).toInt()]
 
     fun surprise(date: LocalDate, themeId: String, topicIds: List<String>, avoidTopicId: String? = null): String? {
         if (topicIds.isEmpty()) return null

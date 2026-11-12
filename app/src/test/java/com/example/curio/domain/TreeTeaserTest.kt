@@ -18,25 +18,25 @@ class TreeTeaserTest {
         val next = TreeTeaser.nextVisit(tree(), DailyMode.GUIDED, D)
         assertNotNull(next)
         assertEquals(LocalDate.of(2026, 10, 27), next!!.date)
-        assertEquals("t3", next.topicId)
+        assertEquals("t2", next.topicId)
     }
 
     @Test
     fun guidedSkipsACompletedTopic() {
-        val done = idsOf("c", 1..6).toSet()
+        val done = idsOf("b", 1..6).toSet()
         val next = TreeTeaser.nextVisit(tree(done), DailyMode.GUIDED, D)
         assertNotNull(next)
         assertEquals(LocalDate.of(2026, 10, 28), next!!.date)
-        assertEquals("t4", next.topicId)
+        assertEquals("t3", next.topicId)
     }
 
     @Test
     fun guidedSkipsSeveralCompletedTopics() {
-        val done = (idsOf("c", 1..6) + idsOf("d", 1..6)).toSet()
+        val done = (idsOf("b", 1..6) + idsOf("c", 1..6)).toSet()
         val next = TreeTeaser.nextVisit(tree(done), DailyMode.GUIDED, D)
         assertNotNull(next)
         assertEquals(LocalDate.of(2026, 10, 29), next!!.date)
-        assertEquals("t1", next.topicId)
+        assertEquals("t4", next.topicId)
     }
 
     @Test
@@ -75,7 +75,7 @@ class TreeTeaserTest {
 
     @Test
     fun theHorizonLimitsTheSearch() {
-        val done = idsOf("c", 1..6).toSet()
+        val done = idsOf("b", 1..6).toSet()
         assertNull(TreeTeaser.nextVisit(tree(done), DailyMode.GUIDED, D, horizonDays = 1))
     }
 
@@ -85,7 +85,7 @@ class TreeTeaserTest {
         val next = TreeTeaser.nextVisit(tree(), DailyMode.GUIDED, oct31)
         assertNotNull(next)
         assertEquals(LocalDate.of(2026, 11, 1), next!!.date)
-        assertEquals("t1", next.topicId)
+        assertEquals("t3", next.topicId)
     }
 
     @Test

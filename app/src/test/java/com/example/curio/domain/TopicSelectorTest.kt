@@ -1,6 +1,7 @@
 package com.example.curio.domain
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -11,29 +12,55 @@ class TopicSelectorTest {
 
     private fun d(year: Int, month: Int, day: Int) = LocalDate.of(year, month, day)
 
-    @Test fun guidedFirstOfMonthIsFirstTopic() {
-        assertEquals("t0", TopicSelector.guided(d(2026, 10, 1), ids))
+    @Test fun guidedUsesTheEpochDayModuloTheTopicCount() {
+        assertEquals("t4", TopicSelector.guided(d(2026, 10, 26), ids))
+        assertEquals("t5", TopicSelector.guided(d(2026, 10, 27), ids))
+        assertEquals("t6", TopicSelector.guided(d(2026, 10, 28), ids))
+        assertEquals("t0", TopicSelector.guided(d(2026, 10, 29), ids))
     }
 
-    @Test fun guidedCyclesEverySevenDays() {
-        assertEquals("t6", TopicSelector.guided(d(2026, 10, 7), ids))
-        assertEquals("t0", TopicSelector.guided(d(2026, 10, 8), ids))
+    @Test fun guidedAdvancesOneTopicPerDay() {
+        val start = d(2026, 10, 1)
+        repeat(21) { i ->
+            val today = ids.indexOf(TopicSelector.guided(start.plusDays(i.toLong()), ids))
+            val tomorrow = ids.indexOf(TopicSelector.guided(start.plusDays(i + 1L), ids))
+            assertEquals((today + 1) % ids.size, tomorrow)
+        }
     }
 
-    @Test fun guidedDay31() {
-        assertEquals("t2", TopicSelector.guided(d(2026, 10, 31), ids))
+    @Test fun guidedNeverRepeatsOnConsecutiveDays() {
+        val three = listOf("t0", "t1", "t2")
+        var day = d(2026, 1, 1)
+        repeat(800) {
+            assertNotEquals(TopicSelector.guided(day, three), TopicSelector.guided(day.plusDays(1), three))
+            day = day.plusDays(1)
+        }
     }
 
-    @Test fun guidedFebruary28() {
-        assertEquals("t6", TopicSelector.guided(d(2027, 2, 28), ids))
+    @Test fun guidedContinuesAcrossTheMonthEnd() {
+        val three = listOf("t0", "t1", "t2")
+        assertNotEquals(TopicSelector.guided(d(2026, 10, 31), three), TopicSelector.guided(d(2026, 11, 1), three))
+        assertNotEquals(TopicSelector.guided(d(2026, 12, 31), three), TopicSelector.guided(d(2027, 1, 1), three))
     }
 
-    @Test fun guidedLeapDay() {
-        assertEquals("t0", TopicSelector.guided(d(2028, 2, 29), ids))
+    @Test fun guidedReachesEveryTopicOfALongList() {
+        val sixty = (0 until 60).map { "t$it" }
+        val used = (0 until 60).map { TopicSelector.guided(d(2026, 10, 1).plusDays(it.toLong()), sixty) }.toSet()
+        assertEquals(60, used.size)
     }
 
-    @Test fun guidedDependsOnlyOnDayOfMonth() {
-        assertEquals(TopicSelector.guided(d(2026, 10, 5), ids), TopicSelector.guided(d(2026, 11, 5), ids))
+    @Test fun guidedRepeatsAfterOneFullCycle() {
+        repeat(30) { i ->
+            val day = d(2026, 10, 1).plusDays(i.toLong())
+            assertEquals(TopicSelector.guided(day, ids), TopicSelector.guided(day.plusDays(ids.size.toLong()), ids))
+        }
+    }
+
+    @Test fun guidedWorksForDatesBeforeTheEpoch() {
+        assertTrue(TopicSelector.guided(d(1960, 1, 1), ids) in ids)
+        val before = ids.indexOf(TopicSelector.guided(d(1969, 12, 31), ids))
+        val after = ids.indexOf(TopicSelector.guided(d(1970, 1, 1), ids))
+        assertEquals((before + 1) % ids.size, after)
     }
 
     @Test fun guidedEmptyListIsNull() {

@@ -21,13 +21,13 @@ class TopicSelectorGoldenTest {
     @Test
     fun guidedFiveTopics() {
         val actual = dates.map { TopicSelector.guided(it, ids5) }
-        assertEquals(listOf("t0", "t1", "t2", "t0", "t0", "t4", "t3"), actual)
+        assertEquals(listOf("t2", "t3", "t4", "t2", "t3", "t2", "t3"), actual)
     }
 
     @Test
     fun guidedSevenTopics() {
         val actual = dates.map { TopicSelector.guided(it, ids7) }
-        assertEquals(listOf("t4", "t5", "t6", "t2", "t0", "t1", "t0"), actual)
+        assertEquals(listOf("t4", "t5", "t6", "t2", "t3", "t4", "t5"), actual)
     }
 
     @Test

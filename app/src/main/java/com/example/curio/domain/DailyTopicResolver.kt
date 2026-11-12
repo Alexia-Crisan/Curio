@@ -15,7 +15,7 @@ class DailyTopicResolver {
 
         return when (mode) {
             DailyMode.GUIDED -> {
-                val index = (date.dayOfMonth - 1) % topics.size
+                val index = Math.floorMod(date.toEpochDay(), topics.size.toLong()).toInt()
                 topics[index]
             }
             DailyMode.CHOOSE -> {
