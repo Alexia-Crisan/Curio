@@ -14,3 +14,9 @@
 | space.moon.fact.03 | Moon | NASA Science, Moon Facts | https://science.nasa.gov/moon/facts/ | Public domain (NASA); credit NASA |
 | space.moon.fact.04 | Moon | NASA Science, Moon Facts | https://science.nasa.gov/moon/facts/ | Public domain (NASA); credit NASA |
 | space.moon.know.01 | Moon | NASA Science, Moon Facts | https://science.nasa.gov/moon/facts/ | Public domain (NASA); credit NASA |
+| space.sun.fact.01 | Sun | NASA Space Place, All About the Sun | https://spaceplace.nasa.gov/all-about-the-sun/en/ | Public domain (NASA); credit NASA |
+| space.sun.fact.02 | Sun | NASA Science, Sun Facts | https://science.nasa.gov/sun/facts/ | Public domain (NASA); credit NASA |
+| space.sun.quiz.01 | Sun | NASA Science, Sun Facts | https://science.nasa.gov/sun/facts/ | Public domain (NASA); credit NASA |
+| space.sun.fact.03 | Sun | NASA Science, Sun Facts | https://science.nasa.gov/sun/facts/ | Public domain (NASA); credit NASA |
+| space.sun.fact.04 | Sun | NASA Science, Sun Facts | https://science.nasa.gov/sun/facts/ | Public domain (NASA); credit NASA |
+| space.sun.know.01 | Sun | NASA Science, Sun Facts | https://science.nasa.gov/sun/facts/ | Public domain (NASA); credit NASA |

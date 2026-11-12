@@ -18,6 +18,12 @@
       "name": "Luna",
       "guidedOrder": 2,
       "accentColor": "0xFF94A3B8"
+    },
+    {
+      "id": "sun",
+      "name": "Soarele",
+      "guidedOrder": 3,
+      "accentColor": "0xFFF59E0B"
     }
   ],
   "discoveries": [
@@ -177,6 +183,88 @@
       "source": {
         "name": "NASA Science, Moon Facts",
         "url": "https://science.nasa.gov/moon/facts/",
+        "license": "Public domain (NASA); credit NASA"
+      }
+    },
+    {
+      "id": "space.sun.fact.01",
+      "subcategoryId": "sun",
+      "type": "FACT",
+      "title": "Lumina Soarelui ajunge pe Pământ în aproximativ 8 minute și 20 de secunde.",
+      "body": "Soarele se află la aproximativ 150 de milioane de kilometri distanță, așa că îl vedem mereu așa cum era acum câteva minute.",
+      "source": {
+        "name": "NASA Space Place, All About the Sun",
+        "url": "https://spaceplace.nasa.gov/all-about-the-sun/en/",
+        "license": "Public domain (NASA); credit NASA"
+      }
+    },
+    {
+      "id": "space.sun.fact.02",
+      "subcategoryId": "sun",
+      "type": "FACT",
+      "title": "Ar fi nevoie de aproximativ 1,3 milioane de Pământuri pentru a umple Soarele.",
+      "body": "Soarele este de aproximativ 100 de ori mai lat decât Pământul și de aproximativ 10 ori mai lat decât Jupiter, cea mai mare planetă.",
+      "source": {
+        "name": "NASA Science, Sun Facts",
+        "url": "https://science.nasa.gov/sun/facts/",
+        "license": "Public domain (NASA); credit NASA"
+      }
+    },
+    {
+      "id": "space.sun.quiz.01",
+      "subcategoryId": "sun",
+      "type": "QUIZ",
+      "title": "Cât din masa sistemului solar se află în Soare?",
+      "quiz": {
+        "question": "Cât la sută din masa sistemului solar se află în Soare?",
+        "options": [
+          "Aproximativ 99,8%",
+          "Aproximativ jumătate",
+          "Aproximativ 75%",
+          "Aproximativ 10%"
+        ],
+        "correctIndex": 0,
+        "explanation": "Soarele deține 99,8% din masa sistemului solar, astfel încât fiecare planetă, lună și asteroid la un loc împart restul de 0,2%."
+      },
+      "source": {
+        "name": "NASA Science, Sun Facts",
+        "url": "https://science.nasa.gov/sun/facts/",
+        "license": "Public domain (NASA); credit NASA"
+      }
+    },
+    {
+      "id": "space.sun.fact.03",
+      "subcategoryId": "sun",
+      "type": "FACT",
+      "title": "Suprafața Soarelui are aproximativ 5.500 de grade Celsius.",
+      "body": "Nucleul său este mult mai fierbinte: temperaturile de acolo depășesc 15 milioane de grade Celsius.",
+      "source": {
+        "name": "NASA Science, Sun Facts",
+        "url": "https://science.nasa.gov/sun/facts/",
+        "license": "Public domain (NASA); credit NASA"
+      }
+    },
+    {
+      "id": "space.sun.fact.04",
+      "subcategoryId": "sun",
+      "type": "FACT",
+      "title": "Soarele se rotește mai repede la ecuator decât la poli.",
+      "body": "Se rotește o dată la aproximativ 25 de zile terestre la ecuator și o dată la aproximativ 36 de zile terestre la poli.",
+      "source": {
+        "name": "NASA Science, Sun Facts",
+        "url": "https://science.nasa.gov/sun/facts/",
+        "license": "Public domain (NASA); credit NASA"
+      }
+    },
+    {
+      "id": "space.sun.know.01",
+      "subcategoryId": "sun",
+      "type": "KNOWLEDGE",
+      "title": "Soarele pe scurt",
+      "body": "Soarele este o stea pitică galbenă, o minge uriașă de hidrogen și heliu cu un diametru de aproximativ 1,4 milioane km. Deține 99,8% din masa sistemului solar, iar nucleul său este mai fierbinte de 15 milioane de grade Celsius.",
+      "source": {
+        "name": "NASA Science, Sun Facts",
+        "url": "https://science.nasa.gov/sun/facts/",
         "license": "Public domain (NASA); credit NASA"
       }
     }
