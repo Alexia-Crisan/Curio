@@ -12,6 +12,12 @@
       "name": "Marte",
       "guidedOrder": 1,
       "accentColor": "0xFFEA580C"
+    },
+    {
+      "id": "moon",
+      "name": "Luna",
+      "guidedOrder": 2,
+      "accentColor": "0xFF94A3B8"
     }
   ],
   "discoveries": [
@@ -90,6 +96,88 @@
         "name": "NASA/JPL-Caltech, Mars at a Glance",
         "url": "https://www.jpl.nasa.gov/news/press_kits/insight/launch/facts/mars-at-a-glance",
         "license": "Public domain (NASA); credit NASA/JPL-Caltech"
+      }
+    },
+    {
+      "id": "space.moon.fact.01",
+      "subcategoryId": "moon",
+      "type": "FACT",
+      "title": "Luna se află, în medie, la 384.400 de kilometri distanță față de Pământ.",
+      "body": "Orbita sa nu este un cerc perfect: distanța variază de la aproximativ 363.300 km în cel mai apropiat punct până la aproximativ 405.500 km în cel mai îndepărtat.",
+      "source": {
+        "name": "NASA Space Science Data Coordinated Archive, Moon Fact Sheet",
+        "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html",
+        "license": "Public domain (NASA); credit NASA/GSFC"
+      }
+    },
+    {
+      "id": "space.moon.fact.02",
+      "subcategoryId": "moon",
+      "type": "FACT",
+      "title": "Vedem mereu aceeași parte a Lunii.",
+      "body": "Luna se rotește în exact timpul în care îi ia să orbiteze Pământul, așa că nu își întoarce niciodată spatele spre noi. Sateliții ne-au arătat însă și fața ascunsă.",
+      "source": {
+        "name": "NASA Science, Tidal Locking",
+        "url": "https://science.nasa.gov/moon/tidal-locking/",
+        "license": "Public domain (NASA); credit NASA"
+      }
+    },
+    {
+      "id": "space.moon.quiz.01",
+      "subcategoryId": "moon",
+      "type": "QUIZ",
+      "title": "Cât de puternică este gravitația pe Lună?",
+      "quiz": {
+        "question": "Cât de puternică este gravitația pe Lună în comparație cu Pământul?",
+        "options": [
+          "De aproximativ șase ori mai slabă",
+          "De aproximativ două ori mai slabă",
+          "Identică",
+          "De două ori mai puternică"
+        ],
+        "correctIndex": 0,
+        "explanation": "Gravitația la suprafața Lunii este de aproximativ o șesime din cea a Pământului, așa că un astronaut cântărește de șase ori mai puțin acolo."
+      },
+      "source": {
+        "name": "NASA Science, Moon Facts",
+        "url": "https://science.nasa.gov/moon/facts/",
+        "license": "Public domain (NASA); credit NASA"
+      }
+    },
+    {
+      "id": "space.moon.fact.03",
+      "subcategoryId": "moon",
+      "type": "FACT",
+      "title": "Luna are o lățime mai mică de o treime din cea a Pământului.",
+      "body": "Raza sa este de aproximativ 1.740 de kilometri (1.080 mile).",
+      "source": {
+        "name": "NASA Science, Moon Facts",
+        "url": "https://science.nasa.gov/moon/facts/",
+        "license": "Public domain (NASA); credit NASA"
+      }
+    },
+    {
+      "id": "space.moon.fact.04",
+      "subcategoryId": "moon",
+      "type": "FACT",
+      "title": "Luna s-a format cel mai probabil în urma impactului Pământului cu un corp de mărimea lui Marte.",
+      "body": "NASA precizează că această coliziune a avut loc probabil acum câteva miliarde de ani.",
+      "source": {
+        "name": "NASA Science, Moon Facts",
+        "url": "https://science.nasa.gov/moon/facts/",
+        "license": "Public domain (NASA); credit NASA"
+      }
+    },
+    {
+      "id": "space.moon.know.01",
+      "subcategoryId": "moon",
+      "type": "KNOWLEDGE",
+      "title": "Luna pe scurt",
+      "body": "Luna se află la aproximativ 384.400 km distanță și are o lățime mai mică de o treime din cea a Pământului. Orbitează Pământul în aproximativ 27 de zile și ne arată mereu aceeași față. Gravitația la suprafața sa este de o șesime din cea a Pământului.",
+      "source": {
+        "name": "NASA Science, Moon Facts",
+        "url": "https://science.nasa.gov/moon/facts/",
+        "license": "Public domain (NASA); credit NASA"
       }
     }
   ]
