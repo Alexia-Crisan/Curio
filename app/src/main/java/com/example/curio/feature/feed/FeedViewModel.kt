@@ -104,11 +104,17 @@ class FeedViewModel(
     }
 
     private suspend fun loadLive() {
-        val themeId = lastTheme
+        var themeId = lastTheme
+        if (themeId == null || content.themes.none { it.id == themeId }) {
+            themeId = content.themes.firstOrNull { it.available }?.id ?: content.themes.firstOrNull()?.id
+        }
         if (themeId == null) {
             endTracking(); _state.value = FeedUiState.NoTheme; return
         }
         val topicIds = content.topicsOf(themeId).map { it.id }
+        if (topicIds.isEmpty()) {
+            endTracking(); _state.value = FeedUiState.NoContent; return
+        }
         applyPlan(themeId, dayPlans.ensureToday(themeId, topicIds, lastMode))
     }
 
@@ -218,7 +224,11 @@ class FeedViewModel(
     }
 
     fun onTopicChosen(topicId: String) {
-        val themeId = lastTheme ?: return
+        var themeId = lastTheme
+        if (themeId == null || content.themes.none { it.id == themeId }) {
+            themeId = content.themes.firstOrNull { it.available }?.id ?: content.themes.firstOrNull()?.id
+        }
+        if (themeId == null) return
         if (!isLive) return
         viewModelScope.launch {
             endTracking()
