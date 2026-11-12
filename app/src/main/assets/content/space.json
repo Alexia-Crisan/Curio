@@ -1,15 +1,15 @@
 {
   "theme": {
     "id": "space",
-    "name": "Space",
-    "tagline": "Look up.",
-    "available": false,
+    "name": "Spațiu",
+    "tagline": "Privește în sus.",
+    "available": true,
     "accentColor": "0xFF6366F1"
   },
   "subcategories": [
     {
       "id": "mars",
-      "name": "Mars",
+      "name": "Marte",
       "guidedOrder": 1,
       "accentColor": "0xFFEA580C"
     }
@@ -19,41 +19,77 @@
       "id": "space.mars.fact.01",
       "subcategoryId": "mars",
       "type": "FACT",
-      "title": "A day on Mars is just 37 minutes longer than on Earth.",
-      "body": "One Martian day, called a sol, lasts about 24 hours and 39 minutes.",
+      "title": "O zi pe Marte este cu aproximativ 40 de minute mai lungă decât o zi pe Pământ.",
+      "body": "O zi marțiană, numită sol, durează 24 de ore, 39 de minute și 35 de secunde.",
       "source": {
-        "name": "NASA",
-        "url": "https://science.nasa.gov/mars/",
-        "license": "Public domain"
+        "name": "NASA/JPL-Caltech, Mars at a Glance",
+        "url": "https://www.jpl.nasa.gov/news/press_kits/insight/launch/facts/mars-at-a-glance",
+        "license": "Public domain (NASA); credit NASA/JPL-Caltech"
       }
     },
     {
       "id": "space.mars.fact.02",
       "subcategoryId": "mars",
       "type": "FACT",
-      "title": "Sunsets on Mars appear blue.",
-      "body": "Fine dust particles in the thin Martian atmosphere scatter blue light forward toward an observer.",
+      "title": "Soarele apune într-o strălucire albastră pe Marte.",
+      "body": "Praful fin din atmosfera subțire marțiană împrăștie lumina albastră spre observator mult mai eficient decât pe cea roșie, astfel încât cerul din jurul Soarelui la apus pare albăstrui.",
       "source": {
-        "name": "NASA JPL",
-        "url": "https://www.jpl.nasa.gov/",
-        "license": "Public domain"
+        "name": "NASA Photojournal",
+        "url": "https://science.nasa.gov/photojournal/the-sun-sets-on-mars/",
+        "license": "Public domain (NASA); credit NASA/JPL/Texas A&M/Cornell"
       }
     },
     {
       "id": "space.mars.quiz.01",
       "subcategoryId": "mars",
       "type": "QUIZ",
-      "title": "Test yourself",
+      "title": "Testează-ți cunoștințele",
       "quiz": {
-        "question": "What is the name of the largest volcano in the solar system, located on Mars?",
-        "options": ["Mauna Kea", "Olympus Mons", "Mount Vesuvius", "Elysium Mons"],
+        "question": "Care este numele celui mai mare vulcan din sistemul solar, situat pe Marte?",
+        "options": ["Mauna Kea", "Olympus Mons", "Vezuviu", "Elysium Mons"],
         "correctIndex": 1,
-        "explanation": "Olympus Mons is a massive shield volcano nearly 22 km (13.6 mi) high, about two and a half times Mount Everest's height!"
+        "explanation": "Olympus Mons este un vulcan masiv cu o înălțime de aproape 22 km, de aproximativ două ori și jumătate mai înalt decât Muntele Everest!"
       },
       "source": {
-        "name": "NASA",
-        "url": "https://science.nasa.gov/mars/",
-        "license": "Public domain"
+        "name": "NASA/JPL-Caltech, Mars at a Glance",
+        "url": "https://www.jpl.nasa.gov/news/press_kits/insight/launch/facts/mars-at-a-glance",
+        "license": "Public domain (NASA); credit NASA/JPL-Caltech"
+      }
+    },
+    {
+      "id": "space.mars.fact.03",
+      "subcategoryId": "mars",
+      "type": "FACT",
+      "title": "Pe Marte ai cântări doar aproximativ 38% din greutatea ta de pe Pământ.",
+      "body": "Marte are aproximativ o zecime din masa Pământului, astfel încât gravitația sa este doar 38% din cea pământeană. O persoană de 60 kg ar cântări acolo echivalentul a 23 kg.",
+      "source": {
+        "name": "NASA/JPL-Caltech, Mars at a Glance",
+        "url": "https://www.jpl.nasa.gov/news/press_kits/insight/launch/facts/mars-at-a-glance",
+        "license": "Public domain (NASA); credit NASA/JPL-Caltech"
+      }
+    },
+    {
+      "id": "space.mars.fact.04",
+      "subcategoryId": "mars",
+      "type": "FACT",
+      "title": "Marte are doi sateliți naturali mici numiți Frică și Teroare.",
+      "body": "Phobos și Deimos, denumiți după cuvintele grecești pentru frică și teroare, au forme neregulate și fiecare măsoară doar câțiva kilometri în lățime.",
+      "source": {
+        "name": "NASA/JPL-Caltech, Mars at a Glance",
+        "url": "https://www.jpl.nasa.gov/news/press_kits/insight/launch/facts/mars-at-a-glance",
+        "license": "Public domain (NASA); credit NASA/JPL-Caltech"
+      }
+    },
+    {
+      "id": "space.mars.know.01",
+      "subcategoryId": "mars",
+      "type": "KNOWLEDGE",
+      "title": "Marte pe scurt",
+      "body": "Marte are aproximativ jumătate din dimensiunea Pământului și dublul Lunii noastre. Ocolește Soarele o dată la 687 de zile pământene. Atmosfera sa subțire conține 95% dioxid de carbon, iar temperatura medie la suprafață este de aproximativ minus 53 grade Celsius.",
+      "source": {
+        "name": "NASA/JPL-Caltech, Mars at a Glance",
+        "url": "https://www.jpl.nasa.gov/news/press_kits/insight/launch/facts/mars-at-a-glance",
+        "license": "Public domain (NASA); credit NASA/JPL-Caltech"
       }
     }
   ]

@@ -3,7 +3,6 @@ package com.example.curio.domain
 import java.io.File
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
-import org.junit.Ignore
 import org.junit.Test
 
 class ContentAssetsTest {
@@ -54,7 +53,6 @@ class ContentAssetsTest {
         }
     }
 
-    @Ignore("Remove this line when the first theme is complete and marked available")
     @Test
     fun atLeastOneThemeIsAvailable() {
         assertTrue(result.index.themes.any { it.available })
