@@ -1,5 +1,7 @@
 # Curio Content Authoring Guide
 
+The schema is described in CONTENT_SCHEMA.md.
+
 This document is a practical guide for content authors creating and editing educational themes, topics, and discoveries for Curio.
 
 ---

@@ -3,6 +3,7 @@
     "id": "space",
     "name": "Space",
     "tagline": "Look up.",
+    "available": false,
     "accentColor": "0xFF6366F1"
   },
   "subcategories": [

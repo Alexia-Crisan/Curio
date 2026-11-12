@@ -2,6 +2,7 @@ package com.example.curio.di
 
 import android.content.Context
 import com.example.curio.data.RealClock
+import com.example.curio.data.content.ContentBootstrap
 import com.example.curio.data.fake.FakeDiscoveryRepository
 import com.example.curio.data.fake.FakeInteractionRepository
 import com.example.curio.data.settings.PreferencesSettingsStore
@@ -27,7 +28,6 @@ import com.example.curio.domain.FreshnessSource
 import com.example.curio.domain.InteractionRepository
 import com.example.curio.domain.ProgressResetter
 import com.example.curio.domain.SettingsStore
-import com.example.curio.domain.TestContent
 import com.example.curio.domain.Theme
 import com.example.curio.domain.TouchQueue
 import com.example.curio.domain.TreeVisitStore
@@ -51,7 +51,7 @@ class AppContainer(context: Context) {
     val tiltSensor: TiltSensor = TiltSensor(context)
 
     val database: CurioDatabase = CurioDatabase.create(context)
-    val contentIndex: ContentIndex = TestContent.index
+    val contentIndex: ContentIndex = ContentBootstrap.index(context)
 
     val dayPlans: DayPlanRepository = DayPlanRepository(database, javaClock)
     val progress: ProgressRepository = ProgressRepository(database, contentIndex.membership)

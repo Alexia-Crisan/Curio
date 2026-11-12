@@ -261,7 +261,7 @@ private fun ColumnScope.ImageContent(d: Discovery) {
     d.mediaUrl?.let { url ->
         AsyncImage(
             model = url,
-            contentDescription = d.title,
+            contentDescription = d.mediaAlt ?: d.title,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(240.dp)

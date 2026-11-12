@@ -31,6 +31,7 @@ data class Discovery(
     val quiz: Quiz? = null,
     val source: Source,
     val accentColor: Long = 0xFF3B82F6,
+    val mediaAlt: String? = null,
 ) {
     val topicId: String get() = subcategoryId
 }
