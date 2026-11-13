@@ -37,7 +37,7 @@ class ArchitectureRulesTest {
         "ActivitySnapshot.kt", "Achievement.kt", "AchievementEvaluator.kt", "Sources.kt",
         "TreeModels.kt", "TreeBuilder.kt", "TreeExplainer.kt", "TreeSelection.kt", "TreeGrowth.kt",
         "TreeVisitStore.kt", "TouchQueue.kt", "DwellTracker.kt", "FeedAssembler.kt", "Settings.kt",
-        "SourcesBuilder.kt", "FreshFirst.kt", "FeedDateResolver.kt",
+        "SourcesBuilder.kt", "FreshFirst.kt", "FeedDateResolver.kt", "BadgeTreeLayout.kt",
     )
 
     private val clockInjectedDataFiles = listOf(
