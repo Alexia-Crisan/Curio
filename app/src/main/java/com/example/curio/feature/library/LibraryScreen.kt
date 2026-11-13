@@ -33,6 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.curio.R
@@ -45,6 +46,7 @@ import java.time.format.FormatStyle
 fun LibraryScreen(
     savedCards: List<Discovery>,
     history: List<HistoryDay> = emptyList(),
+    notes: Map<String, String> = emptyMap(),
     onCardClick: (String) -> Unit,
 ) {
     var selectedTab by remember { mutableIntStateOf(0) }
@@ -100,7 +102,7 @@ fun LibraryScreen(
 
         when {
             (selectedTab == 0 && savedCards.isEmpty()) -> EmptyState(stringResource(R.string.library_saved_empty))
-            selectedTab == 0 -> SavedList(savedCards, onCardClick)
+            selectedTab == 0 -> SavedList(savedCards, notes, onCardClick)
             history.isEmpty() -> EmptyState(stringResource(R.string.library_history_empty))
             else -> HistoryList(history, onCardClick)
         }
@@ -119,7 +121,7 @@ private fun EmptyState(text: String) {
 }
 
 @Composable
-private fun SavedList(savedCards: List<Discovery>, onCardClick: (String) -> Unit) {
+private fun SavedList(savedCards: List<Discovery>, notes: Map<String, String>, onCardClick: (String) -> Unit) {
     LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         items(savedCards, key = { it.id }) { card ->
             Card(
@@ -143,6 +145,16 @@ private fun SavedList(savedCards: List<Discovery>, onCardClick: (String) -> Unit
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
                     )
+                    notes[card.id]?.let { note ->
+                        Spacer(Modifier.height(8.dp))
+                        Text(
+                            text = note,
+                            fontSize = 14.sp,
+                            color = Color.White.copy(alpha = 0.9f),
+                            maxLines = 3,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
                 }
             }
         }

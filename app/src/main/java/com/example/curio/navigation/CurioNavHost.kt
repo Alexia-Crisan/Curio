@@ -185,9 +185,11 @@ fun CurioNavHost(
                     })
                     val saved by vm.saved.collectAsStateWithLifecycle()
                     val history by vm.history.collectAsStateWithLifecycle()
+                    val notes by vm.notes.collectAsStateWithLifecycle()
                     LibraryScreen(
                         savedCards = saved,
                         history = history,
+                        notes = notes,
                         onCardClick = { id -> navController.navigate(Route.Detail(id)) },
                     )
                 }

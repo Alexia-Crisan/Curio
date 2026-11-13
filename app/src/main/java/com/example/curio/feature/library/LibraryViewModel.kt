@@ -17,13 +17,16 @@ class LibraryViewModel(
     activity: UserActivityRepository,
     content: ContentIndex,
 ) : ViewModel() {
-    val saved: StateFlow<List<Discovery>> = activity.observeSavedIds()
+    val saved: StateFlow<List<Discovery>> = activity.observeSavedNewestFirst()
         .map { ids -> ids.mapNotNull(content::discovery) }
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5_000),
             emptyList()
         )
+
+    val notes: StateFlow<Map<String, String>> = activity.observeNotes()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyMap())
 
     val history: StateFlow<List<HistoryDay>> =
         activity.observeRecentViews(50)
