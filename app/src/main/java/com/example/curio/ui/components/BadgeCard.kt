@@ -32,6 +32,7 @@ import com.example.curio.ui.theme.CurioTheme
 import com.example.curio.ui.theme.Spacing
 import com.example.curio.ui.theme.curioCardBorder
 import com.example.curio.ui.theme.curioCardColors
+import com.example.curio.ui.theme.curioCardElevation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,6 +44,7 @@ fun BadgeCard(badge: AchievementUi, onClick: () -> Unit, modifier: Modifier = Mo
         onClick = onClick,
         modifier = modifier.fillMaxWidth().semantics(mergeDescendants = true) { contentDescription = description },
         colors = curioCardColors(),
+        elevation = curioCardElevation(),
         border = curioCardBorder(badge.isUnlocked),
     ) {
         Column(Modifier.padding(Spacing.lg).heightIn(min = Spacing.xxxl), horizontalAlignment = Alignment.CenterHorizontally) {

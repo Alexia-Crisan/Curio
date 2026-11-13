@@ -50,6 +50,7 @@ import com.example.curio.feature.onboarding.modeLabel
 import com.example.curio.ui.theme.Spacing
 import com.example.curio.ui.theme.curioCardBorder
 import com.example.curio.ui.theme.curioCardColors
+import com.example.curio.ui.theme.curioCardElevation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -91,7 +92,7 @@ fun SettingsScreen(
         ) {
             Text(stringResource(R.string.settings_title), style = MaterialTheme.typography.headlineMedium)
 
-            Card(colors = curioCardColors(), border = curioCardBorder(false)) {
+            Card(colors = curioCardColors(), elevation = curioCardElevation(), border = curioCardBorder(false)) {
                 Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.md)) {
                     Row(
                         modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
@@ -155,7 +156,7 @@ fun SettingsScreen(
                     .getDefaultSensor(Sensor.TYPE_GYROSCOPE) != null
             }
 
-            Card(colors = curioCardColors(), border = curioCardBorder(false)) {
+            Card(colors = curioCardColors(), elevation = curioCardElevation(), border = curioCardBorder(false)) {
                 Column(Modifier.padding(Spacing.sm)) {
                     ListItem(
                         headlineContent = { Text(stringResource(R.string.sensor_touchscreen)) },
@@ -177,7 +178,7 @@ fun SettingsScreen(
             }
 
             Text(stringResource(R.string.settings_theme), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
-            Card(colors = curioCardColors(), border = curioCardBorder(false)) {
+            Card(colors = curioCardColors(), elevation = curioCardElevation(), border = curioCardBorder(false)) {
                 Column(Modifier.padding(Spacing.sm)) {
                     ui.themes.forEach { theme ->
                         Row(
@@ -203,7 +204,7 @@ fun SettingsScreen(
             }
 
             Text(stringResource(R.string.settings_mode), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
-            Card(colors = curioCardColors(), border = curioCardBorder(false)) {
+            Card(colors = curioCardColors(), elevation = curioCardElevation(), border = curioCardBorder(false)) {
                 Column(Modifier.padding(Spacing.sm)) {
                     DailyMode.values().forEach { mode ->
                         Row(
@@ -240,7 +241,7 @@ fun SettingsScreen(
                 Text(stringResource(R.string.settings_reset), style = MaterialTheme.typography.labelLarge)
             }
 
-            Card(colors = curioCardColors(), border = curioCardBorder(false)) {
+            Card(colors = curioCardColors(), elevation = curioCardElevation(), border = curioCardBorder(false)) {
                 Text(
                     text = stringResource(R.string.settings_sources),
                     style = MaterialTheme.typography.titleMedium,

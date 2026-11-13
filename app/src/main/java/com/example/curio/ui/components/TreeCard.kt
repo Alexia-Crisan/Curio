@@ -39,6 +39,7 @@ import com.example.curio.ui.theme.CurioTheme
 import com.example.curio.ui.theme.Spacing
 import com.example.curio.ui.theme.curioCardBorder
 import com.example.curio.ui.theme.curioCardColors
+import com.example.curio.ui.theme.curioCardElevation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,6 +54,7 @@ fun TreeCard(
     Card(
         modifier = modifier.fillMaxWidth(),
         colors = curioCardColors(),
+        elevation = curioCardElevation(),
         border = curioCardBorder(false),
     ) {
         Column(Modifier.padding(Spacing.lg)) {

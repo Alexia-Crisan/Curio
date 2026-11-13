@@ -43,6 +43,7 @@ import com.example.curio.ui.theme.CurioTheme
 import com.example.curio.ui.theme.Spacing
 import com.example.curio.ui.theme.curioCardBorder
 import com.example.curio.ui.theme.curioCardColors
+import com.example.curio.ui.theme.curioCardElevation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -152,6 +153,7 @@ private fun BranchRow(branch: TopicNode, onTopicTap: (String) -> Unit, onLeafTap
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = curioCardColors(),
+        elevation = curioCardElevation(),
         border = curioCardBorder(false),
     ) {
         Column(Modifier.padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {

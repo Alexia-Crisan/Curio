@@ -34,6 +34,7 @@ import com.example.curio.domain.DailyMode
 import com.example.curio.ui.theme.Spacing
 import com.example.curio.ui.theme.curioCardBorder
 import com.example.curio.ui.theme.curioCardColors
+import com.example.curio.ui.theme.curioCardElevation
 import com.example.curio.ui.theme.curioSelectedCardColors
 
 @Composable
@@ -73,6 +74,7 @@ fun OnboardingScreen(viewModel: OnboardingViewModel, onFinished: () -> Unit) {
                                 onClick = { viewModel.selectTheme(theme.id) },
                             ),
                         colors = if (selected) curioSelectedCardColors() else curioCardColors(),
+                        elevation = curioCardElevation(),
                         border = curioCardBorder(selected),
                     ) {
                         Row(

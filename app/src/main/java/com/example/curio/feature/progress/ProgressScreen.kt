@@ -48,6 +48,7 @@ import com.example.curio.ui.components.TreeCard
 import com.example.curio.ui.theme.Spacing
 import com.example.curio.ui.theme.curioCardBorder
 import com.example.curio.ui.theme.curioCardColors
+import com.example.curio.ui.theme.curioCardElevation
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -135,6 +136,7 @@ fun ProgressScreen(
             Card(
                 modifier = Modifier.weight(1f),
                 colors = curioCardColors(),
+                elevation = curioCardElevation(),
                 border = curioCardBorder(false),
             ) {
                 Column(Modifier.padding(Spacing.lg)) {
@@ -147,6 +149,7 @@ fun ProgressScreen(
             Card(
                 modifier = Modifier.weight(1f),
                 colors = curioCardColors(),
+                elevation = curioCardElevation(),
                 border = curioCardBorder(false),
             ) {
                 Column(Modifier.padding(Spacing.lg)) {

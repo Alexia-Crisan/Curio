@@ -27,6 +27,7 @@ import com.example.curio.domain.SourceEntry
 import com.example.curio.ui.theme.Spacing
 import com.example.curio.ui.theme.curioCardBorder
 import com.example.curio.ui.theme.curioCardColors
+import com.example.curio.ui.theme.curioCardElevation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,7 +58,11 @@ fun SourcesScreen(entries: List<SourceEntry>, onBack: () -> Unit) {
                 verticalArrangement = Arrangement.spacedBy(Spacing.md),
             ) {
                 items(entries, key = { it.name + "|" + it.license }) { entry ->
-                    Card(colors = curioCardColors(), border = curioCardBorder(false)) {
+                    Card(
+                        colors = curioCardColors(),
+                        elevation = curioCardElevation(),
+                        border = curioCardBorder(false),
+                    ) {
                         Column(modifier = Modifier.fillMaxWidth().padding(Spacing.lg), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
                             Text(entry.name, style = MaterialTheme.typography.titleMedium)
                             Text(entry.license, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
