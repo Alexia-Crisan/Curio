@@ -57,7 +57,7 @@ class UserActivityRepository(
         recordActivity: Boolean = true,
     ) = db.withTransaction {
         if (saved) {
-            savedDao.upsert(SavedDiscoveryEntity(discoveryId, clock.millis()))
+            savedDao.insertIfAbsent(SavedDiscoveryEntity(discoveryId, clock.millis()))
             if (recordActivity) {
                 views.record(ViewTouch(discoveryId, date, source, clock.millis(), markCompleted = true))
             }
