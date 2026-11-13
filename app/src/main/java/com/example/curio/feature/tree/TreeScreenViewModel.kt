@@ -10,11 +10,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import com.example.curio.data.RealClock
+import com.example.curio.domain.AchievementProgress
 import com.example.curio.domain.ActivitySource
 import com.example.curio.domain.Clock
 import com.example.curio.domain.ContentIndex
@@ -51,6 +53,7 @@ data class TreeScreenUi(
     val sheet: NodeSheet? = null,
     val isLoading: Boolean = true,
     val growth: TreeGrowthSummary? = null,
+    val badges: List<AchievementProgress> = emptyList(),
 ) {
     val selected: ThemeTree? get() = trees.firstOrNull { it.theme.id == selectedThemeId }
     val isEmpty: Boolean get() = !isLoading && trees.isEmpty()
@@ -67,6 +70,7 @@ class TreeScreenViewModel(
     initialThemeId: String?,
     private val visits: TreeVisitStore = TreeVisitStore.None,
     private val clock: Clock = RealClock(),
+    private val badgeProgress: Flow<List<AchievementProgress>> = flowOf(emptyList()),
 ) : ViewModel() {
 
     private val manualTheme = MutableStateFlow(initialThemeId)
@@ -92,7 +96,8 @@ class TreeScreenViewModel(
             isLoading = false,
             growth = if (tree != null && base.ready) TreeGrowth.since(tree, base.sinceMs) else null,
         )
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), TreeScreenUi())
+    }.combine(badgeProgress) { ui, badges -> ui.copy(badges = badges) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), TreeScreenUi())
 
     init {
         viewModelScope.launch {

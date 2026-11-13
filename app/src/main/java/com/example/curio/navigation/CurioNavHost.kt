@@ -324,6 +324,7 @@ fun CurioNavHost(
                                     route.themeId,
                                     container.treeVisits,
                                     container.clock,
+                                    badgeProgress = achievementSource.observeProgress(),
                                 )
                             }
                         }

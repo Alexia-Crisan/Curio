@@ -39,6 +39,7 @@ import com.example.curio.R
 import com.example.curio.domain.LeafNode
 import com.example.curio.domain.NextStep
 import com.example.curio.domain.TopicNode
+import com.example.curio.ui.components.BadgeTreeCard
 import com.example.curio.ui.theme.CurioTheme
 import com.example.curio.ui.theme.Spacing
 import com.example.curio.ui.theme.curioCardBorder
@@ -78,6 +79,7 @@ fun TreeScreen(
                 contentPadding = PaddingValues(Spacing.lg),
                 verticalArrangement = Arrangement.spacedBy(Spacing.md),
             ) {
+                item { BadgeTreeCard(state.badges) }
                 item {
                     Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                         if (state.trees.size > 1) {
