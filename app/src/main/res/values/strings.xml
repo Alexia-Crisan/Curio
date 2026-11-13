@@ -168,4 +168,10 @@
     <string name="badge_tree_cd">Arborele insignelor: %1$d din %2$d insigne</string>
     <string name="badge_tree_summary">%1$d din %2$d insigne pe arborele tău</string>
     <string name="badge_tree_empty">Câștigă o insignă și arborele tău începe să crească</string>
+    <string name="note_title">Notița ta</string>
+    <string name="note_add">Adaugă o notiță</string>
+    <string name="note_edit">Editează notița</string>
+    <string name="note_hint">Lasă gol ca să ștergi notița</string>
+    <string name="note_save">Salvează</string>
+    <string name="note_cancel">Anulează</string>
 </resources>

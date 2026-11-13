@@ -10,6 +10,8 @@ import com.example.curio.domain.ContentIndex
 import com.example.curio.domain.DetailReadingTracker
 import com.example.curio.domain.DetailSaves
 import com.example.curio.domain.Discovery
+import com.example.curio.domain.NoSavedNotes
+import com.example.curio.domain.SavedNotes
 import com.example.curio.domain.TouchQueue
 import java.time.Clock
 import java.time.LocalDate
@@ -30,6 +32,7 @@ class DetailViewModel(
     private val saves: DetailSaves,
     private val touches: TouchQueue,
     private val clock: Clock,
+    private val notes: SavedNotes = NoSavedNotes,
 ) : ViewModel() {
 
     private val _discovery = MutableStateFlow(content.discovery(discoveryId))
@@ -38,6 +41,10 @@ class DetailViewModel(
     val isSaved: StateFlow<Boolean> = saves.observeSaved()
         .map { discoveryId in it }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
+
+    val note: StateFlow<String?> = notes.observeNotes()
+        .map { it[discoveryId] }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
 
     private val tracker = DetailReadingTracker(discoveryId, LocalDate.now(clock))
     private var checkpointJob: Job? = null
@@ -70,6 +77,10 @@ class DetailViewModel(
         }
     }
 
+    fun saveNote(raw: String) {
+        viewModelScope.launch { notes.saveNote(discoveryId, raw) }
+    }
+
     override fun onCleared() {
         onHidden()
     }
@@ -83,6 +94,7 @@ class DetailViewModel(
                     saves = container.detailSaves,
                     touches = container.touchQueue,
                     clock = container.javaClock,
+                    notes = container.savedNotes,
                 )
             }
         }

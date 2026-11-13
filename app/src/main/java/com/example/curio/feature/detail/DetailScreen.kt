@@ -41,6 +41,7 @@ fun DetailScreen(
     val vm: DetailViewModel = viewModel(factory = DetailViewModel.factory(container, id))
     val discovery by vm.discovery.collectAsStateWithLifecycle()
     val isSaved by vm.isSaved.collectAsStateWithLifecycle()
+    val note by vm.note.collectAsStateWithLifecycle()
 
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner) {
@@ -92,6 +93,10 @@ fun DetailScreen(
             d.body?.let { body ->
                 Spacer(Modifier.height(Spacing.md))
                 Text(body, style = MaterialTheme.typography.bodyLarge)
+            }
+            if (isSaved) {
+                Spacer(Modifier.height(Spacing.lg))
+                NoteSection(note = note, onSave = vm::saveNote)
             }
             Spacer(Modifier.height(Spacing.lg))
             Text(
