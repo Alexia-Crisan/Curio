@@ -165,4 +165,7 @@
     </plurals>
     <string name="teaser_stage">Arborele tău a ajuns la: %1$s</string>
     <string name="teaser_next">Pe drumul tău, urmează: %1$s la %2$s</string>
+    <string name="badge_tree_cd">Arborele insignelor: %1$d din %2$d insigne</string>
+    <string name="badge_tree_summary">%1$d din %2$d insigne pe arborele tău</string>
+    <string name="badge_tree_empty">Câștigă o insignă și arborele tău începe să crească</string>
 </resources>

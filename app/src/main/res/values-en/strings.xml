@@ -163,4 +163,7 @@
     </plurals>
     <string name="teaser_stage">Your tree reached: %1$s</string>
     <string name="teaser_next">Next on your path: %1$s on %2$s</string>
+    <string name="badge_tree_cd">Badge tree: %1$d of %2$d badges</string>
+    <string name="badge_tree_summary">%1$d of %2$d badges on your tree</string>
+    <string name="badge_tree_empty">Earn a badge and your tree starts to grow</string>
 </resources>
