@@ -27,6 +27,7 @@ import com.example.curio.domain.DiscoveryRepository
 import com.example.curio.domain.FreshnessSource
 import com.example.curio.domain.InteractionRepository
 import com.example.curio.domain.ProgressResetter
+import com.example.curio.domain.SavedNotes
 import com.example.curio.domain.SettingsStore
 import com.example.curio.domain.Theme
 import com.example.curio.domain.TouchQueue
@@ -61,6 +62,7 @@ class AppContainer(context: Context) {
     val achievementSource: AchievementSource get() = achievements
     val achievementTracker: AchievementTracker = AchievementTracker(appScope, userActivity, achievements)
     val detailSaves: DetailSaves = UserActivityDetailSaves(userActivity)
+    val savedNotes: SavedNotes get() = userActivity
 
     val settingsStore: SettingsStore = PreferencesSettingsStore(settingsRepository)
     val treeVisits: TreeVisitStore = PreferencesTreeVisitStore(settingsRepository, appScope)

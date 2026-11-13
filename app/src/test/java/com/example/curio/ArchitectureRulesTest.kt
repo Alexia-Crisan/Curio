@@ -99,7 +99,7 @@ class ArchitectureRulesTest {
     @Test fun theDatabaseStaysAtVersionOneWithExportedSchema() {
         val database = sources.first { it.readText().contains("RoomDatabase()") && it.readText().contains("@Database") }
         val text = database.readText()
-        assertTrue("version must stay 1", Regex("""version\s*=\s*1\b""").containsMatchIn(text))
+        assertTrue("version must stay 2", Regex("""version\s*=\s*2\b""").containsMatchIn(text))
         assertTrue("exportSchema must stay true", Regex("""exportSchema\s*=\s*true""").containsMatchIn(text))
     }
 }

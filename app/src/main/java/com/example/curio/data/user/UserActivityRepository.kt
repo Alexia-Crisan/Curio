@@ -11,6 +11,8 @@ import com.example.curio.domain.ActivitySnapshot
 import com.example.curio.domain.ActivitySnapshotBuilder
 import com.example.curio.domain.ActivitySource
 import com.example.curio.domain.ContentIndex
+import com.example.curio.domain.NoteRules
+import com.example.curio.domain.SavedNotes
 import com.example.curio.domain.ViewEvent
 import com.example.curio.domain.ViewSource
 import com.example.curio.domain.ViewTouch
@@ -21,7 +23,7 @@ class UserActivityRepository(
     private val db: CurioDatabase,
     private val content: ContentIndex,
     private val clock: Clock,
-) : ActivitySource {
+) : ActivitySource, SavedNotes {
     private val views = db.viewEventDao()
     private val savedDao = db.savedDao()
     private val choices = db.dayChoiceDao()
@@ -38,6 +40,14 @@ class UserActivityRepository(
     suspend fun currentSnapshot(): ActivitySnapshot = build(views.getAll(), savedDao.getIds(), choices.getAll())
 
     fun observeSavedIds(): Flow<Set<String>> = savedDao.observeIds().map { it.toSet() }
+
+    fun observeSavedNewestFirst(): Flow<List<String>> = savedDao.observeIdsNewestFirst()
+
+    override fun observeNotes(): Flow<Map<String, String>> =
+        savedDao.observeNotes().map { rows -> rows.associate { it.discoveryId to it.note } }
+
+    override suspend fun saveNote(discoveryId: String, raw: String): Boolean =
+        savedDao.updateNote(discoveryId, NoteRules.normalize(raw)) > 0
 
     suspend fun setSaved(
         discoveryId: String,
