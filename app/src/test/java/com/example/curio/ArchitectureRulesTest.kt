@@ -36,7 +36,7 @@ class ArchitectureRulesTest {
         "ProgressCalculator.kt", "ShakeBonusSelector.kt", "ContentIndex.kt", "TopicProgress.kt",
         "ActivitySnapshot.kt", "Achievement.kt", "AchievementEvaluator.kt", "Sources.kt", "SavedNotes.kt",
         "TreeModels.kt", "TreeBuilder.kt", "TreeExplainer.kt", "TreeSelection.kt", "TreeGrowth.kt",
-        "TreeVisitStore.kt", "TouchQueue.kt", "DwellTracker.kt", "FeedAssembler.kt", "Settings.kt",
+        "TreeVisitStore.kt", "TouchQueue.kt", "DwellTracker.kt", "FeedAssembler.kt", "Settings.kt", "AccentContrast.kt",
         "SourcesBuilder.kt", "FreshFirst.kt", "FeedDateResolver.kt", "BadgeTreeLayout.kt",
     )
 

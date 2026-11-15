@@ -1,6 +1,7 @@
 package com.example.curio.feature.feed
 
 import android.net.Uri
+import com.example.curio.domain.AccentContrast
 import androidx.annotation.OptIn
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -96,7 +97,7 @@ private fun CardScaffold(
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
-    val accent = Color(d.accentColor)
+    val accent = Color(AccentContrast.readable(d.accentColor))
     Box(
         Modifier
             .fillMaxSize()
@@ -178,7 +179,7 @@ private fun CardScaffold(
 private fun Label(text: String) {
     Text(
         text = text,
-        color = Color.White.copy(alpha = 0.75f),
+        color = Color.White.copy(alpha = 0.9f),
         fontSize = 13.sp,
         fontWeight = FontWeight.SemiBold,
         letterSpacing = 2.sp,
@@ -225,10 +226,10 @@ private fun ColumnScope.QuizContent(d: Discovery, onAnswered: () -> Unit) {
     quiz.options.forEachIndexed { i, option ->
         val answered = selected != null
         val target = when {
-            !answered -> Color.White.copy(alpha = 0.18f)
-            i == quiz.correctIndex -> Color(0xFF22C55E)
-            i == selected -> Color(0xFFEF4444)
-            else -> Color.White.copy(alpha = 0.08f)
+            !answered -> Color.Black.copy(alpha = 0.28f)
+            i == quiz.correctIndex -> Color(0xFF15803D)
+            i == selected -> Color(0xFFB91C1C)
+            else -> Color.Black.copy(alpha = 0.18f)
         }
         val bg by animateColorAsState(target, label = "option")
         Box(
@@ -348,7 +349,7 @@ private fun SaveButton(saved: Boolean, onClick: () -> Unit) {
         Icon(
             imageVector = if (saved) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
             contentDescription = contentDesc,
-            tint = if (saved) Color(0xFFFF5A7A) else Color.White,
+            tint = if (saved) Color(0xFFFFA3B5) else Color.White,
             modifier = Modifier.size(36.dp),
         )
     }

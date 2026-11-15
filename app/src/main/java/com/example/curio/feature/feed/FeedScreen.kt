@@ -1,6 +1,8 @@
 package com.example.curio.feature.feed
 
+import android.app.Activity
 import android.content.pm.ApplicationInfo
+import androidx.core.view.WindowCompat
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -39,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -92,6 +95,18 @@ fun FeedScreen(
         else -> null
     }
 
+    val fullBleed = (state as? FeedUiState.Ready)?.readOnly == false
+    val view = LocalView.current
+    DisposableEffect(view, fullBleed) {
+        val window = (view.context as? Activity)?.window
+        val controller = window?.let { WindowCompat.getInsetsController(it, view) }
+        val previous = controller?.isAppearanceLightStatusBars
+        if (fullBleed) controller?.isAppearanceLightStatusBars = false
+        onDispose {
+            if (controller != null && previous != null) controller.isAppearanceLightStatusBars = previous
+        }
+    }
+
     Column(Modifier.fillMaxSize()) {
         if (pastDate != null) {
             PastDayHeader(date = pastDate, onBack = { backDispatcher?.onBackPressed() })
@@ -100,20 +115,20 @@ fun FeedScreen(
             when (val s = state) {
                 FeedUiState.Loading -> Box(Modifier.fillMaxSize(), Alignment.Center) { CircularProgressIndicator() }
                 FeedUiState.NoTheme -> Box(Modifier.fillMaxSize(), Alignment.Center) {
-                    Text(stringResource(R.string.feed_no_theme), color = Color.White)
+                    Text(stringResource(R.string.feed_no_theme), color = MaterialTheme.colorScheme.onBackground)
                 }
                 FeedUiState.NoContent -> Box(Modifier.fillMaxSize(), Alignment.Center) {
-                    Text(stringResource(R.string.feed_no_content), color = Color.White)
+                    Text(stringResource(R.string.feed_no_content), color = MaterialTheme.colorScheme.onBackground)
                 }
                 is FeedUiState.NeedsChoice -> Box(Modifier.fillMaxSize(), Alignment.Center) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(stringResource(R.string.feed_choose_topic), color = Color.White, style = MaterialTheme.typography.titleMedium)
+                        Text(stringResource(R.string.feed_choose_topic), color = MaterialTheme.colorScheme.onBackground, style = MaterialTheme.typography.titleMedium)
                         Spacer(Modifier.height(16.dp))
                         LazyColumn {
                             items(s.topics) { topic ->
                                 Text(
                                     text = topic.title,
-                                    color = Color.White,
+                                    color = MaterialTheme.colorScheme.onBackground,
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .clickable { viewModel.onTopicChosen(topic.id) }
@@ -124,7 +139,7 @@ fun FeedScreen(
                     }
                 }
                 is FeedUiState.PastDayMissing -> Box(Modifier.fillMaxSize(), Alignment.Center) {
-                    Text(stringResource(R.string.feed_past_day_missing), color = Color.White)
+                    Text(stringResource(R.string.feed_past_day_missing), color = MaterialTheme.colorScheme.onBackground)
                 }
                 is FeedUiState.Ready -> {
                     key(s.date, s.topicId) {
@@ -223,7 +238,7 @@ private fun FeedPager(
                             .padding(top = 20.dp, end = 16.dp)
                             .align(Alignment.TopEnd)
                             .clip(RoundedCornerShape(8.dp))
-                            .background(Color(0xFF6366F1))
+                            .background(Color(0xFF4F46E5))
                             .padding(horizontal = 8.dp, vertical = 4.dp),
                     )
                 }

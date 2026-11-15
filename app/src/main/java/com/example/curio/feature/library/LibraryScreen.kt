@@ -37,6 +37,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.curio.R
+import com.example.curio.domain.AccentContrast
 import com.example.curio.domain.Discovery
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -70,7 +71,7 @@ fun LibraryScreen(
             Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(12.dp))
-                .background(Color.White.copy(alpha = 0.1f))
+                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
                 .padding(4.dp)
         ) {
             val tabs = listOf(
@@ -90,9 +91,8 @@ fun LibraryScreen(
                 ) {
                     Text(
                         text = tab,
-                        color = Color.White,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 15.sp,
+                        color = if (selectedTab == i) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.labelLarge,
                     )
                 }
             }
@@ -115,7 +115,7 @@ private fun EmptyState(text: String) {
         Text(
             text = text,
             style = MaterialTheme.typography.bodyLarge,
-            color = Color.Gray,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }
@@ -129,14 +129,13 @@ private fun SavedList(savedCards: List<Discovery>, notes: Map<String, String>, o
                     .fillMaxWidth()
                     .clickable { onCardClick(card.id) },
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(card.accentColor)),
+                colors = CardDefaults.cardColors(containerColor = Color(AccentContrast.readable(card.accentColor))),
             ) {
                 Column(Modifier.padding(20.dp)) {
                     Text(
                         text = card.type.name,
-                        fontSize = 11.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White.copy(alpha = 0.7f),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.White.copy(alpha = 0.9f),
                     )
                     Spacer(Modifier.height(6.dp))
                     Text(
