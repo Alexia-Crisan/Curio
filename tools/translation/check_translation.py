@@ -6,10 +6,19 @@ import sys
 TEXT_FIELDS = ("title", "body", "mediaAlt")
 NAME_FIELDS = ("name", "tagline")
 STOPWORDS = frozenset(
-    "the and of is was were with from that which this its than you your has have not but about would their they".split()
+    (
+        "the and of is was were with from that which this its than you your has have not but about would their they "
+        "oil canvas panel paper ink watercolor watercolour wood stone marble gold silver glass porcelain stoneware glazed "
+        "linen silk cotton copper ivory bronze lithograph graphite charcoal pencil "
+        "overall framed sheet height width depth diameter "
+        "germany france italy netherlands england spain japan greece turkey russia switzerland belgium norway sweden "
+        "denmark ireland scotland poland portugal united britain"
+    ).split()
 )
+PROPER_NAMES = ("Art Institute of Chicago", "Metropolitan Museum of Art")
 FORBIDDEN_LETTERS = frozenset("şţŞŢãÃ")
 NUMBER = re.compile(r"\d+(?:[.,]\d+)*")
+QUOTED = re.compile(r"[\u201e\u201c\u00ab][^\u201e\u201c\u201d\u00bb]*[\u201d\u00bb]")
 WORD = re.compile(r"[^\W\d_]+")
 MAX_TITLE = 200
 MAX_BODY = 1000
@@ -56,9 +65,14 @@ def language_problems(data):
         bad = sorted({c for c in text if c in FORBIDDEN_LETTERS})
         if bad:
             problems.append((owner, where, "cedilla or foreign letters " + "".join(bad) + ", use comma letters ș ț"))
-        words = sorted({w.lower() for w in WORD.findall(text)} & STOPWORDS)
-        if words:
-            problems.append((owner, where, "looks English, found: " + ", ".join(words)))
+        if where != "subcategory.name":
+            outside = text
+            for name in PROPER_NAMES:
+                outside = outside.replace(name, " ")
+            outside = QUOTED.sub(" ", outside)
+            words = sorted({w.lower() for w in WORD.findall(outside)} & STOPWORDS)
+            if words:
+                problems.append((owner, where, "looks English, found: " + ", ".join(words)))
         if text != text.strip():
             problems.append((owner, where, "leading or trailing space"))
         if "  " in text:

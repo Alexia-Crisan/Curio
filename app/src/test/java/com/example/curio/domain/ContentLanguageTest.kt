@@ -30,7 +30,7 @@ class ContentLanguageTest {
         }
         (root["subcategories"] as? JsonArray).orEmpty().forEach { sub ->
             val o = sub as? JsonObject ?: return@forEach
-            o.text("name")?.let { out += Text("${file.name} ${o.text("id")}", "name", it) }
+            o.text("name")?.let { out += Text("${file.name} ${o.text("id")}", "subcategory.name", it) }
         }
         (root["discoveries"] as? JsonArray).orEmpty().forEach { card ->
             val o = card as? JsonObject ?: return@forEach
@@ -61,8 +61,9 @@ class ContentLanguageTest {
 
     @Test
     fun noEnglishFunctionWordsRemain() {
-        val bad = all.mapNotNull { t ->
-            val hits = WORD.findAll(t.value).map { it.value.lowercase() }.filter { it in ENGLISH }.toSortedSet()
+        val bad = all.filter { it.where != "subcategory.name" }.mapNotNull { t ->
+            val outside = QUOTED.replace(PROPER_NAMES.fold(t.value) { acc, name -> acc.replace(name, " ") }, " ")
+            val hits = WORD.findAll(outside).map { it.value.lowercase() }.filter { it in ENGLISH }.toSortedSet()
             if (hits.isEmpty()) null else "${t.owner} | ${t.where} | ${hits.joinToString(", ")}"
         }
         assertTrue("Text that looks English (content is Romanian):\n" + bad.joinToString("\n"), bad.isEmpty())
@@ -82,10 +83,16 @@ class ContentLanguageTest {
     private companion object {
         val FORBIDDEN = setOf('ş', 'ţ', 'Ş', 'Ţ', 'ã', 'Ã')
         val WORD = Regex("[\\p{L}]+")
-        val ENGLISH = setOf(
-            "the", "and", "of", "is", "was", "were", "with", "from", "that", "which", "this", "its",
-            "than", "you", "your", "has", "have", "not", "but", "about", "would", "their", "they",
-        )
+        val PROPER_NAMES = listOf("Art Institute of Chicago", "Metropolitan Museum of Art")
+        val QUOTED = Regex("[\\u201E\\u201C\\u00AB][^\\u201E\\u201C\\u201D\\u00BB]*[\\u201D\\u00BB]")
+        val ENGLISH = (
+            "the and of is was were with from that which this its than you your has have not but about would their they " +
+                "oil canvas panel paper ink watercolor watercolour wood stone marble gold silver glass porcelain stoneware glazed " +
+                "linen silk cotton copper ivory bronze lithograph graphite charcoal pencil " +
+                "overall framed sheet height width depth diameter " +
+                "germany france italy netherlands england spain japan greece turkey russia switzerland belgium norway sweden " +
+                "denmark ireland scotland poland portugal united britain"
+            ).split(" ").toSet()
         val SHIPPED_SPACE_IDS = listOf(
             "space.mars.fact.01", "space.mars.fact.02", "space.mars.quiz.01", "space.mars.fact.03", "space.mars.fact.04", "space.mars.know.01",
             "space.moon.fact.01", "space.moon.fact.02", "space.moon.quiz.01", "space.moon.fact.03", "space.moon.fact.04", "space.moon.know.01",

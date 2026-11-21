@@ -137,6 +137,37 @@ class CheckTranslationTest(unittest.TestCase):
         self.assertIn("leading or trailing space", found)
         self.assertIn("double space", found)
 
+    def test_english_inside_quotation_marks_is_a_title_and_is_left_alone(self):
+        ro = copy.deepcopy(ROMANIAN)
+        ro["discoveries"][0]["title"] = "\u201eThe Interior of the Palm House\u201d este o lucrare de Carl Blechen."
+        ro["discoveries"][0]["body"] = "Lucrarea \u201eA Sunday on the Island\u201d are 40 de minute, 24 de ore, 39 de minute, 35 de secunde."
+        self.assertEqual([], problems(None, ro))
+        ro["discoveries"][0]["title"] = "\u201eThe Palm House\u201d este made of oil on canvas."
+        found = messages(problems(None, ro))
+        self.assertTrue(any("looks English" in m and "oil" in m for m in found))
+
+    def test_museum_terms_left_in_english_are_reported(self):
+        ro = copy.deepcopy(ROMANIAN)
+        ro["discoveries"][0]["body"] = "Tehnica: Oil on canvas. Proveniența: Germany."
+        found = [m for m in messages(problems(None, ro)) if "looks English" in m]
+        self.assertEqual(1, len(found))
+        self.assertIn("canvas", found[0])
+        self.assertIn("germany", found[0])
+
+    def test_museum_names_are_proper_names_and_are_left_alone(self):
+        ro = copy.deepcopy(ROMANIAN)
+        ro["discoveries"][0]["body"] = "Sursa informației: Metropolitan Museum of Art și Art Institute of Chicago."
+        self.assertEqual([], problems(None, ro))
+        ro["discoveries"][0]["body"] = "Sursa informației: Museum of Modern Art."
+        self.assertTrue(any("looks English" in m for m in messages(problems(None, ro))))
+
+    def test_a_topic_name_may_be_an_english_artwork_title_but_not_use_cedilla(self):
+        ro = copy.deepcopy(ROMANIAN)
+        ro["subcategories"][0]["name"] = "The Interior of the Palm House"
+        self.assertEqual([], [p for p in problems(None, ro) if p[1] == "subcategory.name"])
+        ro["subcategories"][0]["name"] = "Palm House \u015f"
+        self.assertTrue(any(w == "subcategory.name" for _, w, _ in problems(None, ro)))
+
     def test_a_file_saved_with_a_byte_order_mark_still_loads(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = os.path.join(tmp, "en.json")

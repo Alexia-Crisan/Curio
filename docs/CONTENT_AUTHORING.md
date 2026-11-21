@@ -154,5 +154,5 @@ All card text is Romanian, with comma diacritics (ș, ț, ă, â, î) and never 
 
     python tools/translation/check_translation.py --romanian app/src/main/assets/content/<theme>.json
 
-It reports cedilla letters, English words, titles over 200 characters and bodies over 1000 characters. When you translate an existing file, add `--english <path to the old English copy>` to also check that ids, card order, sources, quiz answer positions and numbers did not change. `ContentLanguageTest` runs the cedilla and English-word checks on every file in `assets/content` with the normal unit tests.
+It reports cedilla letters, English words, museum terms left in English (oil, canvas, Germany and similar), titles over 200 characters and bodies over 1000 characters. Text inside quotation marks (artwork titles), topic names and the two museum names in `PROPER_NAMES` are not checked for English words; to allow another museum name, add it to `PROPER_NAMES` in both the checker and `ContentLanguageTest`. When you translate an existing file, add `--english <path to the old English copy>` to also check that ids, card order, sources, quiz answer positions and numbers did not change. `ContentLanguageTest` runs the cedilla and English-word checks on every file in `assets/content` with the normal unit tests.
 
