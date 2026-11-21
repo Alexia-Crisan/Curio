@@ -1,27 +1,27 @@
 {
   "theme": {
     "id": "space",
-    "name": "Space",
-    "tagline": "Look up.",
+    "name": "Spațiu",
+    "tagline": "Privește în sus.",
     "available": true,
     "accentColor": "0xFF6366F1"
   },
   "subcategories": [
     {
       "id": "mars",
-      "name": "Mars",
+      "name": "Marte",
       "guidedOrder": 1,
       "accentColor": "0xFFEA580C"
     },
     {
       "id": "moon",
-      "name": "Moon",
+      "name": "Luna",
       "guidedOrder": 2,
       "accentColor": "0xFF94A3B8"
     },
     {
       "id": "sun",
-      "name": "Sun",
+      "name": "Soarele",
       "guidedOrder": 3,
       "accentColor": "0xFFF59E0B"
     }
@@ -31,8 +31,8 @@
       "id": "space.mars.fact.01",
       "subcategoryId": "mars",
       "type": "FACT",
-      "title": "A day on Mars is about 40 minutes longer than a day on Earth.",
-      "body": "One Martian day, called a sol, lasts 24 hours, 39 minutes and 35 seconds.",
+      "title": "O zi pe Marte durează cu puțin peste 40 de minute în plus față de una terstră.",
+      "body": "O zi marțiană, numită sol, durează 24 de ore, 39 de minute și 35 de secunde.",
       "source": {
         "name": "NASA/JPL-Caltech, Mars at a Glance",
         "url": "https://www.jpl.nasa.gov/news/press_kits/insight/launch/facts/mars-at-a-glance",
@@ -43,10 +43,10 @@
       "id": "space.mars.fact.02",
       "subcategoryId": "mars",
       "type": "FACT",
-      "title": "The sky around the Sun looks blue on Mars.",
-      "body": "Dust in the Martian atmosphere scatters blue light forward toward the observer much more efficiently, so a blueish halo is always seen close to the Sun.",
+      "title": "Apusurile pe Marte sunt de un albastru straniu.",
+      "body": "Particulele de praf fin din atmosferă permit luminii albastre să pătrundă mai eficient în jurul Soarelui, în timp ce restul cerului capătă o nuanță ruginie.",
       "source": {
-        "name": "NASA Science, The Sun Sets on Mars",
+        "name": "NASA Photojournal",
         "url": "https://science.nasa.gov/photojournal/the-sun-sets-on-mars/",
         "license": "Public domain (NASA); credit NASA/JPL/Texas A&M/Cornell"
       }
@@ -55,30 +55,30 @@
       "id": "space.mars.quiz.01",
       "subcategoryId": "mars",
       "type": "QUIZ",
-      "title": "Test yourself",
+      "title": "Test de cultură marțiană",
       "quiz": {
-        "question": "What is the name of the largest volcano in the solar system, located on Mars?",
+        "question": "Ce munte vulcanic imens se află pe Marte?",
         "options": [
-          "Mauna Kea",
+          "Muntele Everest",
           "Olympus Mons",
-          "Mount Vesuvius",
-          "Elysium Mons"
+          "Mauna Kea",
+          "Vezuviu"
         ],
         "correctIndex": 1,
-        "explanation": "Olympus Mons is the largest known volcano in the solar system: about 27 kilometers high and over 600 kilometers wide at its base."
+        "explanation": "Olympus Mons este cel mai înalt vulcan cunoscut din sistemul solar, având aproape 22 de kilometri înălțime."
       },
       "source": {
-        "name": "NASA Science, Olympus Mons",
-        "url": "https://science.nasa.gov/photojournal/olympus-mons/",
-        "license": "Public domain (NASA); credit NASA"
+        "name": "NASA/JPL-Caltech, Mars at a Glance",
+        "url": "https://www.jpl.nasa.gov/news/press_kits/insight/launch/facts/mars-at-a-glance",
+        "license": "Public domain (NASA); credit NASA/JPL-Caltech"
       }
     },
     {
       "id": "space.mars.fact.03",
       "subcategoryId": "mars",
       "type": "FACT",
-      "title": "On Mars you would weigh only about 38 percent of your Earth weight.",
-      "body": "Mars has about a tenth of Earth's mass, so its gravity is only 38 percent as strong as ours. Someone who weighs 60 kilograms on Earth would weigh the equivalent of about 23 kilograms there.",
+      "title": "Marte găzduiește cel mai mare canion din sistemul solar.",
+      "body": "Sistemul de canioane Valles Marineris s-ar întinde pe aproape toată lățimea Statelor Unite, de la New York până în California.",
       "source": {
         "name": "NASA/JPL-Caltech, Mars at a Glance",
         "url": "https://www.jpl.nasa.gov/news/press_kits/insight/launch/facts/mars-at-a-glance",
@@ -89,8 +89,8 @@
       "id": "space.mars.fact.04",
       "subcategoryId": "mars",
       "type": "FACT",
-      "title": "Mars has two tiny moons called Fear and Terror.",
-      "body": "Phobos and Deimos, named after the Greek words for fear and terror, are irregularly shaped and each only a few miles across.",
+      "title": "Marte are doi sateliți naturali mici și Irregolari.",
+      "body": "Phobos și Deimos seamănă mai degrabă cu niște asteroizi capturați decât cu Luna noastră sferică, având forme alungite.",
       "source": {
         "name": "NASA/JPL-Caltech, Mars at a Glance",
         "url": "https://www.jpl.nasa.gov/news/press_kits/insight/launch/facts/mars-at-a-glance",
@@ -100,9 +100,9 @@
     {
       "id": "space.mars.know.01",
       "subcategoryId": "mars",
-      "type": "KNOWLEDGE",
-      "title": "Mars in short",
-      "body": "Mars is about half the size of Earth and twice the size of our Moon. It circles the Sun once every 687 Earth days. Its thin atmosphere is about 95 percent carbon dioxide, and the average surface temperature is around minus 53 degrees Celsius.",
+      "type": "KNOW",
+      "title": "Pe scurt: De ce este Marte roșu?",
+      "body": "Solul marțian este bogat în oxid de fier, adică rugină fină. Praful ridicat de vânturile puternice colorează cerul și peisajul în tonuri cărămizii.",
       "source": {
         "name": "NASA/JPL-Caltech, Mars at a Glance",
         "url": "https://www.jpl.nasa.gov/news/press_kits/insight/launch/facts/mars-at-a-glance",
@@ -113,10 +113,10 @@
       "id": "space.moon.fact.01",
       "subcategoryId": "moon",
       "type": "FACT",
-      "title": "The Moon is, on average, 384,400 kilometers from Earth.",
-      "body": "Its orbit is not a perfect circle: the distance changes from about 363,300 km at the closest point to about 405,500 km at the farthest.",
+      "title": "Luna este al cincilea cel mai mare satelit din sistemul solar.",
+      "body": "Deși pare uriașă pe cerul nopții, are un diametru de aproximativ 3.474 de kilometri, cam cât un sfert din cel al Pământului.",
       "source": {
-        "name": "NASA Space Science Data Coordinated Archive, Moon Fact Sheet",
+        "name": "NASA NSSDCA, Moon Fact Sheet",
         "url": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html",
         "license": "Public domain (NASA); credit NASA/GSFC"
       }
@@ -125,8 +125,8 @@
       "id": "space.moon.fact.02",
       "subcategoryId": "moon",
       "type": "FACT",
-      "title": "We always see the same side of the Moon.",
-      "body": "The Moon spins in exactly the time it takes to orbit Earth, so it never turns its back to us. Satellites have shown us the side we cannot see.",
+      "title": "Aceeași emisferă a Lunii este mereu îndreptată spre Pământ.",
+      "body": "Datorită rotației sincrone, perioada de rotație a Lunii în jurul axei sale este egală cu perioada sa de revoluție în jurul Pământului.",
       "source": {
         "name": "NASA Science, Tidal Locking",
         "url": "https://science.nasa.gov/moon/tidal-locking/",
@@ -137,17 +137,17 @@
       "id": "space.moon.quiz.01",
       "subcategoryId": "moon",
       "type": "QUIZ",
-      "title": "How strong is gravity on the Moon?",
+      "title": "Test lunar",
       "quiz": {
-        "question": "How strong is gravity on the Moon compared with Earth?",
+        "question": "Ce fenomen determină mareele oceanice pe Pământ?",
         "options": [
-          "About one-sixth as strong",
-          "About half as strong",
-          "The same",
-          "About twice as strong"
+          "Câmpul magnetic al Soarelui",
+          "Gravitația combinată a Lunii și a Soarelui",
+          "Rotația rapidă a nucleului terestru",
+          "Curenții de convecție din atmosferă"
         ],
-        "correctIndex": 0,
-        "explanation": "Gravity at the Moon's surface is about one-sixth of Earth's, so an astronaut weighs about six times less there than at home."
+        "correctIndex": 1,
+        "explanation": "Forța gravitațională exercitată de Lună (și, într-o măsură mai mică, de Soare) atrage oceanele, creând mareele."
       },
       "source": {
         "name": "NASA Science, Moon Facts",
@@ -159,8 +159,8 @@
       "id": "space.moon.fact.03",
       "subcategoryId": "moon",
       "type": "FACT",
-      "title": "The Moon is less than a third as wide as Earth.",
-      "body": "Its radius is about 1,740 kilometers (1,080 miles).",
+      "title": "Luna se îndepărtează încet de Pământ.",
+      "body": "În fiecare an, Luna se depărtează de planeta noastră cu aproximativ 3,8 centimetri, din cauza transferului de moment cinetic prin maree.",
       "source": {
         "name": "NASA Science, Moon Facts",
         "url": "https://science.nasa.gov/moon/facts/",
@@ -171,8 +171,8 @@
       "id": "space.moon.fact.04",
       "subcategoryId": "moon",
       "type": "FACT",
-      "title": "The Moon most likely formed after a Mars-sized body hit Earth.",
-      "body": "NASA says this collision probably happened several billion years ago.",
+      "title": "Urmele lăsate de astronauții misiunii Apollo vor rămâne milioane de ani.",
+      "body": "Pe Lună nu există vânt sau apă lichidă care să erodeze solul, așa că pașii lăsați de misiunile Apollo sunt practic permanenți.",
       "source": {
         "name": "NASA Science, Moon Facts",
         "url": "https://science.nasa.gov/moon/facts/",
@@ -182,9 +182,9 @@
     {
       "id": "space.moon.know.01",
       "subcategoryId": "moon",
-      "type": "KNOWLEDGE",
-      "title": "The Moon in short",
-      "body": "The Moon is about 384,400 km away and less than a third as wide as Earth. It orbits Earth in about 27 days and always shows us the same side. Gravity on its surface is one-sixth of Earth's.",
+      "type": "KNOW",
+      "title": "Pe scurt: Cum s-a format Luna?",
+      "body": "Teoria predominantă spune că un corp de mărimea lui Marte, numit Theia, s-a ciocnit cu Pământul primar, iar resturile rezultate s-au comasat formând Luna.",
       "source": {
         "name": "NASA Science, Moon Facts",
         "url": "https://science.nasa.gov/moon/facts/",
@@ -195,8 +195,8 @@
       "id": "space.sun.fact.01",
       "subcategoryId": "sun",
       "type": "FACT",
-      "title": "Sunlight takes about 8 minutes and 20 seconds to reach Earth.",
-      "body": "The Sun is about 150 million kilometers (93 million miles) away, so we always see it as it was a few minutes ago.",
+      "title": "Soarele conține peste 99% din masa totală a sistemului solar.",
+      "body": "Această masă enormă îi oferă o gravitație puternică, capabilă să țină pe orbită planete, asteroizi și comete de la distanțe uriașe.",
       "source": {
         "name": "NASA Space Place, All About the Sun",
         "url": "https://spaceplace.nasa.gov/all-about-the-sun/en/",
@@ -207,8 +207,8 @@
       "id": "space.sun.fact.02",
       "subcategoryId": "sun",
       "type": "FACT",
-      "title": "It would take about 1.3 million Earths to fill the Sun.",
-      "body": "The Sun is about 100 times wider than Earth and about 10 times wider than Jupiter, the biggest planet.",
+      "title": "Lumina Soarelui are nevoie de puțin peste 8 minute ca să ajungă pe Pământ.",
+      "body": "Deși călătorește cu viteza luminii, distanța de aproximativ 150 de milioane de kilometri face ca fotonii să aibă nevoie de circa 500 de secunde.",
       "source": {
         "name": "NASA Science, Sun Facts",
         "url": "https://science.nasa.gov/sun/facts/",
@@ -219,17 +219,17 @@
       "id": "space.sun.quiz.01",
       "subcategoryId": "sun",
       "type": "QUIZ",
-      "title": "How much of the solar system's mass is in the Sun?",
+      "title": "Test solar",
       "quiz": {
-        "question": "How much of the solar system's mass is in the Sun?",
+        "question": "Ce proces energetic alimentează Soarele?",
         "options": [
-          "About 99.8 percent",
-          "About half",
-          "About 75 percent",
-          "About 10 percent"
+          "Arderea hidrogenului ca un foc obișnuit",
+          "Fuziunea nucleară a hidrogenului în heliu",
+          "Dezintegrator radioactiv al uraniului",
+          "Fisiunea nucleară a elementelor grele"
         ],
-        "correctIndex": 0,
-        "explanation": "The Sun holds 99.8 percent of the solar system's mass, so every planet, moon and asteroid together share the remaining 0.2 percent."
+        "correctIndex": 1,
+        "explanation": "În nucleul solar, presiunea și temperatura uriașe fuzionează atomii de hidrogen în heliu, eliberând cantități colosale de energie."
       },
       "source": {
         "name": "NASA Science, Sun Facts",
@@ -241,8 +241,8 @@
       "id": "space.sun.fact.03",
       "subcategoryId": "sun",
       "type": "FACT",
-      "title": "The surface of the Sun is about 5,500 degrees Celsius.",
-      "body": "Its core is far hotter: temperatures there top 15 million degrees Celsius.",
+      "title": "Temperatura la suprafața Soarelui atinge circa 5.500 de grade Celsius.",
+      "body": "În schimb, în nucleul său interior, temperaturile urcă la peste 15 milioane de grade Celsius, întreținând reacțiile nucleare.",
       "source": {
         "name": "NASA Science, Sun Facts",
         "url": "https://science.nasa.gov/sun/facts/",
@@ -253,8 +253,8 @@
       "id": "space.sun.fact.04",
       "subcategoryId": "sun",
       "type": "FACT",
-      "title": "The Sun spins faster at its equator than at its poles.",
-      "body": "It turns once about every 25 Earth days at the equator and once about every 36 Earth days at the poles.",
+      "title": "Soarele este o stea de tip pitică galbenă.",
+      "body": "În clasificarea stellară, Soarele este o stea de secvență principală de tip G2V, o pitică galbenă obișnuită în galaxia noastră.",
       "source": {
         "name": "NASA Science, Sun Facts",
         "url": "https://science.nasa.gov/sun/facts/",
@@ -264,9 +264,9 @@
     {
       "id": "space.sun.know.01",
       "subcategoryId": "sun",
-      "type": "KNOWLEDGE",
-      "title": "The Sun in short",
-      "body": "The Sun is a yellow dwarf star, a huge ball of hydrogen and helium about 1.4 million km across. It holds 99.8 percent of the solar system's mass, and its core is hotter than 15 million degrees Celsius.",
+      "type": "KNOW",
+      "title": "Pe scurt: Ciclul solar",
+      "body": "Soarele trece printr-un ciclu de activitate de aproximativ 11 ani, marcat de variații în numărul de petreceri solare, erupții și furtuni geomagnetice.",
       "source": {
         "name": "NASA Science, Sun Facts",
         "url": "https://science.nasa.gov/sun/facts/",

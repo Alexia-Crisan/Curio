@@ -147,3 +147,12 @@ The unit test `DatasetValidationTest` enforces the following rules on the datase
 - Create a topic branch: `git checkout -b a/content-<theme>`
 - Commit only JSON changes and media files.
 - Review changes before merging to `main`.
+
+## Language
+
+All card text is Romanian, with comma diacritics (ș, ț, ă, â, î) and never cedilla letters (ş, ţ). Source names and licences stay in the language of the source. Before a pull request that adds or changes content, run:
+
+    python tools/translation/check_translation.py --romanian app/src/main/assets/content/<theme>.json
+
+It reports cedilla letters, English words, titles over 200 characters and bodies over 1000 characters. When you translate an existing file, add `--english <path to the old English copy>` to also check that ids, card order, sources, quiz answer positions and numbers did not change. `ContentLanguageTest` runs the cedilla and English-word checks on every file in `assets/content` with the normal unit tests.
+
