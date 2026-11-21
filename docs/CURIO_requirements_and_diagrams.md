@@ -7,7 +7,7 @@ This document outlines the complete project specifications, feature set, user pa
 # 1. Project Specifications
 
 ## 1.1 Project Description
-Curio is an offline-first Android application that delivers a daily curated educational feed in a modern vertical pager format (one discovery card at a time). Users select a theme (e.g., Space, Animals) and a daily delivery mode (Guided, Surprise, or Choose). Each day, the app presents a structured sequence of discoveries for that day's topic. A discovery card is marked complete after 3 seconds on screen, when opened in Detail, or when bookmarked. A day is completed when all 6 discoveries of its topic are completed in the feed.
+Curio is an offline-first Android application that delivers a daily curated educational feed in a modern vertical pager format (one discovery card at a time). Users select a theme (e.g., Space, Art) and a daily delivery mode (Guided, Surprise, or Choose). Each day, the app presents a structured sequence of discoveries for that day's topic. A discovery card is marked complete after 3 seconds on screen, when opened in Detail, or when bookmarked. A day is completed when all 6 discoveries of its topic are completed in the feed.
 
 Curio rewards consistent learning through a month progress calendar, unlockable badges (Achievements), and an interactive Knowledge Tree that grows through six stages (Seed, Sprout, Sapling, Tree, Mature, Bloom) based on accumulated discoveries. Shaking the device provides bonus discovery cards (capped at 3 per day). All content is bundled locally, ensuring full offline capability from first launch.
 
@@ -21,12 +21,13 @@ Curio rewards consistent learning through a month progress calendar, unlockable 
 
 ## 1.2 Features (Screens and Capabilities)
 1. **Onboarding**: Theme selector and daily mode picker (Guided, Surprise, Choose).
-2. **Feed (Home)**: Vertical discovery pager, detail view, bookmarking, shake bonus cards, end card with tree growth teaser, and achievement unlock banners.
-3. **Card Detail**: Full article text, "Pe scurt" knowledge summary, publisher source, and licence attribution.
+2. **Feed (Home)**: Vertical discovery pager, detail view, bookmarking with personal notes, shake bonus cards, end card with tree growth teaser, and achievement unlock banners.
+3. **Card Detail**: Full article text, "Pe scurt" knowledge summary, personal note editor (`NoteSection`), publisher source, and licence attribution.
 4. **Calendar (Progress)**: Month grid tracking completed days, with tap-to-open read-only past-day feeds (`FeedDay`).
 5. **Achievements**: Grid of unlocked and locked badges with detailed progress and unlock timestamps.
 6. **Knowledge Tree**: Theme tree progress, topic branch states (Locked, Seeded, Growing, Complete), and landmark discovery exploration.
 7. **Settings**: Theme and daily mode switching, sources and licences review, and progress reset.
+8. **Library**: Saved cards (newest first, displaying personal notes under titles) and view history grouped by day.
 
 ```mermaid
 mindmap
@@ -38,9 +39,12 @@ mindmap
       Topic of the day
       Swipe cards
       Card detail
-      Save card
+      Save card & note
       Shake bonus card
       End card with tree teaser
+    Library
+      Saved cards with notes
+      View history
     Calendar
       Month progress
       Past day read-only
@@ -70,12 +74,14 @@ journey
     Open feed with topic of the day: 5: Learner
     Swipe through cards: 5: Learner
     Open a card detail: 4: Learner
+    Save card and add note: 5: Learner
     Shake for a bonus card: 5: Learner
   section Progress
     See the day completed on the calendar: 5: Learner
     Unlock a badge: 5: Learner
     Watch the knowledge tree grow: 5: Learner
   section Maintenance
+    Check saved notes in Library: 5: Learner
     Check sources: 3: Learner
     Reset progress: 2: Learner
 ```
@@ -93,10 +99,11 @@ journey
 - **US10**: As a learner, I can see the sources and licences of the content so that I trust it.
 - **US11**: As a learner, I can reset my progress so that I can start again.
 - **US12**: As a learner, I can use the whole app offline so that I can learn anywhere.
+- **US13**: As a learner, I can write, edit, and delete a personal note on any saved card so that I can record my reflections.
 
 **Requirements Summary:**
-- **Functional**: FR1 (Daily topic selection by mode with Surprise yesterday avoidance); FR2 (Card completion after 3s, Detail opened, or saved); FR3 (Day completion by topic feed cards); FR4 (Achievement evaluation from snapshot); FR5 (Knowledge tree branch states and growth stages); FR6 (Shake bonus cards capped at 3 per day).
-- **Non-Functional**: NFR1 (Offline-first local bundled content); NFR2 (Deterministic topic selection); NFR3 (Pure Kotlin domain logic testable without Android); NFR4 (Exported Room database schema).
+- **Functional**: FR1 (Daily topic selection by mode with Surprise yesterday avoidance); FR2 (Card completion after 3s, Detail opened, or saved); FR3 (Day completion by topic feed cards); FR4 (Achievement evaluation from snapshot); FR5 (Knowledge tree branch states and growth stages); FR6 (Shake bonus cards capped at 3 per day); FR7 (Personal notes up to `NoteRules.MAX_LENGTH` characters).
+- **Non-Functional**: NFR1 (Offline-first local bundled content); NFR2 (Deterministic topic selection); NFR3 (Pure Kotlin domain logic testable without Android); NFR4 (Exported Room database schema version 2 with tested migration 1 to 2).
 
 ## 1.4 Mock-ups / Wireframes (PlantUML Salt)
 
@@ -108,8 +115,7 @@ journey
     ----
     Choose a theme
     (X) Space
-    () Animals
-    () History
+    () Art
     ----
     Daily mode
     (X) Guided
@@ -148,12 +154,34 @@ journey
 - **Language**: Kotlin 2.0+
 - **UI Framework**: Jetpack Compose, Material 3 (Lagoon design system)
 - **Navigation**: Navigation Compose (typed routes with kotlinx.serialization)
-- **Local Database**: Room (SQLite) with exported schema (`version = 1`)
+- **Local Database**: Room (SQLite) with exported schema (`version = 2`)
 - **Settings Store**: DataStore Preferences
 - **Concurrency**: Kotlin Coroutines & Flows
 - **Dependency Injection**: Manual `AppContainer`
 - **Time & Platform**: `java.time.Clock` (injected), Android Sensor API (Accelerometer for shake detection)
 - **Testing**: JUnit 4, Kotlin Coroutines Test, AndroidX Test (Room migration / instrumented tests)
+
+## 1.6 Content pipeline
+Content is bundled locally and processed through an ingest and validation pipeline. Card text comes from human-written templates and museum records, with no language model generating or summarising content. Only public-domain works with allow-listed licences are accepted, and every statement is manually verified against museum pages. Automated tests (`ContentAssetsTest`, `ContentLanguageTest`, and `tools/translation/check_translation.py`) enforce structural integrity, ids, order, sources, quiz positions, numbers, and language standards (comma diacritics and no English leftovers).
+
+```plantuml
+@startuml
+skinparam shadowing false
+start
+:fetch\nmuseum records for public-domain works\n(Art Institute of Chicago, the Met);
+:build\n6 cards per record from a template\nwritten by a human, no language model;
+:images\ndownload the original image;
+:review\na human checks every statement against the museum page,\ntranslates the museum's values to Romanian,\nshrinks the image, writes the alt text, sets status approved;
+if (licence on the allow-list,\nreviewer set, no warnings?) then (yes)
+  :promote --write\nassets/content/<theme>.json;
+else (no)
+  :refused with the reason printed;
+  stop
+endif
+:ContentAssetsTest and ContentLanguageTest;
+stop
+@enduml
+```
 
 ---
 
@@ -187,6 +215,7 @@ rectangle "Curio (offline-first Android app)" {
   usecase "Evaluate achievements" as UC15
   usecase "Show unlock banner" as UC16
   usecase "Show tree growth teaser" as UC17
+  usecase "Write a note on\na saved card" as UC18
 }
 
 U --> UC1
@@ -210,6 +239,7 @@ UC16 .up.> UC15 : <<extend>>\n[badge earned]
 UC17 .up.> UC2 : <<extend>>\n[end of feed]
 UC7 ..> UC6 : <<include>>
 UC12 .up.> UC10 : <<extend>>\n[learner confirms]
+UC18 .up.> UC4 : <<extend>>\n[card is saved]
 @enduml
 ```
 
@@ -319,7 +349,7 @@ repeat
     :Evaluate achievements;
   else (no)
     :Mark card skipped;
-  endif
+  fi
 repeat while (More cards?) is (yes)
 ->no;
 if (All cards completed?) then (yes)
@@ -412,6 +442,7 @@ class DayChoice {
 class SavedDiscovery {
   +discoveryId: String
   +savedAt: Long
+  +note: String? [0..1]
 }
 class AchievementUnlock {
   +achievementId: String
@@ -443,6 +474,16 @@ class FeedViewModel {
   +onPageSettled(index)
   +onShake()
 }
+class NoteRules <<object>> {
+  +MAX_LENGTH: Int
+  +normalize(raw): String?
+}
+package "Content" {
+  class ContentLoader {
+  }
+  class ContentIndex {
+  }
+}
 
 Theme "1" *-- "many" Topic
 Topic "1" o-- "many" Discovery
@@ -463,6 +504,10 @@ ProgressCalculator ..> DayChoice
 FeedViewModel ..> TopicSelector
 FeedViewModel ..> TreeBuilder
 FeedViewModel ..> AchievementEvaluator
+SavedDiscovery ..> NoteRules : note validated by
+ContentLoader ..> ContentIndex : creates
+ContentIndex "1" o-- "many" Theme
+note right of SavedDiscovery : Room table saved_discovery,\ndatabase version 2
 @enduml
 ```
 
@@ -477,6 +522,7 @@ package "UI Layer (Jetpack Compose, Material 3)" {
   [ProgressScreen] as CAL
   [AchievementsScreen] as ACH
   [SettingsScreen] as SET
+  [LibraryScreen] as LIB
   [Navigation (CurioNavHost)] as NAV
 }
 package "Presentation Layer" {
@@ -485,6 +531,7 @@ package "Presentation Layer" {
   [ProgressViewModel] as PVM
   [AchievementsViewModel] as AVM
   [SettingsViewModel] as SVM
+  [LibraryViewModel] as LVM
 }
 package "Domain Layer (Pure Kotlin)" {
   [TopicSelector] as TS
@@ -498,7 +545,8 @@ package "Data Layer" {
   [Repositories] as REPO
   database "Room (SQLite)" as ROOM
   database "Preferences DataStore" as DS
-  [Bundled Content JSON] as CONTENT
+  [Bundled Content JSON + assets] as CONTENT
+  [ContentLoader] as LOADER
 }
 [AppContainer] as DI
 [Accelerometer Sensor] as SENS
@@ -509,11 +557,13 @@ NAV --> DETAIL
 NAV --> CAL
 NAV --> ACH
 NAV --> SET
+NAV --> LIB
 FEED --> FVM
 DETAIL --> DVM
 CAL --> PVM
 ACH --> AVM
 SET --> SVM
+LVM --> REPO
 SENS --> FVM
 FVM --> TS
 FVM --> DW
@@ -528,7 +578,8 @@ SVM --> REPO
 REPO --> PC
 REPO --> ROOM
 REPO --> DS
-REPO --> CONTENT
+REPO --> LOADER
+LOADER --> CONTENT : reads assets/content/*.json
 DI ..> REPO : provides
 DI ..> FVM : provides
 @enduml
@@ -570,10 +621,22 @@ fun surprise(date: LocalDate, themeId: String, topicIds: List<String>, avoidTopi
 }
 ```
 
+**Note Normalisation Rule (`NoteRules`):**
+```kotlin
+fun normalize(raw: String): String? {
+    val trimmed = raw.trim()
+    if (trimmed.isEmpty()) return null
+    if (trimmed.length <= MAX_LENGTH) return trimmed
+    var end = MAX_LENGTH
+    if (Character.isHighSurrogate(trimmed[end - 1])) end -= 1
+    return trimmed.substring(0, end).trimEnd().ifEmpty { null }
+}
+```
+
 ---
 
 # 4. Handover Checklist
 - [x] Project specifications and user journey defined.
 - [x] PlantUML and Mermaid architectural diagrams updated.
 - [x] Core domain rules and pseudocode documented.
-- [x] All 495 unit tests passing successfully.
+- [x] All 624 unit tests passing successfully.

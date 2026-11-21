@@ -9,12 +9,12 @@
 5. Turn on Airplane Mode. Ensure Battery Saver is off and system animations are enabled.
 6. Note: Fresh-first ordering only shows on a revisit, so the `almost_there` preset (which never revisits today's topic) shows dataset order; this is expected behavior.
 
-## 2. Scene 1: Daily Feed (2 min)
-1. Open the Feed tab.
-2. Swipe through the six discovery cards for today's topic.
-3. Pause on card 1 for at least 4 seconds without swiping away.
-4. Switch to the Progress tab to demonstrate that the card counted live while viewing (1/6).
-5. Note: with the `almost_there` preset the Progress calendar has four past days with records; tap one to show the read-only banner.
+## 2. Scene 1: Daily Feed & Personal Notes (2 min)
+1. Open the Feed tab and open any card detail view.
+2. Tap "Adaugă o notiță" (Add a note), type a reflection in the dialog, and press "Salvează" (Save).
+3. Observe the note appearing under the "Notița ta" (Your note) heading on the Detail screen and in the Library tab under the card title.
+4. Tap "Editează notița" (Edit note), modify or clear the text (leaving empty to remove), and save.
+5. Optional: open Android Studio App Inspection -> `curio.db` -> `saved_discovery` table to watch the `note` column update live.
 
 ## 3. Scene 2: Achievement Unlock (2 min)
 1. Return to the Feed tab and view the remaining cards to complete today's topic (card 25 total).
@@ -28,11 +28,10 @@
 3. Observe a 7th bonus card appearing at the end of today's feed with a "Revisit" badge if previously viewed.
 4. Show that completing the bonus card does not inflate daily completed day counts.
 
-## 5. Scene 4: Knowledge Tree (2 min)
+## 5. Scene 4: Knowledge Tree & Art Theme (2 min)
 1. Open the Progress tab and tap "Open tree" on the Knowledge Tree card.
 2. Tap a branch node to inspect its explanation sheet (showing progress, state, and next steps).
-3. Tap a locked leaf to verify that no title is revealed.
-4. Tap a completed leaf and press "Read again" to open its Detail view.
+3. Navigate to Settings, tap "Tema" (Theme), and switch to the Art theme to explore curated masterpieces.
 
 ## 6. Scene 5: Trust and Privacy (1 min)
 1. Open the Settings tab.
