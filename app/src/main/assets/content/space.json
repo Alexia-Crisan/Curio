@@ -100,7 +100,7 @@
     {
       "id": "space.mars.know.01",
       "subcategoryId": "mars",
-      "type": "KNOW",
+      "type": "KNOWLEDGE",
       "title": "Pe scurt: De ce este Marte roșu?",
       "body": "Solul marțian este bogat în oxid de fier, adică rugină fină. Praful ridicat de vânturile puternice colorează cerul și peisajul în tonuri cărămizii.",
       "source": {
@@ -182,7 +182,7 @@
     {
       "id": "space.moon.know.01",
       "subcategoryId": "moon",
-      "type": "KNOW",
+      "type": "KNOWLEDGE",
       "title": "Pe scurt: Cum s-a format Luna?",
       "body": "Teoria predominantă spune că un corp de mărimea lui Marte, numit Theia, s-a ciocnit cu Pământul primar, iar resturile rezultate s-au comasat formând Luna.",
       "source": {
@@ -264,7 +264,7 @@
     {
       "id": "space.sun.know.01",
       "subcategoryId": "sun",
-      "type": "KNOW",
+      "type": "KNOWLEDGE",
       "title": "Pe scurt: Ciclul solar",
       "body": "Soarele trece printr-un ciclu de activitate de aproximativ 11 ani, marcat de variații în numărul de petreceri solare, erupții și furtuni geomagnetice.",
       "source": {
