@@ -95,8 +95,8 @@
     <string name="settings_shake_desc">Shake phone for a bonus discovery card</string>
     <string name="settings_tilt_title">Tilt cards</string>
     <string name="settings_tilt_desc">Tilt phone to reveal hidden card details</string>
-    <string name="settings_haptics_title">Haptic Feedback</string>
-    <string name="settings_haptics_desc">Vibrate on save, shake and badge unlocks</string>
+    <string name="settings_haptics_title">Vibration</string>
+    <string name="settings_haptics_desc">The vibration motor pulses on a shake and when you finish the day</string>
     <string name="settings_sensors">Sensors</string>
     <string name="sensor_touchscreen">Touchscreen</string>
     <string name="sensor_touchscreen_use">Swipe, tap and save cards</string>
@@ -104,6 +104,8 @@
     <string name="sensor_accelerometer_use">Shake for a bonus discovery</string>
     <string name="sensor_gyroscope">Gyroscope</string>
     <string name="sensor_gyroscope_use">Tilt a card to reveal a hidden detail</string>
+    <string name="sensor_vibration">Vibration motor</string>
+    <string name="sensor_vibration_use">Actuator: one pulse for a bonus, another pattern for a complete day</string>
     <string name="sensor_missing">Not available on this phone</string>
     <string name="settings_theme">Theme</string>
     <string name="settings_mode">Daily mode</string>
@@ -147,10 +149,22 @@
     <string name="day_complete">complete</string>
     <string name="day_in_progress">in progress</string>
     <string name="day_not_started">not started</string>
+
     <string name="tilt_hint_gyro">Tilt your phone to reveal the hidden detail</string>
     <string name="tilt_hint_drag">Drag the card left or right</string>
     <string name="tilt_reveal_button">Show the detail</string>
     <string name="tilt_revealed">Hidden detail</string>
+
+    <string name="note_title">Personal note</string>
+    <string name="note_add">Add note</string>
+    <string name="note_edit">Edit note</string>
+    <string name="note_hint">Write your thoughts about this discovery...</string>
+    <string name="note_save">Save</string>
+    <string name="note_cancel">Cancel</string>
+
+    <string name="badge_tree_cd">Badge tree, level %1$d of %2$d</string>
+    <string name="badge_tree_empty">Unlock achievements to grow the tree</string>
+    <string name="badge_tree_summary">%1$d of %2$d badges unlocked</string>
 
     <plurals name="tree_growth_new">
         <item quantity="one">%1$d new discovery since your last visit</item>
@@ -163,13 +177,4 @@
     </plurals>
     <string name="teaser_stage">Your tree reached: %1$s</string>
     <string name="teaser_next">Next on your path: %1$s on %2$s</string>
-    <string name="badge_tree_cd">Badge tree: %1$d of %2$d badges</string>
-    <string name="badge_tree_summary">%1$d of %2$d badges on your tree</string>
-    <string name="badge_tree_empty">Earn a badge and your tree starts to grow</string>
-    <string name="note_title">Your note</string>
-    <string name="note_add">Add a note</string>
-    <string name="note_edit">Edit note</string>
-    <string name="note_hint">Leave empty to remove the note</string>
-    <string name="note_save">Save</string>
-    <string name="note_cancel">Cancel</string>
 </resources>

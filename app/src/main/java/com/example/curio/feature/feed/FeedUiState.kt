@@ -24,4 +24,5 @@ sealed interface FeedEvent {
     data class ScrollTo(val index: Int) : FeedEvent
     data object BonusCapReached : FeedEvent
     data object BonusNothingLeft : FeedEvent
+    data object DayCompleted : FeedEvent
 }
