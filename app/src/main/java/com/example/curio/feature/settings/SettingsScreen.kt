@@ -47,6 +47,7 @@ import com.example.curio.R
 import com.example.curio.domain.DailyMode
 import com.example.curio.feature.onboarding.modeDescription
 import com.example.curio.feature.onboarding.modeLabel
+import com.example.curio.hardware.VibrationMotor
 import com.example.curio.ui.theme.Spacing
 import com.example.curio.ui.theme.curioCardBorder
 import com.example.curio.ui.theme.curioCardColors
@@ -155,6 +156,9 @@ fun SettingsScreen(
                 (context.getSystemService(Context.SENSOR_SERVICE) as SensorManager)
                     .getDefaultSensor(Sensor.TYPE_GYROSCOPE) != null
             }
+            val hasVibration = remember {
+                VibrationMotor(context).isAvailable
+            }
 
             Card(colors = curioCardColors(), elevation = curioCardElevation(), border = curioCardBorder(false)) {
                 Column(Modifier.padding(Spacing.sm)) {
@@ -172,6 +176,12 @@ fun SettingsScreen(
                         headlineContent = { Text(stringResource(R.string.sensor_gyroscope)) },
                         supportingContent = {
                             Text(stringResource(if (hasGyroscope) R.string.sensor_gyroscope_use else R.string.sensor_missing))
+                        },
+                    )
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.sensor_vibration)) },
+                        supportingContent = {
+                            Text(stringResource(if (hasVibration) R.string.sensor_vibration_use else R.string.sensor_missing))
                         },
                     )
                 }

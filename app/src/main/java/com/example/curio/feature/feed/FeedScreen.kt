@@ -67,6 +67,7 @@ fun FeedScreen(
     tilt: Flow<TiltState> = emptyFlow(),
     useGyroscope: Boolean = false,
     onOpenDetail: (String) -> Unit = {},
+    onDayCompleted: () -> Unit = {},
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val savedIds by viewModel.savedIds.collectAsStateWithLifecycle()
@@ -155,6 +156,7 @@ fun FeedScreen(
                                     is FeedEvent.ScrollTo -> pagerState.animateScrollToPage(e.index)
                                     FeedEvent.BonusCapReached -> snackbarHostState.showSnackbar(bonusCapText)
                                     FeedEvent.BonusNothingLeft -> snackbarHostState.showSnackbar(bonusNothingText)
+                                    FeedEvent.DayCompleted -> onDayCompleted()
                                 }
                             }
                         }

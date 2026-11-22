@@ -14,6 +14,7 @@ import com.example.curio.domain.CurrentThemeSource
 import com.example.curio.domain.DailyMode
 import com.example.curio.domain.DailyModeSource
 import com.example.curio.domain.DayChoice
+import com.example.curio.domain.DayCompletionWatcher
 import com.example.curio.domain.DayPlan
 import com.example.curio.domain.Discovery
 import com.example.curio.domain.DwellTracker
@@ -96,6 +97,17 @@ class FeedViewModel(
                         lastTheme = theme
                         lastMode = mode
                         loadLive()
+                    }
+            }
+            viewModelScope.launch {
+                val watcher = DayCompletionWatcher()
+                activity.observeSnapshot()
+                    .map { LocalDate.now(clock) in it.completedDays }
+                    .distinctUntilChanged()
+                    .collect { complete ->
+                        if (watcher.update(complete)) {
+                            _events.emit(FeedEvent.DayCompleted)
+                        }
                     }
             }
         } else {

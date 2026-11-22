@@ -69,10 +69,11 @@ import com.example.curio.feature.settings.SourcesScreen
 import com.example.curio.feature.tree.TreeScreen
 import com.example.curio.feature.tree.TreeScreenEvent
 import com.example.curio.feature.tree.TreeScreenViewModel
+import com.example.curio.hardware.VibrationPattern
 import java.time.LocalDate
 import kotlinx.coroutines.launch
 
-data class NavTab(val route: Route, @StringRes val labelRes: Int, val icon: ImageVector)
+data class NavTab(val route: Route, @param:StringRes val labelRes: Int, val icon: ImageVector)
 
 val navTabs = listOf(
     NavTab(Route.Feed, R.string.tab_feed, Icons.Default.Home),
@@ -114,7 +115,7 @@ fun CurioNavHost(
                 if (currentRoute != null && !currentRoute.contains("Onboarding") && !currentRoute.contains("Sources") && !currentRoute.contains("Tree") && !onAchievements && !onFeedDay) {
                     NavigationBar(containerColor = MaterialTheme.colorScheme.surfaceContainer) {
                         navTabs.forEach { tab ->
-                            val selected = currentDestination?.hierarchy?.any { it.hasRoute(tab.route::class) } == true
+                            val selected = currentDestination.hierarchy.any { it.hasRoute(tab.route::class) }
                             NavigationBarItem(
                                 selected = selected,
                                 onClick = {
@@ -171,11 +172,14 @@ fun CurioNavHost(
                         shakes = shakes,
                         shakeEnabled = shakeEnabled,
                         onShakeDetected = {
-                            haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                            if (hapticsEnabled) container.vibrationMotor.play(VibrationPattern.SHAKE_BONUS)
                         },
                         tilt = tilt,
                         useGyroscope = tiltEnabled && container.tiltSensor.isAvailable,
                         onOpenDetail = { id -> navController.navigate(Route.Detail(id)) },
+                        onDayCompleted = {
+                            if (hapticsEnabled) container.vibrationMotor.play(VibrationPattern.DAY_COMPLETE)
+                        },
                     )
                 }
 
@@ -258,11 +262,14 @@ fun CurioNavHost(
                             shakes = shakes,
                             shakeEnabled = shakeEnabled,
                             onShakeDetected = {
-                                haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                                if (hapticsEnabled) container.vibrationMotor.play(VibrationPattern.SHAKE_BONUS)
                             },
                             tilt = tilt,
                             useGyroscope = tiltEnabled && container.tiltSensor.isAvailable,
                             onOpenDetail = { id -> navController.navigate(Route.Detail(id)) },
+                            onDayCompleted = {
+                                if (hapticsEnabled) container.vibrationMotor.play(VibrationPattern.DAY_COMPLETE)
+                            },
                         )
                     }
                 }

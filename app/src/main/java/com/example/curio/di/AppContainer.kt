@@ -34,6 +34,7 @@ import com.example.curio.domain.TouchQueue
 import com.example.curio.domain.TreeVisitStore
 import com.example.curio.hardware.ShakeSensor
 import com.example.curio.hardware.TiltSensor
+import com.example.curio.hardware.VibrationMotor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -50,6 +51,7 @@ class AppContainer(context: Context) {
     val settingsRepository: SettingsRepository = SettingsRepository(context)
     val shakeSensor: ShakeSensor = ShakeSensor(context)
     val tiltSensor: TiltSensor = TiltSensor(context)
+    val vibrationMotor: VibrationMotor = VibrationMotor(context)
 
     val database: CurioDatabase = CurioDatabase.create(context)
     val contentIndex: ContentIndex = ContentBootstrap.index(context)

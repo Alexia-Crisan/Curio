@@ -94,8 +94,8 @@
     <string name="settings_shake_desc">Scutură telefonul pentru un card bonus</string>
     <string name="settings_tilt_title">Înclină cardurile</string>
     <string name="settings_tilt_desc">Înclină telefonul pentru detalii ascunse</string>
-    <string name="settings_haptics_title">Feedback haptic</string>
-    <string name="settings_haptics_desc">Vibrație la salvare, shake și deblocare de insignă</string>
+    <string name="settings_haptics_title">Vibrații</string>
+    <string name="settings_haptics_desc">Motorul de vibrații pulsează la shake și când termini ziua</string>
     <string name="settings_sensors">Senzori</string>
     <string name="sensor_touchscreen">Ecran tactil</string>
     <string name="sensor_touchscreen_use">Glisare, apăsare și salvare de carduri</string>
@@ -103,6 +103,8 @@
     <string name="sensor_accelerometer_use">Scuturare pentru descoperire bonus</string>
     <string name="sensor_gyroscope">Giroscop</string>
     <string name="sensor_gyroscope_use">Înclină cardul pentru un detaliu ascuns</string>
+    <string name="sensor_vibration">Motor de vibrații</string>
+    <string name="sensor_vibration_use">Actuator: un puls la bonus, alt tipar la ziua completă</string>
     <string name="sensor_missing">Indisponibil pe acest telefon</string>
     <string name="settings_theme">Tema</string>
     <string name="settings_mode">Modul zilnic</string>
@@ -152,6 +154,17 @@
     <string name="tilt_reveal_button">Arată detaliul</string>
     <string name="tilt_revealed">Detaliu ascuns</string>
 
+    <string name="note_title">Notă personală</string>
+    <string name="note_add">Adaugă notă</string>
+    <string name="note_edit">Editează notă</string>
+    <string name="note_hint">Scrie gândurile tale despre această descoperire...</string>
+    <string name="note_save">Salvează</string>
+    <string name="note_cancel">Anulează</string>
+
+    <string name="badge_tree_cd">Arbore de insignă, nivelul %1$d din %2$d</string>
+    <string name="badge_tree_empty">Deblochează realizări pentru a crește arborele</string>
+    <string name="badge_tree_summary">%1$d din %2$d insigne deblocate</string>
+
     <plurals name="tree_growth_new">
         <item quantity="one">%1$d descoperire nouă de la ultima ta vizită</item>
         <item quantity="few">%1$d descoperiri noi de la ultima ta vizită</item>
@@ -165,13 +178,4 @@
     </plurals>
     <string name="teaser_stage">Arborele tău a ajuns la: %1$s</string>
     <string name="teaser_next">Pe drumul tău, urmează: %1$s la %2$s</string>
-    <string name="badge_tree_cd">Arborele insignelor: %1$d din %2$d insigne</string>
-    <string name="badge_tree_summary">%1$d din %2$d insigne pe arborele tău</string>
-    <string name="badge_tree_empty">Câștigă o insignă și arborele tău începe să crească</string>
-    <string name="note_title">Notița ta</string>
-    <string name="note_add">Adaugă o notiță</string>
-    <string name="note_edit">Editează notița</string>
-    <string name="note_hint">Lasă gol ca să ștergi notița</string>
-    <string name="note_save">Salvează</string>
-    <string name="note_cancel">Anulează</string>
 </resources>
